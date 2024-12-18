@@ -61,13 +61,13 @@
                                     @csrf
 
                                     <div class="col-12">
-                                        <label for="yourName" class="form-label">Nom</label>
+                                        <label for="yourName" class="form-label">Nom<span class="text-danger">*</span></label>
                                         <input type="text" name="name" class="form-control" id="yourName" required>
                                         <div class="invalid-feedback">S'il vous plaît, entrez votre nom!</div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourEmail" class="form-label">Email</label>
+                                        <label for="yourEmail" class="form-label">Email<span class="text-danger">*</span></label>
                                         <input type="email" name="email" class="form-control" id="yourEmail" required>
                                         <div class="invalid-feedback">Veuillez entrer une adresse e-mail valide!</div>
                                     </div>
@@ -89,7 +89,7 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="password" class="form-label">Mot de passe</label>
+                                        <label for="password" class="form-label">Mot de passe<span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <input type="password" name="password" class="form-control" id="password" required>
                                             <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password')">
@@ -100,7 +100,7 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="password_confirmation" class="form-label">Confirmez mot de passe</label>
+                                        <label for="password_confirmation" class="form-label">Confirmez mot de passe<span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" required>
                                             <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password_confirmation')">
