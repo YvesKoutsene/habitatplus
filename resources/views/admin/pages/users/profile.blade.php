@@ -166,7 +166,7 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Confirmer mot de passe</label>
+                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Confirmez mot de passe</label>
                         <div class="col-md-8 col-lg-9">
                             <div class="input-group">
                                 <input name="renewpassword" type="password" class="form-control" id="renewPassword" required>
