@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'numero',
+        'pays',
+        'photo_profil',
+        'statut'
     ];
 
     /**
@@ -44,5 +48,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function biens()
+    {
+        return $this->hasMany(Bien::class, 'id_user');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'id_user');
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'id_user');
     }
 }
