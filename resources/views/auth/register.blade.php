@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8">
@@ -89,15 +89,25 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourPassword" class="form-label">Mot de passe</label>
-                                        <input type="password" name="password" class="form-control" id="yourPassword" required>
-                                        <div class="invalid-feedback">Veuillez entrer votre mot de passe!</div>
+                                        <label for="password" class="form-label">Mot de passe</label>
+                                        <div class="input-group">
+                                            <input type="password" name="password" class="form-control" id="password" required>
+                                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password')">
+                                                <i class="bi bi-eye" id="eye-icon-password"></i>
+                                            </button>
+                                            <div class="invalid-feedback">Veuillez entrer votre mot de passe!</div>
+                                        </div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourPasswordConfirmation" class="form-label">Confirmez mot de passe</label>
-                                        <input type="password" name="password_confirmation" class="form-control" id="yourPasswordConfirmation" required>
-                                        <div class="invalid-feedback">Veuillez confirmer votre mot de passe!</div>
+                                        <label for="password_confirmation" class="form-label">Confirmez mot de passe</label>
+                                        <div class="input-group">
+                                            <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" required>
+                                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password_confirmation')">
+                                                <i class="bi bi-eye" id="eye-icon-confirmation"></i>
+                                            </button>
+                                            <div class="invalid-feedback">Veuillez confirmer votre mot de passe!</div>
+                                        </div>
                                     </div>
 
                                     <div class="col-12">
@@ -155,6 +165,22 @@
             })
             .catch(error => console.error('Erreur lors de la récupération des données:', error));
     });
+
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(inputId === 'password' ? 'eye-icon-password' : 'eye-icon-confirmation');
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        } else {
+            input.type = "password";
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
+    }
+
 </script>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

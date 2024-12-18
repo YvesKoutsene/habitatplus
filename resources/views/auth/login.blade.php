@@ -65,17 +65,22 @@
                                     @csrf
 
                                     <div class="col-12">
-                                        <label for="yourEmail" class="form-label">Email</label>
+                                        <label for="yourEmail" class="form-label">Email<span class="text-danger">*</span></label>
                                         <input type="email" name="email" class="form-control" id="yourEmail" value="{{ old('email') }}" required autofocus>
                                         <div class="invalid-feedback">Veuillez entrer votre adresse e-mail valide!</div>
                                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourPassword" class="form-label">Mot de passe</label>
-                                        <input type="password" name="password" class="form-control" id="yourPassword" required autocomplete="current-password">
-                                        <div class="invalid-feedback">Veuillez entrer votre mot de passe!</div>
-                                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                        <label for="yourPassword" class="form-label">Mot de passe<span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <input type="password" name="password" class="form-control" id="yourPassword" required autocomplete="current-password">
+                                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('yourPassword')">
+                                                <i class="bi bi-eye" id="eye-icon-password"></i>
+                                            </button>
+                                            <div class="invalid-feedback">Veuillez entrer votre mot de passe!</div>
+                                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                        </div>
                                     </div>
 
                                     <div class="col-12">
@@ -125,6 +130,23 @@
 
 <!-- Template Main JS File -->
 <script src="\assets/js/main.js"></script>
+
+<script>
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(inputId === 'yourPassword' ? 'eye-icon-password' : 'eye-icon-confirmation');
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        } else {
+            input.type = "password";
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
+    }
+</script>
 
 </body>
 
