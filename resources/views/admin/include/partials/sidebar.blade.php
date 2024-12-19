@@ -18,7 +18,7 @@
                 </a>
             </li>
             <li>
-                <a href="components-accordion.html">
+                <a href="{{ route('users.index') }}">
                     <i class="bi bi-circle"></i><span>Accordion</span>
                 </a>
             </li>

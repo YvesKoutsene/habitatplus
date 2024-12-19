@@ -24,8 +24,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('roles', RoleController::class)->middleware('auth');
 
     //Pour les users
-        //Route::patch('users/{user}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
-        //Route::patch('users/{user}/reactivate', [UserController::class, 'reactivate'])->name('users.reactivate');
+        Route::patch('users/{user}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
+        Route::patch('users/{user}/reactivate', [UserController::class, 'reactivate'])->name('users.reactivate');
         Route::resource('users', UserController::class);
 });
 
