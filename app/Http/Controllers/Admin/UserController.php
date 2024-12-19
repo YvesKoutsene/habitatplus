@@ -103,6 +103,13 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+
+        // Vérifier si le rôle du user est "Abonné"
+        if ($user->roles->pluck('name')->contains('Abonné')) {
+            return redirect()->route('users.index')
+                ->with('error', 'Cet utilisateur ne peut pas être modifié.');
+        }
+
         $roles = Role::all();
         return view('admin.pages.users.edit', compact('user', 'roles'));
     }
@@ -112,6 +119,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Vérifier si le rôle du user est "Abonné"
+        if ($user->roles->pluck('name')->contains('Abonné')) {
+            return redirect()->route('users.index')
+                ->with('error', 'Cet utilisateur ne peut pas être modifié.');
+        }
+
         $validateUser = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
@@ -131,12 +144,16 @@ class UserController extends Controller
         // Récupérer l'utilisateur
         $user = User::findOrFail($id);
         
+        // Conserver l'ancienne photo de profil par défaut
+        $profilePath = $user->photo_profil;
+
         // Gestion de l'upload de l'image
-        $profilePath = $user->photo_profil; // Valeur par défaut
         if ($request->hasFile('photo_profil')) {
             $profile = $request->file('photo_profil');
             $profileName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $profile->getClientOriginalName());
             $profilePath = $profile->storeAs('images/profils', $profileName, 'public');
+            // Mettre à jour le chemin de la photo de profil
+            $profilePath = Storage::url($profilePath);
         }
 
         // Mise à jour des informations de l'utilisateur
@@ -146,7 +163,7 @@ class UserController extends Controller
             'password' => $request->password ? Hash::make($request->password) : $user->password,
             'pays' => $request->pays,
             'numero' => $request->numero,
-            'photo_profil' => $profilePath ? Storage::url($profilePath) : $user->photo_profil,
+            'photo_profil' => $profilePath, // Utiliser le chemin mis à jour ou l'ancien
             'statut' => 'actif', // ou laissez tel quel si ce n'est pas modifiable
         ]);
 
@@ -196,6 +213,12 @@ class UserController extends Controller
     {
         if (auth()->id() === $user->id) {
             return redirect()->route('users.index')->with('error', 'Vous ne pouvez pas supprimer votre propre compte.');
+        }
+
+        // Vérifier si le rôle du user est "Abonné"
+        if ($user->roles->pluck('name')->contains('Abonné')) {
+            return redirect()->route('users.index')
+                ->with('error', 'Cet utilisateur ne peut pas être supprimé.');
         }
     
         $user->delete();

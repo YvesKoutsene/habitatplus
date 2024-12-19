@@ -125,8 +125,10 @@
 
                         <!-- Boutons -->
                     <div class="text-center">
-                        <button type="submit" class="btn btn-outline-primary">Ajouter</button>
-                        <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                        <!--
+                        <button type="reset" class="btn btn-secondary">Réinitialiser</button> 
+                        -->
                     </div>
                 </div>
         </div>

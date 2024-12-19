@@ -66,9 +66,11 @@ use Carbon\Carbon;
 
                             <td>
                                 <div class="d-flex">
+                                    @if(!$user->roles->pluck('name')->contains('Abonné'))
                                     <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
+                                    @endif
 
                                     @if(auth()->id() !== $user->id)
                                     @if($user->statut == 'actif')
