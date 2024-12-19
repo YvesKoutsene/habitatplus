@@ -33,7 +33,7 @@ use Carbon\Carbon;
                             Aucun rôle disponible pour le moment. <a href="{{ route('roles.create') }}" class="alert-link">Créer un rôle</a>.
                         </div>
                     @else
-                        <table class="table table-hover">
+                        <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -63,21 +63,44 @@ use Carbon\Carbon;
                                         @endif
                                     </td>
                                     <td>{{ \Carbon\Carbon::parse($role->created_at)->format('d M Y') }}</td>
+
                                     <td>
-                                        <div class="d-flex">
-                                            <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
-                                            <form action="{{ route('roles.destroy', $role->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce rôle ?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+                                    @if($role->name != 'Administrateur' && $role->name != 'Abonné')
+                                    <div class="d-flex">
+                                        <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $role->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+
+                                        <!-- Modal de confirmation de suppression -->
+                                        <div class="modal fade" id="deleteConfirmation{{ $role->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $role->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="deleteConfirmationLabel{{ $role->id }}">Confirmation de Suppression</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Êtes-vous sûr de vouloir supprimer le rôle "{{ $role->name }}" ? Cette action est irréversible.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                        <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </td>
-                                </tr>
+                                        <!-- Fin de la Modal -->
+                                    </div>
+                                    @endif
+                                </td>
+                            </tr>
 
                                 <!-- Modale pour afficher toutes les permissions -->
                                 <div class="modal fade" id="permissionsModal{{ $role->id }}" tabindex="-1" aria-labelledby="permissionsModalLabel{{ $role->id }}" aria-hidden="true">

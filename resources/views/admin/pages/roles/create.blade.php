@@ -17,13 +17,13 @@ use Carbon\Carbon;
 </div>
 
 <section class="section">
-    <div class="row">
+    <div class="row justify-content-center">
         <!-- Formulaire de création de rôle -->
-        <div class="col-lg-7">
+        <div class="col-lg-8">
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Formulaire de création de rôle</h5>
-                    <form method="POST" action="{{ route('roles.store') }}" class="needs-validation" novalidate >
+                    <form method="POST" action="{{ route('roles.store') }}" class="needs-validation" novalidate>
                         @csrf
                         <!-- Nom du rôle -->
                         <div class="mb-3">
@@ -89,27 +89,33 @@ use Carbon\Carbon;
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Créer</button>
                             <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+                            <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#previewModal" onclick="previewSelectedPermissions()">Prévisualiser</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- Liste des permissions choisies -->
-        <div class="col-lg-5">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Liste de permissions choisies</h5>
-                    <div id="selected-permissions" class="mb-3">
-                        <span class="text-muted">Aucune permission sélectionnée pour le moment.</span>
+        <!-- Modale de prévisualisation -->
+        <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="previewModalLabel">Permissions Sélectionnées</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-outline-info" onclick="previewSelectedPermissions()">Prévisualiser</button>
+                    <div class="modal-body">
+                        <div id="selected-permissions-preview">
+                            <span class="text-muted">Aucune permission sélectionnée pour le moment.</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                     </div>
                 </div>
             </div>
         </div>
-        
+
     </div>
 </section>
 
@@ -117,7 +123,7 @@ use Carbon\Carbon;
     function previewSelectedPermissions() {
         const checkboxes = document.querySelectorAll('input[name="permissions[]"]:checked');
         const selectedPermissions = Array.from(checkboxes).map(checkbox => checkbox.nextElementSibling.innerText);
-        const previewDiv = document.getElementById('selected-permissions');
+        const previewDiv = document.getElementById('selected-permissions-preview');
 
         if (selectedPermissions.length > 0) {
             previewDiv.innerHTML = `<ul class="list-group">` +

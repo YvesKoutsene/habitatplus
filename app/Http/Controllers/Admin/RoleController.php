@@ -79,6 +79,11 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+
+        if ($role->name === 'Administrateur' || $role->name === 'Abonné') {
+            return redirect()->route('roles.index')->with('error', 'Vous ne pouvez pas modifier ce rôle.');
+        }
+
         $permissions = Permission::with('children')->whereNull('parent_id')->get();
         return view('admin.pages.roles.edit', compact('role', 'permissions'));
     }
@@ -90,6 +95,10 @@ class RoleController extends Controller
 
     public function update(Request $request, Role $role)
     {
+        if ($role->name === 'Administrateur' || $role->name === 'Abonné') {
+            return redirect()->route('roles.index')->with('error', 'Vous ne pouvez pas modifier ce rôle.');
+        }
+
         $request->validate([
             'name' => 'required|unique:roles,name,' . $role->id,
             'permissions' => 'nullable|array',
@@ -121,8 +130,12 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        if ($role->name === 'Administrateur' || $role->name === 'Abonné') {
+            return redirect()->route('roles.index')->with('error', 'Vous ne pouvez pas supprimer ce rôle.');
+        }
+
         $role->delete();
-        return redirect()->route('roles.index')->with('success', 'Rôle supprimé avec succès.');
+        return redirect()->route('roles.index')->with('success', "Rôle {$role->name} supprimé avec succès.");
     }
 
 }
