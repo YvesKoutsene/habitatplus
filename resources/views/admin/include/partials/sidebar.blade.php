@@ -30,15 +30,17 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route ('parameter_category.index') }}">
                     <i class="bi bi-circle"></i><span>Paramètre Categorie</span>
                 </a>
             </li>
+            <!--
             <li>
-                <a href="#">
+                <a href="{{ route ('parameter_category.create') }}">
                     <i class="bi bi-circle"></i><span>Ajouter Paramètre</span>
                 </a>
             </li>
+            -->
         </ul>
     </li><!-- End Components Nav -->
 
@@ -62,11 +64,13 @@
                     <i class="bi bi-circle"></i><span>Liste Paramètre</span>
                 </a>
             </li>
+            <!--
             <li>
                 <a href="#">
                     <i class="bi bi-circle"></i><span>Ajouter Paramètre</span>
                 </a>
             </li>
+            -->
         </ul>
     </li><!-- End Forms Nav -->
 
@@ -155,7 +159,7 @@
 
     <li class="nav-item">
         <a href="javascript:void(0);" id="logout-link" class="nav-link collapsed" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <i class="bi bi-box-arrow-in-right"></i>
+            <i class="bi bi-box-arrow-in-left"></i>
             <span>Deconnexion</span>
         </a>
         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
