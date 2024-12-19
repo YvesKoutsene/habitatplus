@@ -124,14 +124,17 @@
                         <!-- Rôle -->
                         <div class="mb-3">
                             <label for="role" class="form-label">Rôle<span class="text-danger">*</span></label>
-                            <select name="role" class="form-select" required>
+                            <select name="role" class="form-select" {{ auth()->id() === $user->id ? 'disabled' : '' }} required>
                                 <option value="">Choisir un rôle...</option>
                                 @foreach($roles as $role)
-                                <option value="{{ $role->id }}" {{ $user->hasRole($role->id) ? 'selected' : '' }}>{{ $role->name }}</option>
+                                    <option value="{{ $role->id }}" {{ $user->hasRole($role->id) ? 'selected' : '' }}>{{ $role->name }}</option>
                                 @endforeach
                             </select>
+                            @if(auth()->id() === $user->id)
+                                <input type="hidden" name="role" value="{{ $user->roles->first()->id }}">
+                            @endif
                             @error('role')
-                            <div class="text-danger">{{ $message }}</div>
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 

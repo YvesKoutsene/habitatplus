@@ -40,9 +40,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Information sur l'utilisateur</h5>
-
                     <!-- Formulaire -->
-                    
                         <!-- Nom -->
                         <div class="mb-3">
                             <label for="name" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
@@ -93,7 +91,7 @@
 
                         <!-- Confirmation mot de passe -->
                         <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">Confirmez mot de passe<span class="text-danger" title="obligatoire">*</span></label>
+                            <label for="password_confirmation" class="form-label">Confirmer mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                             <div class="input-group">
                                 <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" required>
                                 <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password_confirmation')">

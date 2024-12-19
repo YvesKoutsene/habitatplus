@@ -30,7 +30,8 @@ class AuthenticatedSessionController extends Controller
 
         session()->flash('success', 'Content de vous revoir!');
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        //return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('profile.edit', absolute: false));
     }
 
     /**

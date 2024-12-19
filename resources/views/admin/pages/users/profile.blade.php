@@ -75,23 +75,26 @@
 
                 </div>
 
-                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
-
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit"
                   <!-- Profile Edit Form -->
-                  <form>
+                  <form method="POST" action="{{ route('update.profile', $user->id) }}" class="needs-validation" enctype="multipart/form-data" novalidate>
+                    @method('PUT')
+                    @csrf
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Image Profil</label>
                       <div class="col-md-8 col-lg-9">
-                        <img src="{{ asset(Auth::user()->photo_profil ) }}" alt="Profil">
-                        <div class="pt-2">
-                          <a href="#" class="btn btn-primary btn-sm" title="Téléverser une nouvelle photo de profil"><i class="bi bi-upload"></i></a>
-                          <a href="#" class="btn btn-danger btn-sm" title="Supprimer ma photo de photo"><i class="bi bi-trash"></i></a>
-                        </div>
+                          <img id="profilePreview" src="{{ asset(Auth::user()->photo_profil) }}" alt="Profil" class="img-fluid rounded" style="max-height: 150px;">
+                          <div class="pt-2">
+                              <label for="uploadImage" class="btn btn-primary btn-sm" title="Téléverser une photo">
+                                  <i class="bi bi-upload"></i> Téléverser
+                              </label>
+                              <input type="file" name="photo_profil" id="uploadImage" class="d-none" accept="image/*">
+                          </div>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Nom</label>
+                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
                       <div class="col-md-8 col-lg-9">
                         <input name="name" type="text" class="form-control" id="fullName" value="{{ old('name', $user->name) }}">
                       </div>
@@ -100,19 +103,25 @@
                     <div class="row mb-3">
                       <label for="Job" class="col-md-4 col-lg-3 col-form-label">Rôle</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="job" type="text" class="form-control" id="Job" value="Web Designer">
+                        <input name="job" type="text" class="form-control" id="Job" value="{{ ucfirst(Auth::user()->roles->first()->name) }}" disabled>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Telephone</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="numero" type="text" class="form-control" id="Phone" value="({{ old('name', $user->pays) }}) {{ old('name', $user->numero) }}">
-                      </div>
+                        <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Telephone<span class="text-danger" title="obligatoire">*</span></label>
+                            <div class="col-md-4">
+                                <select id="countryCode" name="pays" class="form-select" required>
+                                    <option value="{{ old('pays', $user->pays) }}">{{ old('pays', $user->pays) }}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <input type="text" name="numero" class="form-control" id="numero" required oninput="validateInput()" value="{{ old('numero', $user->numero) }}">
+                                <div class="invalid-feedback">Veuillez entrer le numéro!</div>
+                            </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email<span class="text-danger" title="obligatoire">*</span></label>
                       <div class="col-md-8 col-lg-9">
                         <input name="email" type="email" class="form-control" id="Email" value="{{ old('name', $user->email) }}">
                       </div>
@@ -122,7 +131,6 @@
                       <button type="submit" class="btn btn-primary">Modifier</button>
                     </div>
                   </form><!-- End Profile Edit Form -->
-
                 </div>
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
@@ -131,7 +139,7 @@
                       @method('PUT')
                       @csrf
                       <div class="row mb-3">
-                          <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Mot de passe actuel</label>
+                          <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Mot de passe actuel<span class="text-info" title="Obligatoire pour changer le mot de passe">*</span></label>
                           <div class="col-md-8 col-lg-9">
                               <div class="input-group">
                                   <input name="current_password" type="password" class="form-control" id="currentPassword" required>
@@ -143,7 +151,7 @@
                       </div>
 
                       <div class="row mb-3">
-                          <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Nouveau mot de passe</label>
+                          <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Nouveau mot de passe<span class="text-info" title="Laisser vide si pas de changement">*</span></label>
                           <div class="col-md-8 col-lg-9">
                               <div class="input-group">
                                   <input name="password" type="password" class="form-control" id="newPassword" required>
@@ -155,7 +163,7 @@
                       </div>
 
                       <div class="row mb-3">
-                          <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Confirmez mot de passe</label>
+                          <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Confirmer mot de passe<span class="text-info" title="Laisser vide si pas de changement">*</span></label>
                           <div class="col-md-8 col-lg-9">
                               <div class="input-group">
                                   <input name="password_confirmation" type="password" class="form-control" id="renewPassword" required>
@@ -195,7 +203,44 @@
             icon.classList.add('bi-eye');
         }
     }
+
+    document.getElementById('uploadImage').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+              document.getElementById('profilePreview').src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+      }
+    });
+
+    // Validation des champs de téléphone
+    function validateInput() {
+        const input = document.getElementById('numero');
+        input.value = input.value.replace(/[^0-9]/g, '');
+    }
+
+    // Charger la liste des indicatifs téléphoniques
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('https://restcountries.com/v3.1/all')
+            .then(response => response.json())
+            .then(data => {
+                const selectElement = document.getElementById("countryCode");
+                data.sort((a, b) => a.name.common.localeCompare(b.name.common));
+                data.forEach(country => {
+                    const indicatif = country.idd.root + (country.idd.suffixes ? country.idd.suffixes[0] : '');
+                    if (indicatif) {
+                        const option = document.createElement("option");
+                        option.value = indicatif;
+                        option.textContent = `${indicatif} - ${country.name.common}`;
+                        selectElement.appendChild(option);
+                    }
+                });
+                selectElement.value = "{{ old('pays', $user->pays) }}"; // Pré-sélectionner le pays
+            })
+            .catch(console.error);
+    });
+
 </script>
-
-
 @endsection

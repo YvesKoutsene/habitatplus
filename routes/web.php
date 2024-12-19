@@ -26,10 +26,11 @@ Route::middleware('auth')->group(function () {
     //Pour les users
         Route::patch('users/{user}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
         Route::patch('users/{user}/reactivate', [UserController::class, 'reactivate'])->name('users.reactivate');
-        
+
         Route::resource('users', UserController::class);
     //Pour profil d'admin
         Route::put('/profile/password/update/{id}', [ProfileController::class, 'updatePassword'])->name('update.password');
+        Route::put('/profile/profile/update/{id}', [ProfileController::class, 'update'])->name('update.profile');
 
 });
 

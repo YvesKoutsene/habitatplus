@@ -131,6 +131,12 @@ class UserController extends Controller
                 ->with('error', 'Cet utilisateur ne peut pas être modifié.');
         }
 
+        // Vérifier si l'utilisateur connecté essaie de modifier son propre rôle
+        if (auth()->id() === $user->id && $request->has('role')) {
+            return redirect()->back()
+                ->with('error', 'Vous ne pouvez pas modifier votre propre rôle.');
+        }
+
         // Valider les données du formulaire
         $validateUser = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
