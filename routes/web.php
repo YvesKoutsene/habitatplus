@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ParameterCategoryController;
+use App\Http\Controllers\Admin\CategoryBienController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,6 +36,9 @@ Route::middleware('auth')->group(function () {
 
     //Pour les paramètres categories de bien
     Route::resource('parameter_category', ParameterCategoryController::class);
+
+    //Pour les categorie de bien
+    Route::resource('category_bien', CategoryBienController::class);
 
 });
 

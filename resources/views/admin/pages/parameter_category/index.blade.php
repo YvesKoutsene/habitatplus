@@ -53,10 +53,11 @@
                                                 <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editParameterModal{{ $parametre->id }}">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $parametre->id }}">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-
+                                                @if ($parametre->associations->isEmpty() )
+                                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $parametre->id }}">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                @endif
                                                 <!-- Modal de confirmation de suppression -->
                                                 <div class="modal fade" id="deleteConfirmation{{ $parametre->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $parametre->id }}" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">

@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\ParametreCategorie; // Exemple d'utilisation d'un modèle
+use App\Models\ParametreCategorie; 
+use App\Models\AssociationCategorieParametre; 
 
 class ParameterCategoryController extends Controller
 {
@@ -14,7 +15,7 @@ class ParameterCategoryController extends Controller
      */
     public function index()
     {
-        $parametres = ParametreCategorie::orderBy('created_at', 'asc')->all();
+        $parametres = ParametreCategorie::orderBy('created_at', 'asc')->get();
         return view('admin.pages.parameter_category.index', compact('parametres'));
     }
 
@@ -40,7 +41,7 @@ class ParameterCategoryController extends Controller
 
         $parametre = ParametreCategorie::create($request->all());
 
-        return redirect()->route('parameter_category.index')->with('success', "Paramètre {{ $parametre->nom_parametre }} créé avec succès.");
+        return redirect()->route('parameter_category.index')->with('success', "Paramètre {$parametre->nom_parametre} créé avec succès.");
     }
 
     /**
@@ -87,11 +88,21 @@ class ParameterCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ParametreCategorie $parametreCategorie)
-    {
-        $parametreCategorie->delete();
 
-        return redirect()->route('parameter_category.index')->with('success', "Paramètre {$parametreCategorie->nom_parametre} supprimé avec succès.");
+    public function destroy($parametreCategorie)
+    {
+
+        $parametre = ParametreCategorie::findOrFail($parametreCategorie);
+
+        if ($parametre->associations()->exists()) {
+            return redirect()->route('parameter_category.index')
+                ->with('error', "Le paramètre {$parametreCategorie->nom_parametre} ne peut pas être supprimé.");
+        }
+     
+        $parametre->delete();
+     
+        return redirect()->route('parameter_category.index')->with('success', "Paramètre {$parametre->nom_parametre} supprimé avec succès.");
     }
+    
     
 }
