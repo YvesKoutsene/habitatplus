@@ -35,25 +35,51 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // Fonction d'enregistrement d'utilisateur
     public function store(Request $request)
     {
-        $request->validate([
+        $validateUser = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8|confirmed',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|confirmed|min:8',
+            'numero' => 'required|string|max:15',
+            'photo_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'role' => 'required|exists:roles,id',
         ]);
 
+        if ($validateUser->fails()) {
+            return redirect()->back()
+                ->withErrors($validateUser)
+                ->withInput();
+        }
+
+        $profilePath = null;
+
+        // Gestion de l'upload de l'image
+        if ($request->hasFile('photo_profil')) {
+            $profile = $request->file('photo_profil');
+            $profileName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $profile->getClientOriginalName());
+            $profilePath = $profile->storeAs('images/profils', $profileName, 'public');
+        }
+
+        // Création de l'utilisateur
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
+            'numero' => $request->numero,
+            'photo_profil' => $profilePath ? Storage::url($profilePath) : '/storage/images/profils/default_profile.jpg', // Définir une image par défaut
+            'statut' => 'actif',
         ]);
 
+        // Attribution du rôle
         $role = Role::find($request->role);
-        $user->assignRole($role);
+        if ($role) {
+            $user->assignRole($role);
+        }
 
-        return redirect()->route('users.index')->with('success', 'Utilisateur ajouté avec succès.');
+        return redirect()->route('users.index')
+            ->with('success', "Utilisateur {$user->name} ajouté avec succès.");
     }
 
 

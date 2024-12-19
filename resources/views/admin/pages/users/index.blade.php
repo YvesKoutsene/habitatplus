@@ -39,7 +39,7 @@ use Carbon\Carbon;
                             <th scope="col">#</th>
                             <th scope="col">Nom</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Rôle(s)</th>
+                            <th scope="col">Rôle</th>
                             <th scope="col">Statut</th>
                             <th scope="col">Date création</th>
                             <th scope="col">Actions</th>
@@ -52,12 +52,17 @@ use Carbon\Carbon;
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>
-                                <span class="badge bg-primary">{{ ucfirst($user->getRoleNames()->first()) }}</span>
-                            </td>
+    @if($user->hasRole($user->getRoleNames()->first()))
+        <span class="badge bg-primary">{{ ucfirst($user->getRoleNames()->first()) }}</span>
+    @else
+        <span class="text-muted">Aucun rôle assigné</span>
+    @endif
+</td>
+
 
                             <td>
                                 <span class="badge {{ $user->status == 'active' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ ucfirst($user->status) }}
+                                    {{ ucfirst($user->statut) }}
                                 </span>
                             </td>
                             <td>{{ \Carbon\Carbon::parse($user->created_at)->format('d M Y') }}</td>
