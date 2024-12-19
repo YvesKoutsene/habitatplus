@@ -38,9 +38,9 @@ use Carbon\Carbon;
                         <tr>
                             <th scope="col">Utilisateur</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Pays</th>
                             <th scope="col">Téléphone</th>
                             <th scope="col">Rôle</th>
+                            <th scope="col">Crée le</th>
                             <th scope="col">Statut</th>
                             <th scope="col">Actions</th>
                         </tr>
@@ -53,11 +53,11 @@ use Carbon\Carbon;
                                 | {{ $user->name }}
                             </td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->pays }}</td>
-                            <td>{{ $user->numero }}</td>
+                            <td>({{ $user->pays }}) {{ $user->numero }}</td>
                             <td>
                                 <span class="badge bg-primary">{{ ucfirst($user->roles->first()->name) }}</span>
                             </td>
+                            <td>{{ \Carbon\Carbon::parse($user->created_at)->format('d M Y') }}</td>
                             <td>
                                 <span class="badge {{ $user->statut == 'actif' ? 'bg-success' : 'bg-danger' }}">
                                     {{ ucfirst($user->statut) }}

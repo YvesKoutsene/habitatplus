@@ -23,9 +23,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles')->get(); 
+        $users = User::with('roles')->orderBy('created_at', 'asc')->get(); 
         return view('admin.pages.users.index', compact('users'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -106,27 +107,57 @@ class UserController extends Controller
         return view('admin.pages.users.edit', compact('user', 'roles'));
     }
 
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        $request->validate([
+        $validateUser = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'password' => 'nullable|string|confirmed|min:8',
+            'pays' => 'required|string',
+            'numero' => 'required|string|max:15',
+            'photo_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'role' => 'required|exists:roles,id',
         ]);
 
+        if ($validateUser->fails()) {
+            return redirect()->back()
+                ->withErrors($validateUser)
+                ->withInput();
+        }
+
+        // Récupérer l'utilisateur
+        $user = User::findOrFail($id);
+        
+        // Gestion de l'upload de l'image
+        $profilePath = $user->photo_profil; // Valeur par défaut
+        if ($request->hasFile('photo_profil')) {
+            $profile = $request->file('photo_profil');
+            $profileName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $profile->getClientOriginalName());
+            $profilePath = $profile->storeAs('images/profils', $profileName, 'public');
+        }
+
+        // Mise à jour des informations de l'utilisateur
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
+            'password' => $request->password ? Hash::make($request->password) : $user->password,
+            'pays' => $request->pays,
+            'numero' => $request->numero,
+            'photo_profil' => $profilePath ? Storage::url($profilePath) : $user->photo_profil,
+            'statut' => 'actif', // ou laissez tel quel si ce n'est pas modifiable
         ]);
 
+        // Attribution du rôle
         $role = Role::find($request->role);
-        $user->syncRoles([$role]);
+        if ($role) {
+            $user->syncRoles([$role->id]); // Synchroniser le rôle
+        }
 
-        return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour avec succès.');
+        return redirect()->route('users.index')
+            ->with('success', "Utilisateur {$user->name} mis à jour avec succès.");
     }
 
 

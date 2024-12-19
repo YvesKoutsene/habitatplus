@@ -15,6 +15,8 @@
 <section class="section">
     <div class="row justify-content-center">
         <div class="col-lg-6">
+        <form method="POST" action="{{ route('users.store') }}" class="needs-validation" enctype="multipart/form-data" novalidate>
+        @csrf
             <!-- Carte Photo de Profil -->
             <div class="card">
                 <div class="card-body">
@@ -28,7 +30,7 @@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">Aperçu</label>
                         <div class="col-sm-8 text-center">
-                            <img id="image-preview-img" alt="Aperçu de l'image" class="img-thumbnail"  width="150" class="rounded-circle">
+                            <img id="image-preview-img" alt="Aperçu de l'image" class="img-thumbnail"  width="150">
                         </div>
                     </div>
                 </div>
@@ -40,9 +42,7 @@
                     <h5 class="card-title">Information sur l'utilisateur</h5>
 
                     <!-- Formulaire -->
-                    <form method="POST" action="{{ route('users.store') }}" class="needs-validation" enctype="multipart/form-data" novalidate>
-                        @csrf
-
+                    
                         <!-- Nom -->
                         <div class="mb-3">
                             <label for="name" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
@@ -67,7 +67,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <select id="countryCode" name="pays" class="form-select" required>
-                                        <option value="{{ old('pays') }}">Selectionner pays...</option>
+                                        <option value="{{ old('pays') }}">Choisir indicatif...</option>
                                     </select>
                                 </div>
                                 <div class="col-md-8">
@@ -101,31 +101,36 @@
                                 </button>
                             </div>
                         </div>
-                        
-                        <!-- Rôle du compte -->
-                        <div class="mb-3">
-                            <label for="role" class="form-label">Rôle<span class="text-danger" title="obligatoire">*</span></label>
-                            <select name="role" class="form-select" required>
-                                <option value="">Choisir un rôle...</option>
-                                @foreach($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('role')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Boutons -->
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Ajouter</button>
-                            <button type="reset" class="btn btn-secondary">Réinitialiser</button>
-                        </div>
-                    </form>
+                    
 
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Rôle du compte</h5>
+                        <!-- Rôle -->
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Rôle<span class="text-danger">*</span></label>
+                        <select name="role" class="form-select" required>
+                            <option value="">Choisir un rôle...</option>
+                            @foreach($roles as $role)
+                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('role')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                        <!-- Boutons -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-outline-primary">Ajouter</button>
+                        <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+                    </div>
+                </div>
         </div>
+        </form>
     </div>
 </section>
 
