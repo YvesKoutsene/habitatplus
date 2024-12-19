@@ -14,25 +14,27 @@
 
 <section class="section">
     <div class="row justify-content-center">
-        <div class="col-lg-7">
+        <div class="col-lg-6">
+            <!-- Carte Photo de Profil -->
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Photo de profil</h5>
                     <div class="row mb-3">
-                        <label for="formFile" class="col-sm-4 col-form-label">Téléverser<span class="text-danger">*</span></label>
+                        <label for="formFile" class="col-sm-4 col-form-label">Téléverser</label>
                         <div class="col-sm-8">
-                            <input class="form-control" type="file" id="formFile" name="photo_profil" onchange="previewImage(this)">
+                            <input class="form-control" type="file" id="formFile" name="photo_profil" onchange="previewImage(this)" accept="image/*">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">Aperçu</label>
                         <div class="col-sm-8 text-center">
-                            <img id="image-preview-img" src="{{ asset('images/profils/default_profile.png') }}" alt="Aperçu de l'image" class="img-thumbnail" width="150">
+                            <img id="image-preview-img" alt="Aperçu de l'image" class="img-thumbnail"  width="150" class="rounded-circle">
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Carte Informations sur l'Utilisateur -->
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Information sur l'utilisateur</h5>
@@ -43,7 +45,7 @@
 
                         <!-- Nom -->
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nom<span class="text-danger">*</span></label>
+                            <label for="name" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
                             <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}" required>
                             @error('name')
                             <div class="text-danger">{{ $message }}</div>
@@ -52,7 +54,7 @@
 
                         <!-- Email -->
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
+                            <label for="email" class="form-label">Email<span class="text-danger" title="obligatoire">*</span></label>
                             <input type="email" name="email" class="form-control" id="email" value="{{ old('email') }}" required>
                             @error('email')
                             <div class="text-danger">{{ $message }}</div>
@@ -61,21 +63,23 @@
 
                         <!-- Téléphone -->
                         <div class="mb-3">
-                            <label for="numero" class="form-label">Téléphone<span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <select id="countryCode" name="country_code" class="form-select" required>
-                                    <option value="">Indicatif...</option>
-                                </select>
-                                <input type="text" name="numero" class="form-control" id="numero" value="{{ old('numero') }}" required oninput="validateInput()">
+                            <label for="inputState" class="form-label">Téléphone<span class="text-danger" title="obligatoire">*</span></label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <select id="countryCode" name="pays" class="form-select" required>
+                                        <option value="{{ old('pays') }}">Selectionner pays...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" name="numero" class="form-control" id="numero" required oninput="validateInput()" value="{{ old('numero') }}" required>
+                                    <div class="invalid-feedback">Veuillez entrer le numéro!</div>
+                                </div>
                             </div>
-                            @error('numero')
-                            <div class="text-danger">{{ $message }}</div>
-                            @enderror
                         </div>
 
                         <!-- Mot de passe -->
                         <div class="mb-3">
-                            <label for="password" class="form-label">Mot de passe<span class="text-danger">*</span></label>
+                            <label for="password" class="form-label">Mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                             <div class="input-group">
                                 <input type="password" name="password" class="form-control" id="password" required>
                                 <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password')">
@@ -89,7 +93,7 @@
 
                         <!-- Confirmation mot de passe -->
                         <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">Confirmez le mot de passe<span class="text-danger">*</span></label>
+                            <label for="password_confirmation" class="form-label">Confirmez mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                             <div class="input-group">
                                 <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" required>
                                 <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password_confirmation')">
@@ -98,33 +102,27 @@
                             </div>
                         </div>
                         
-                    </form>
-
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Rôle du compte</h5>
-                        <!-- Rôle -->
-                    <div class="mb-3">
-                        <label for="role" class="form-label">Rôle<span class="text-danger">*</span></label>
-                        <select name="role" class="form-select" required>
-                            <option value="">Choisir un rôle...</option>
-                            @foreach($roles as $role)
-                            <option value="{{ $role->id }}">{{ $role->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('role')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
+                        <!-- Rôle du compte -->
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Rôle<span class="text-danger" title="obligatoire">*</span></label>
+                            <select name="role" class="form-select" required>
+                                <option value="">Choisir un rôle...</option>
+                                @foreach($roles as $role)
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('role')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
 
                         <!-- Boutons -->
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-outline-primary">Ajouter</button>
-                        <button type="reset" class="btn btn-secondary">Réinitialiser</button>
-                    </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                            <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>

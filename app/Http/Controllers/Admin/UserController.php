@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
+
 class UserController extends Controller
 {
 
@@ -40,6 +47,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
+            'pays' => 'required|string',
             'numero' => 'required|string|max:15',
             'photo_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'role' => 'required|exists:roles,id',
@@ -65,8 +73,9 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'pays' => $request->pays,
             'numero' => $request->numero,
-            'photo_profil' => $profilePath ? Storage::url($profilePath) : '/storage/images/profils/default_profile.jpg', // Définir une image par défaut
+            'photo_profil' => $profilePath ? Storage::url($profilePath) : '/storage/images/profils/default_profile.jpg',
             'statut' => 'actif',
         ]);
 

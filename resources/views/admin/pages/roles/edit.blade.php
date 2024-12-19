@@ -24,7 +24,7 @@
                         @method('PUT')
                         <!-- Nom du rôle -->
                         <div class="mb-3">
-                            <label for="roleName" class="form-label">Nom<span class="text-danger">*</span></label>
+                            <label for="roleName" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
                             <input
                                 type="text"
                                 class="form-control @error('name') is-invalid @enderror"
@@ -40,7 +40,7 @@
 
                         <!-- Permissions -->
                         <div class="mb-3">
-                            <label class="form-label">Permissions<span class="text-danger">*</span></label>
+                            <label class="form-label">Permissions<span class="text-danger" title="obligatoire">*</span></label>
                             <div class="accordion" id="permissionsAccordion">
                                 @foreach($permissions as $parentPermission)
                                 <div class="accordion-item">
