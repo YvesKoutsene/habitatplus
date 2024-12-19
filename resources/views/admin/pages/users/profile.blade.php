@@ -19,7 +19,7 @@
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
               <img src="{{ asset(Auth::user()->photo_profil ) }}" alt="Profil" class="rounded-circle">
               <h2>{{ Auth::user()->name }}</h2>
-              <h3 class="badge bg-info" >{{ ucfirst(Auth::user()->roles->first()->name) }}</h3>
+              <h3 class="badge bg-info">{{ ucfirst(Auth::user()->roles->first()->name) }}</h3>
               <span>Actif depuis le {{ \Carbon\Carbon::parse(Auth::user()->created_at)->format('d M Y') }}</span>
             </div>
           </div>
@@ -60,17 +60,12 @@
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Rôle</div>
-                    <div class="col-lg-9 col-md-8">Web Designer</div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Pays</div>
-                    <div class="col-lg-9 col-md-8">{{ Auth::user()->pays }}</div>
+                    <div class="col-lg-9 col-md-8">{{ ucfirst(Auth::user()->roles->first()->name) }}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Téléphone</div>
-                    <div class="col-lg-9 col-md-8">{{ Auth::user()->numero }}</div>
+                    <div class="col-lg-9 col-md-8">({{ Auth::user()->pays }}) {{ Auth::user()->numero }}</div>
                   </div>
 
                   <div class="row">
@@ -110,16 +105,9 @@
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Country" class="col-md-4 col-lg-3 col-form-label">Pays</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="pays" type="text" class="form-control" id="Country" value="{{ old('name', $user->pays) }}">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
                       <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Telephone</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="numero" type="text" class="form-control" id="Phone" value="{{ old('name', $user->numero) }}">
+                        <input name="numero" type="text" class="form-control" id="Phone" value="({{ old('name', $user->pays) }}) {{ old('name', $user->numero) }}">
                       </div>
                     </div>
 
@@ -137,9 +125,9 @@
 
                 </div>
 
-                  <div class="tab-pane fade pt-3" id="profile-change-password">
+                <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
-                  <form method="POST" action="{{ route('password.update', $user->id) }}" class="needs-validation" novalidate>
+                  <form method="POST" action="{{ route('update.password', $user->id) }}" class="needs-validation" novalidate>
                       @method('PUT')
                       @csrf
                       <div class="row mb-3">
@@ -181,7 +169,7 @@
                           <button type="submit" class="btn btn-primary">Changer</button>
                       </div>
                   </form><!-- End Change Password Form -->
-              </div>
+                </div>
 
               </div><!-- End Bordered Tabs -->
 
