@@ -24,55 +24,54 @@ use Carbon\Carbon;
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Liste des utilisateurs</h5>
                         <a href="{{ route('users.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i> Ajouter un utilisateur
+                            <i class="bi bi-plus-circle"></i> Ajouter utilisateur
                         </a>
                     </div>
 
                     @if($users->isEmpty())
                     <div class="alert alert-info">
-                        Aucun utilisateur disponible pour le moment. <a href="{{ route('users.create') }}" class="alert-link">Ajouter un utilisateur</a>.
+                        Aucun utilisateur disponible pour le moment. <a href="{{ route('users.create') }}" class="alert-link"> Ajouter utilisateur</a>.
                     </div>
                     @else
-                    <table class="table table-hover">
+                    <table class="table table-hover table-striped">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nom</th>
+                            <th scope="col">Utilisateur</th>
                             <th scope="col">Email</th>
+                            <th scope="col">Pays</th>
+                            <th scope="col">Téléphone</th>
                             <th scope="col">Rôle</th>
                             <th scope="col">Statut</th>
-                            <th scope="col">Date création</th>
                             <th scope="col">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($users as $user)
                         <tr>
-                            <td>{{ $user->id }}</td>
-                            <td>{{ $user->name }}</td>
+                            <td>
+                                <img src="{{ asset($user->photo_profil) }}" alt="Profil" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;">
+                                | {{ $user->name }}
+                            </td>
                             <td>{{ $user->email }}</td>
+                            <td>{{ $user->pays }}</td>
+                            <td>{{ $user->numero }}</td>
                             <td>
-    @if($user->hasRole($user->getRoleNames()->first()))
-        <span class="badge bg-primary">{{ ucfirst($user->getRoleNames()->first()) }}</span>
-    @else
-        <span class="text-muted">Aucun rôle assigné</span>
-    @endif
-</td>
-
-
+                                <span class="badge bg-primary">{{ ucfirst($user->roles->first()->name) }}</span>
+                            </td>
                             <td>
-                                <span class="badge {{ $user->status == 'active' ? 'bg-success' : 'bg-danger' }}">
+                                <span class="badge {{ $user->statut == 'actif' ? 'bg-success' : 'bg-danger' }}">
                                     {{ ucfirst($user->statut) }}
                                 </span>
                             </td>
-                            <td>{{ \Carbon\Carbon::parse($user->created_at)->format('d M Y') }}</td>
+
                             <td>
                                 <div class="d-flex">
                                     <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    
-                                    @if($user->status == 'actif')
+
+                                    @if(auth()->id() !== $user->id)
+                                    @if($user->statut == 'actif')
                                     <form action="{{ route('users.suspend', $user->id) }}" method="POST" class="me-2">
                                         @csrf
                                         @method('PATCH')
@@ -89,7 +88,7 @@ use Carbon\Carbon;
                                         </button>
                                     </form>
                                     @endif
-                                    
+
                                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $user->id }}" data-bs-placement="top" title="Supprimer">
                                         <i class="bi bi-trash"></i>
                                     </button>
@@ -117,8 +116,10 @@ use Carbon\Carbon;
                                         </div>
                                     </div>
                                     <!-- Fin de la Modal -->
+                                    @endif
                                 </div>
                             </td>
+
                         </tr>
                         @endforeach
                         </tbody>

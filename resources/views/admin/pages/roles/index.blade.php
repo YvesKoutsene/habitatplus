@@ -24,13 +24,13 @@ use Carbon\Carbon;
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Liste des rôles</h5>
                         <a href="{{ route('roles.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i> Ajouter un rôle
+                            <i class="bi bi-plus-circle"></i> Créer rôle
                         </a>
                     </div>
 
                     @if($roles->isEmpty())
                         <div class="alert alert-info">
-                            Aucun rôle disponible pour le moment. <a href="{{ route('roles.create') }}" class="alert-link">Créer un rôle</a>.
+                            Aucun rôle disponible pour le moment. <a href="{{ route('roles.create') }}" class="alert-link"> Créer rôle</a>.
                         </div>
                     @else
                         <table class="table table-hover table-striped">
