@@ -15,7 +15,7 @@
 <section class="section">
     <div class="row">
         <!-- Formulaire de mise à jour de rôle -->
-        <div class="col-lg-6">
+        <div class="col-lg-7">
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Formulaire de mise à jour de rôle</h5>
@@ -93,7 +93,7 @@
         </div>
 
         <!-- Liste des permissions choisies -->
-        <div class="col-lg-6">
+        <div class="col-lg-5">
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Liste de permissions choisies</h5>
@@ -109,7 +109,7 @@
                         @endif
                     </div>
                     <div class="text-center">
-                        <button type="button" class="btn btn-info" onclick="previewSelectedPermissions()">Prévisualiser</button>
+                        <button type="button" class="btn btn-outline-info" onclick="previewSelectedPermissions()">Prévisualiser</button>
                     </div>
                 </div>
             </div>

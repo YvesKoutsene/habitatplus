@@ -28,31 +28,43 @@ class RoleController extends Controller
 
     public function create()
     {
-        $permissions = Permission::all();
+        $permissions = Permission::with('children')->whereNull('parent_id')->get();
         return view('admin.pages.roles.create', compact('permissions'));
-
-        /*
-            // Le reste de votre code
-            $permissions = Permission::with('children')->get();
-            return view('admin.permissions.index', compact('permissions'));
-        */
+        
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|unique:roles,name',
-            'permissions' => 'array',
-        ]);
 
-        $role = Role::create(['name' => $request->name]);
-        $role->syncPermissions($request->permissions);
+     public function store(Request $request)
+     {
+         $request->validate([
+             'name' => 'required|unique:roles,name',
+             'permissions' => 'required|array',
+             'permissions.*' => 'exists:permissions,id',
+         ], [
+             'permissions.required' => 'Veuillez sélectionner au moins une permission.',
+             'permissions.*.exists' => 'Une des permissions sélectionnées est invalide.',
+             'name.unique' => 'Ce rôle existe déjà.',
+         ]);
+     
+         try {
+             // Création du rôle
+             $role = Role::create(['name' => $request->name]);
+     
+             // Récupération des permissions sélectionnées
+             $permissions = Permission::whereIn('id', $request->permissions)->get();
+     
+             // Association des permissions au rôle
+             $role->syncPermissions($permissions);
+     
+             return redirect()->route('roles.index')->with('success', "Rôle {$role->name} créé avec succès.");
+         } catch (\Exception $e) {
+             return back()->withErrors(['error' => "Une erreur est survenue : " . $e->getMessage()]);
+         }
+     }     
 
-        return redirect()->route('roles.index')->with('success', 'Rôle créé avec succès.');
-    }
 
     /**
      * Display the specified resource.
@@ -67,24 +79,40 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        $permissions = Permission::all();
+        $permissions = Permission::with('children')->whereNull('parent_id')->get();
         return view('admin.pages.roles.edit', compact('role', 'permissions'));
     }
 
     /**
      * Update the specified resource in storage.
      */
+    
+
     public function update(Request $request, Role $role)
     {
         $request->validate([
             'name' => 'required|unique:roles,name,' . $role->id,
-            'permissions' => 'array',
+            'permissions' => 'nullable|array',
+        ],
+        [
+            'permissions.required' => 'Veuillez sélectionner au moins une permission.',
+            'name.unique' => 'Ce rôle existe déjà.',
         ]);
 
-        $role->update(['name' => $request->name]);
-        $role->syncPermissions($request->permissions);
+        // Vérification que toutes les permissions existent
+        if ($request->permissions) {
+            $validPermissions = Permission::whereIn('id', $request->permissions)->pluck('id')->toArray();
+            
+            // Si le nombre de permissions valides ne correspond pas à celui fourni
+            if (count($validPermissions) !== count($request->permissions)) {
+                return redirect()->back()->withErrors(['permissions' => 'Certaines permissions fournies sont invalides.']);
+            }
+        }
 
-        return redirect()->route('roles.index')->with('success', 'Rôle mis à jour avec succès.');
+        $role->update(['name' => $request->name]);
+        $role->syncPermissions($validPermissions);  // Utilisez les permissions valides
+
+        return redirect()->route('roles.index')->with('success', "Rôle {$role->name} mis à jour avec succès.");
     }
 
 
