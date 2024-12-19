@@ -26,6 +26,21 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function updatePassword(Request $request, $id): RedirectResponse
+    {
+        $validated = $request->validateWithBag('updatePassword', [
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->password = Hash::make($validated['password']);
+        $user->save();
+
+        return back()->with('success', 'Mot de passe mis à jour avec succès.');
+    }
+
+
     /**
      * Update the user's profile information.
      */

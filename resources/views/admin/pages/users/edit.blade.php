@@ -77,9 +77,23 @@
                             </div>
                         </div>
 
+                        <!-- Ancien mot de passe -->
+                        <div class="mb-3">
+                            <label for="current_password" class="form-label">Mot de passe actuel<span class="text-info" title="Obligatoire pour changer le mot de passe">*</span></label>
+                            <div class="input-group">
+                                <input type="password" name="current_password" class="form-control" id="current_password">
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('current_password')">
+                                    <i class="bi bi-eye" id="eye-icon-current-password"></i>
+                                </button>
+                            </div>
+                            @error('current_password')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <!-- Mot de passe -->
                         <div class="mb-3">
-                            <label for="password" class="form-label">Mot de passe<span class="text-info" title="laisser vide si pas de changement">*</span></label>
+                            <label for="password" class="form-label">Nouveau mot de passe<span class="text-info" title="Laisser vide si pas de changement">*</span></label>
                             <div class="input-group">
                                 <input type="password" name="password" class="form-control" id="password">
                                 <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password')">
@@ -91,9 +105,9 @@
                             @enderror
                         </div>
 
-                        <!-- Confirmation mot de passe -->
+                        <!-- Confirmation du mot de passe -->
                         <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">Confirmez mot de passe<span class="text-info" title="laisser vide si pas de changement">*</span></label>
+                            <label for="password_confirmation" class="form-label">Confirmer le nouveau mot de passe<span class="text-info" title="Laisser vide si pas de changement">*</span></label>
                             <div class="input-group">
                                 <input type="password" name="password_confirmation" class="form-control" id="password_confirmation">
                                 <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password_confirmation')">

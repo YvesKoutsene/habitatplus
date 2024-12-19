@@ -51,6 +51,9 @@ class UserController extends Controller
             'numero' => 'required|string|max:15',
             'photo_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'role' => 'required|exists:roles,id',
+        ],
+        [
+            'password.confirmed' => 'Les mots de passe ne correspondent pas.',
         ]);
 
         if ($validateUser->fails()) {
@@ -119,20 +122,28 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Récupérer l'utilisateur
+        $user = User::findOrFail($id);
+
         // Vérifier si le rôle du user est "Abonné"
         if ($user->roles->pluck('name')->contains('Abonné')) {
             return redirect()->route('users.index')
                 ->with('error', 'Cet utilisateur ne peut pas être modifié.');
         }
 
+        // Valider les données du formulaire
         $validateUser = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'current_password' => 'nullable|required_with:password|current_password', 
             'password' => 'nullable|string|confirmed|min:8',
             'pays' => 'required|string',
             'numero' => 'required|string|max:15',
             'photo_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'role' => 'required|exists:roles,id',
+        ],[
+            'current_password.current_password' => 'Mot de passe actuel incorrect.',
+            'password.confirmed' => 'Les mots de passe ne correspondent pas.',
         ]);
 
         if ($validateUser->fails()) {
@@ -141,9 +152,6 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        // Récupérer l'utilisateur
-        $user = User::findOrFail($id);
-        
         // Conserver l'ancienne photo de profil par défaut
         $profilePath = $user->photo_profil;
 
@@ -152,7 +160,6 @@ class UserController extends Controller
             $profile = $request->file('photo_profil');
             $profileName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $profile->getClientOriginalName());
             $profilePath = $profile->storeAs('images/profils', $profileName, 'public');
-            // Mettre à jour le chemin de la photo de profil
             $profilePath = Storage::url($profilePath);
         }
 
@@ -163,20 +170,19 @@ class UserController extends Controller
             'password' => $request->password ? Hash::make($request->password) : $user->password,
             'pays' => $request->pays,
             'numero' => $request->numero,
-            'photo_profil' => $profilePath, // Utiliser le chemin mis à jour ou l'ancien
-            'statut' => 'actif', // ou laissez tel quel si ce n'est pas modifiable
+            'photo_profil' => $profilePath,
+            'statut' => 'actif',
         ]);
 
         // Attribution du rôle
         $role = Role::find($request->role);
         if ($role) {
-            $user->syncRoles([$role->id]); // Synchroniser le rôle
+            $user->syncRoles([$role->id]);
         }
 
         return redirect()->route('users.index')
             ->with('success', "Utilisateur {$user->name} mis à jour avec succès.");
     }
-
 
     public function suspend(User $user)
     {

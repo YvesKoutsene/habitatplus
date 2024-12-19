@@ -90,10 +90,11 @@ use Carbon\Carbon;
                                         </button>
                                     </form>
                                     @endif
-
+                                    @if(!$user->roles->pluck('name')->contains('Abonné'))
                                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $user->id }}" data-bs-placement="top" title="Supprimer">
                                         <i class="bi bi-trash"></i>
                                     </button>
+                                    @endif
 
                                     <!-- Modal de confirmation de suppression -->
                                     <div class="modal fade" id="deleteConfirmation{{ $user->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $user->id }}" aria-hidden="true">

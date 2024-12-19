@@ -17,10 +17,9 @@
         <div class="col-xl-4">
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-
               <img src="{{ asset(Auth::user()->photo_profil ) }}" alt="Profil" class="rounded-circle">
               <h2>{{ Auth::user()->name }}</h2>
-              <h3>Admin</h3>
+              <h3 class="badge bg-info" >{{ ucfirst(Auth::user()->roles->first()->name) }}</h3>
               <span>Actif depuis le {{ \Carbon\Carbon::parse(Auth::user()->created_at)->format('d M Y') }}</span>
             </div>
           </div>
@@ -138,50 +137,51 @@
 
                 </div>
 
-                <div class="tab-pane fade pt-3" id="profile-change-password">
+                  <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
-                <form>
-                    <div class="row mb-3">
-                        <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Mot de passe actuel</label>
-                        <div class="col-md-8 col-lg-9">
-                            <div class="input-group">
-                                <input name="password" type="password" class="form-control" id="currentPassword" required>
-                                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('currentPassword')">
-                                    <i class="bi bi-eye" id="eye-icon-current"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                  <form method="POST" action="{{ route('password.update', $user->id) }}" class="needs-validation" novalidate>
+                      @method('PUT')
+                      @csrf
+                      <div class="row mb-3">
+                          <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Mot de passe actuel</label>
+                          <div class="col-md-8 col-lg-9">
+                              <div class="input-group">
+                                  <input name="current_password" type="password" class="form-control" id="currentPassword" required>
+                                  <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('currentPassword')">
+                                      <i class="bi bi-eye" id="eye-icon-current"></i>
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
 
-                    <div class="row mb-3">
-                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Nouveau mot de passe</label>
-                        <div class="col-md-8 col-lg-9">
-                            <div class="input-group">
-                                <input name="newpassword" type="password" class="form-control" id="newPassword" required>
-                                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('newPassword')">
-                                    <i class="bi bi-eye" id="eye-icon-new"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                      <div class="row mb-3">
+                          <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Nouveau mot de passe</label>
+                          <div class="col-md-8 col-lg-9">
+                              <div class="input-group">
+                                  <input name="password" type="password" class="form-control" id="newPassword" required>
+                                  <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('newPassword')">
+                                      <i class="bi bi-eye" id="eye-icon-new"></i>
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
 
-                    <div class="row mb-3">
-                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Confirmez mot de passe</label>
-                        <div class="col-md-8 col-lg-9">
-                            <div class="input-group">
-                                <input name="renewpassword" type="password" class="form-control" id="renewPassword" required>
-                                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('renewPassword')">
-                                    <i class="bi bi-eye" id="eye-icon-renew"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Changer</button>
-                    </div>
-                </form><!-- End Change Password Form -->
-
-                </div>
+                      <div class="row mb-3">
+                          <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Confirmez mot de passe</label>
+                          <div class="col-md-8 col-lg-9">
+                              <div class="input-group">
+                                  <input name="password_confirmation" type="password" class="form-control" id="renewPassword" required>
+                                  <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('renewPassword')">
+                                      <i class="bi bi-eye" id="eye-icon-renew"></i>
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="text-center">
+                          <button type="submit" class="btn btn-primary">Changer</button>
+                      </div>
+                  </form><!-- End Change Password Form -->
+              </div>
 
               </div><!-- End Bordered Tabs -->
 
