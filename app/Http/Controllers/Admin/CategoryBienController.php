@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CategorieBien;
 
+use App\Models\ParametreCategorie;
+
+
 
 class CategoryBienController extends Controller
 {

@@ -2,11 +2,12 @@
 @section('content')
 
 <div class="pagetitle">
-    <h1>Catégories de Biens</h1>
+    <h1>Catégories</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Accueil</a></li>
-            <li class="breadcrumb-item active">Catégories</li>
+            <li class="breadcrumb-item">Categories</li>
+            <li class="breadcrumb-item active">Lste Catégorie</li>
         </ol>
     </nav>
 </div>
@@ -19,13 +20,13 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Liste des Catégories</h5>
                         <a href="{{ route('category_bien.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i> Ajouter une Catégorie
+                            <i class="bi bi-plus-circle"></i> Ajouter catégorie
                         </a>
                     </div>
 
                     @if($categories->isEmpty())
                         <div class="alert alert-info">
-                            Aucune catégorie de bien disponible pour le moment. <a href="{{ route('category_bien.create') }}" class="alert-link">Ajouter une Catégorie</a>.
+                            Aucune catégorie de bien disponible pour le moment. <a href="{{ route('category_bien.create') }}" class="alert-link">Ajouter catégorie</a>.
                         </div>
                     @else
                         <table class="table table-hover table-striped">

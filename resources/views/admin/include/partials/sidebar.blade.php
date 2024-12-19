@@ -98,6 +98,11 @@
         </a>
         <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
+                <a href="{{ route('users.index') }}">
+                    <i class="bi bi-circle"></i><span>Liste Utilisateur</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('roles.index') }}">
                     <i class="bi bi-circle"></i><span>Liste Rôle</span>
                 </a>
@@ -105,11 +110,6 @@
             <li>
                 <a href="{{ route('roles.create') }}">
                     <i class="bi bi-circle"></i><span>Créer Rôle</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('users.index') }}">
-                    <i class="bi bi-circle"></i><span>Liste Utilisateur</span>
                 </a>
             </li>
             <li>
