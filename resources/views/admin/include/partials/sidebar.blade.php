@@ -130,7 +130,7 @@
     <li class="nav-item">
         <a class="nav-link collapsed" href="#">
             <i class="bi bi-flag"></i>
-            <span>Signalement</span>
+            <span>Rapport</span>
         </a>
     </li>
 

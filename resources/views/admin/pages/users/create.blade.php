@@ -44,7 +44,7 @@
                         <!-- Nom -->
                         <div class="mb-3">
                             <label for="name" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
-                            <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}" required>
+                            <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}" placeholder="Nom complet de l'utilisateur" required>
                             @error('name')
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -53,7 +53,7 @@
                         <!-- Email -->
                         <div class="mb-3">
                             <label for="email" class="form-label">Email<span class="text-danger" title="obligatoire">*</span></label>
-                            <input type="email" name="email" class="form-control" id="email" value="{{ old('email') }}" required>
+                            <input type="email" name="email" class="form-control" id="email" value="{{ old('email') }}" required placeholder="Email de l'utilisateur">
                             @error('email')
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -69,7 +69,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-8">
-                                    <input type="text" name="numero" class="form-control" id="numero" required oninput="validateInput()" value="{{ old('numero') }}" required>
+                                    <input type="text" name="numero" class="form-control" id="numero" required oninput="validateInput()" value="{{ old('numero') }}" required placeholder="Numero de téléphone de l'utilisateur">
                                     <div class="invalid-feedback">Veuillez entrer le numéro!</div>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
                         <div class="mb-3">
                             <label for="password" class="form-label">Mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                             <div class="input-group">
-                                <input type="password" name="password" class="form-control" id="password" required>
+                                <input type="password" name="password" class="form-control" id="password" required placeholder="Mot de passe de l'utilisateur">
                                 <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password')">
                                     <i class="bi bi-eye" id="eye-icon-password"></i>
                                 </button>
@@ -93,7 +93,7 @@
                         <div class="mb-3">
                             <label for="password_confirmation" class="form-label">Confirmer mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                             <div class="input-group">
-                                <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" required>
+                                <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" required placeholder="Confirmation de mot de passe">
                                 <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password_confirmation')">
                                     <i class="bi bi-eye" id="eye-icon-confirmation"></i>
                                 </button>
@@ -123,7 +123,7 @@
 
                         <!-- Boutons -->
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Ajouter</button>
                         <!--
                         <button type="reset" class="btn btn-secondary">Réinitialiser</button> 
                         -->

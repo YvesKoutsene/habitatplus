@@ -11,7 +11,7 @@ use Carbon\Carbon;
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Accueil</a></li>
             <li class="breadcrumb-item"><a href="{{ route('roles.index') }}">Liste Rôles</a></li>
-            <li class="breadcrumb-item active">Ajouter Rôle</li>
+            <li class="breadcrumb-item active">Créer Rôle</li>
         </ol>
     </nav>
 </div>
@@ -87,9 +87,9 @@ use Carbon\Carbon;
 
                         <!-- Boutons -->
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Créer</button>
-                            <button type="reset" class="btn btn-secondary">Réinitialiser</button>
-                            <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#previewModal" onclick="previewSelectedPermissions()">Prévisualiser</button>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Créer</button>
+                            <button type="reset" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Réinitialiser</button>
+                            <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#previewModal" onclick="previewSelectedPermissions()"><i class="bi bi-eye"></i> Prévisualiser</button>
                         </div>
                     </form>
                 </div>

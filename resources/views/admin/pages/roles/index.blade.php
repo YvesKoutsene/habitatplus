@@ -86,11 +86,11 @@ use Carbon\Carbon;
                                                         Êtes-vous sûr de vouloir supprimer le rôle "{{ $role->name }}" ? Cette action est irréversible.
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
                                                         <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="d-inline">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                                                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -118,7 +118,7 @@ use Carbon\Carbon;
                                                 </ul>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
                                             </div>
                                         </div>
                                     </div>

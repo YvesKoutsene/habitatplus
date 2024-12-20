@@ -51,11 +51,11 @@
                                         <td>
                                             <div class="d-flex">
                                                 <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editParameterModal{{ $parametre->id }}">
-                                                    <i class="bi bi-pencil-square"></i>
+                                                    <i class="bi bi-pencil-square" title="Editer"></i>
                                                 </button>
                                                 @if ($parametre->associations->isEmpty() )
                                                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $parametre->id }}">
-                                                        <i class="bi bi-trash"></i>
+                                                        <i class="bi bi-trash" title="Supprimer"></i>
                                                     </button>
                                                 @endif
                                                 <!-- Modal de confirmation de suppression -->
@@ -70,11 +70,11 @@
                                                                 Êtes-vous sûr de vouloir supprimer le paramètre "{{ $parametre->nom_parametre }}" ? Cette action est irréversible.
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
                                                                 <form action="{{ route('parameter_category.destroy', $parametre->id) }}" method="POST">
                                                                     @csrf
                                                                     @method('DELETE')
-                                                                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                                                                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -100,11 +100,11 @@
                                                         <div class="mb-3">
                                                             <label for="nom_parametre{{ $parametre->id }}" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
                                                             <input type="hidden" name="id" value="{{ $parametre->id }}">
-                                                            <input type="text" name="nom_parametre" class="form-control" id="nom_parametre{{ $parametre->id }}" value="{{ $parametre->nom_parametre }}" required>
+                                                            <input type="text" name="nom_parametre" class="form-control" placeholder="Nom du paramètre de categorie" id="nom_parametre{{ $parametre->id }}" value="{{ $parametre->nom_parametre }}" required>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                                            <button type="submit" class="btn btn-success">Mettre à jour</button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                                                            <button type="submit" class="btn btn-success"><i class="bi bi-check2-circle"></i> Mettre à jour</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -136,11 +136,11 @@
                     @csrf
                     <div class="mb-3">
                         <label for="nom_parametre" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
-                        <input type="text" name="nom_parametre" class="form-control" id="nom_parametre" required>
+                        <input type="text" name="nom_parametre" class="form-control" id="nom_parametre" required placeholder="Nom du paramètre de categorie">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Ajouter</button>
                     </div>
                 </form>
             </div>

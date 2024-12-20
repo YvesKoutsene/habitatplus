@@ -84,9 +84,9 @@
 
                         <!-- Boutons -->
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Mettre à jour</button>
-                            <a href="{{ route('roles.index') }}" class="btn btn-secondary">Annuler</a>
-                            <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#previewModal" onclick="previewSelectedPermissions()">Prévisualiser</button>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle"></i> Mettre à jour</button>
+                            <a href="{{ route('roles.index') }}" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Annuler</a>
+                            <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#previewModal" onclick="previewSelectedPermissions()"><i class="bi bi-eye"></i> Prévisualiser</button>
                         </div>
                     </form>
                 </div>

@@ -20,13 +20,13 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Liste des Catégories</h5>
                         <a href="{{ route('category_bien.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i> Ajouter catégorie
+                            <i class="bi bi-plus-circle"></i> Créer catégorie
                         </a>
                     </div>
 
                     @if($categories->isEmpty())
                         <div class="alert alert-info">
-                            Aucune catégorie de bien disponible pour le moment. <a href="{{ route('category_bien.create') }}" class="alert-link">Ajouter catégorie</a>.
+                            Aucune catégorie de bien disponible pour le moment. <a href="{{ route('category_bien.create') }}" class="alert-link">Créer catégorie</a>.
                         </div>
                     @else
                         <table class="table table-hover table-striped">
