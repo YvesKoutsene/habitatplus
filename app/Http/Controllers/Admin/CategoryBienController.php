@@ -139,7 +139,7 @@ class CategoryBienController extends Controller
     {
         $category = CategorieBien::findOrFail($categorieBien);
 
-        if ($category->biens()->exists() || $category->alertes()->exists()) {
+        if ($category->biens()->exists() && $category->alertes()->exists()) {
             return redirect()->route('parameter_category.index')
                 ->with('error', "Impossible de supprimer la catégorie de bien : {$category->titre}.");
         }        

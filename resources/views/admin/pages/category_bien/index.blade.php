@@ -113,10 +113,11 @@
                                                 <a href="{{ route('category_bien.edit', $categorie->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" title="Modifier">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </a>
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $categorie->id }}" data-bs-toggle="tooltip" title="Supprimer">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-
+                                                @if ($categorie->biens->isEmpty() && $categorie->alertes->isEmpty())
+                                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $categorie->id }}" data-bs-toggle="tooltip" title="Supprimer">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                @endif
                                                 <!-- Modal de confirmation de suppression -->
                                                 <div class="modal fade" id="deleteConfirmation{{ $categorie->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $categorie->id }}" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">

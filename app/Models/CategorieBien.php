@@ -25,7 +25,7 @@ class CategorieBien extends Model
 
     public function alertes()
     {
-         return $this->hasMany(AlerteRecherche::class, 'id_alerte');
+         return $this->hasMany(AlerteRecherche::class, 'id_categorie_bien');
     }
  
 }
