@@ -45,7 +45,35 @@
                                     <tr>
                                         <td>{{ $categorie->id }}</td>
                                         <td>{{ ucfirst($categorie->titre) }}</td>
-                                        <td>{{ ucfirst($categorie->descr) }}</td>
+                                        <td>
+                                            @if(strlen($categorie->description) > 8)
+                                                {{ ucfirst(substr($categorie->description, 0, 8)) }}...
+                                                <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#descriptionModal{{ $categorie->id }}"> <!--class="btn btn-link"-->
+                                                    Lire la suite
+                                                </button>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="descriptionModal{{ $categorie->id }}" tabindex="-1" aria-labelledby="descriptionModalLabel{{ $categorie->id }}" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="descriptionModalLabel{{ $categorie->id }}">Description complète de {{ ucfirst($categorie->titre) }}</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                {{ ucfirst($categorie->description) }}
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                {{ ucfirst($categorie->description) }}
+                                            @endif
+                                        </td>
+
                                         <td>
                                             @foreach($categorie->associations->take(2) as $association)
                                             <span class="badge bg-success">{{ $association->parametre->nom_parametre }}</span>

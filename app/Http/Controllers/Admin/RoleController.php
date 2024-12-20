@@ -50,13 +50,10 @@ class RoleController extends Controller
          ]);
      
          try {
-             // Création du rôle
              $role = Role::create(['name' => $request->name]);
      
-             // Récupération des permissions sélectionnées
              $permissions = Permission::whereIn('id', $request->permissions)->get();
      
-             // Association des permissions au rôle
              $role->syncPermissions($permissions);
      
              return redirect()->route('roles.index')->with('success', "Rôle {$role->name} créé avec succès.");
@@ -108,11 +105,9 @@ class RoleController extends Controller
             'name.unique' => 'Ce rôle existe déjà.',
         ]);
 
-        // Vérification que toutes les permissions existent
         if ($request->permissions) {
             $validPermissions = Permission::whereIn('id', $request->permissions)->pluck('id')->toArray();
             
-            // Si le nombre de permissions valides ne correspond pas à celui fourni
             if (count($validPermissions) !== count($request->permissions)) {
                 return redirect()->back()->withErrors(['permissions' => 'Certaines permissions fournies sont invalides.']);
             }

@@ -41,7 +41,7 @@ class CategoryBienController extends Controller
      * Store a newly created resource in storage.
      */
 
-     public function store(Request $request)
+    public function store(Request $request)
      {
          $validated = $request->validate([
              'titre' => 'required|string|max:255|unique:categorie_biens,titre',
@@ -70,7 +70,7 @@ class CategoryBienController extends Controller
      
          return redirect()->route('category_bien.index')
              ->with('success', "Catégorie de bien {$categorie->titre} créée avec succès.");
-     }     
+    }     
 
 
     /**
@@ -84,9 +84,15 @@ class CategoryBienController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        // Récupérer la catégorie avec ses paramètres associés
+        $categorie = CategorieBien::with('associations.parametre')->findOrFail($id);
+
+        // Récupérer tous les paramètres disponibles
+        $parametres = ParametreCategorie::all();
+
+        return view('admin.pages.category_bien.edit', compact('categorie', 'parametres'));
     }
 
     /**

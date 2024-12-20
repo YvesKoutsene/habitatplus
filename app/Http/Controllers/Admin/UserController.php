@@ -71,7 +71,6 @@ class UserController extends Controller
             $profilePath = $profile->storeAs('images/profils', $profileName, 'public');
         }
 
-        // Création de l'utilisateur
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -82,7 +81,6 @@ class UserController extends Controller
             'statut' => 'actif',
         ]);
 
-        // Attribution du rôle
         $role = Role::find($request->role);
         if ($role) {
             $user->assignRole($role);
@@ -106,8 +104,6 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-
-        // Vérifier si le rôle du user est "Abonné"
         if ($user->roles->pluck('name')->contains('Abonné')) {
             return redirect()->route('users.index')
                 ->with('error', 'Cet utilisateur ne peut pas être modifié.');
@@ -122,22 +118,18 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Récupérer l'utilisateur
         $user = User::findOrFail($id);
 
-        // Vérifier si le rôle du user est "Abonné"
         if ($user->roles->pluck('name')->contains('Abonné')) {
             return redirect()->route('users.index')
                 ->with('error', 'Cet utilisateur ne peut pas être modifié.');
         }
 
-        // Vérifier si l'utilisateur connecté essaie de modifier son propre rôle
         if (auth()->id() === $user->id && $request->has('role')) {
             return redirect()->back()
                 ->with('error', 'Vous ne pouvez pas modifier votre propre rôle.');
         }
 
-        // Valider les données du formulaire
         $validateUser = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
@@ -158,7 +150,6 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        // Conserver l'ancienne photo de profil par défaut
         $profilePath = $user->photo_profil;
 
         // Gestion de l'upload de l'image
@@ -169,7 +160,6 @@ class UserController extends Controller
             $profilePath = Storage::url($profilePath);
         }
 
-        // Mise à jour des informations de l'utilisateur
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -180,7 +170,6 @@ class UserController extends Controller
             'statut' => 'actif',
         ]);
 
-        // Attribution du rôle
         $role = Role::find($request->role);
         if ($role) {
             $user->syncRoles([$role->id]);
@@ -227,7 +216,6 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('error', 'Vous ne pouvez pas supprimer votre propre compte.');
         }
 
-        // Vérifier si le rôle du user est "Abonné"
         if ($user->roles->pluck('name')->contains('Abonné')) {
             return redirect()->route('users.index')
                 ->with('error', 'Cet utilisateur ne peut pas être supprimé.');

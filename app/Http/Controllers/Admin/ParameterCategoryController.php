@@ -67,17 +67,14 @@ class ParameterCategoryController extends Controller
 
      public function update(Request $request, $id)
      {
-         // Récupérer le paramètre ou lever une exception si non trouvé
          $parametreCategorie = ParametreCategorie::findOrFail($id);
      
-         // Validation
          $request->validate([
              'nom_parametre' => 'required|string|max:255|unique:parametre_categories,nom_parametre,' . $id . ',id',
          ], [
              'nom_parametre.unique' => 'Ce paramètre de catégorie de bien existe déjà'
          ]);
      
-         // Mise à jour
          $parametreCategorie->nom_parametre = $request->nom_parametre;
          $parametreCategorie->save();
      
