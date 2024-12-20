@@ -17,13 +17,15 @@ class CategorieBien extends Model
         return $this->hasMany(Bien::class, 'id_categorie_bien');
     }
 
-    public function parametres()
-    {
-        return $this->hasMany(AssociationCategorieParametre::class, 'id_categorie');
-    }
-
+    //New by Jean-Yves 
     public function associations()
     {
         return $this->hasMany(AssociationCategorieParametre::class, 'id_categorie');
     }
+
+    public function alertes()
+    {
+         return $this->hasMany(AlerteRecherche::class, 'id_recherche');
+    }
+ 
 }

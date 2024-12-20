@@ -141,9 +141,9 @@
                         <!-- Boutons -->
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle"></i> Mettre à jour</button>
-                            <!--
-                            <button type="reset" class="btn btn-secondary">Réinitialiser</button>
-                            -->
+                            <a href="{{ route('users.index') }}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Retour
+                            </a>
                         </div>
                     </div>
                 </div>

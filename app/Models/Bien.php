@@ -24,7 +24,7 @@ class Bien extends Model
 
     public function photos()
     {
-        return $this->hasMany(PhotoBien::class, 'id_bien');
+        return $this->hasMany(PhotoBien::class, 'id_photo');
     }
 
     public function valeurs()

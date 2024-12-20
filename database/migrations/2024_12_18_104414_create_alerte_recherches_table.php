@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('statut');
             $table->string('type_offre');
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_categorie')->constrained('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -103,7 +103,7 @@
                                                             <input type="text" name="nom_parametre" class="form-control" placeholder="Nom du paramètre de categorie" id="nom_parametre{{ $parametre->id }}" value="{{ $parametre->nom_parametre }}" required>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-arrow-left"></i> Retour</button>
                                                             <button type="submit" class="btn btn-success"><i class="bi bi-check2-circle"></i> Mettre à jour</button>
                                                         </div>
                                                     </form>

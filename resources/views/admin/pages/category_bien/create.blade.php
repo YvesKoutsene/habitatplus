@@ -17,7 +17,7 @@
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Informations sur la Catégorie</h5>
+                    <h5 class="card-title">Informations sur la catégorie</h5>
                     
                     <form action="{{ route('category_bien.store') }}" method="POST" class="needs-validation" novalidate>
                         @csrf

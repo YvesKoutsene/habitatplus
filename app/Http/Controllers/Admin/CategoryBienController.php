@@ -8,8 +8,8 @@ use App\Models\CategorieBien;
 use App\Models\AssociationCategorieParametre;
 
 use App\Models\ParametreCategorie;
-
-
+use App\Models\AlerteRecherche;
+use App\Models\Bien;
 
 class CategoryBienController extends Controller
 {
@@ -46,21 +46,19 @@ class CategoryBienController extends Controller
          $validated = $request->validate([
              'titre' => 'required|string|max:255|unique:categorie_biens,titre',
              'description' => 'required|string|max:255|:categorie_biens,description',
-             'parametres' => 'required|array', // On s'assure que des paramètres sont envoyés
-             'parametres.*' => 'exists:parametre_categories,id', // Validation des IDs des paramètres
+             'parametres' => 'required|array', 
+             'parametres.*' => 'exists:parametre_categories,id', 
          ],
          [
             'titre.unique' => 'Cette catégorie de bien existe déjà',
             'parametres.required' => 'Veuillez paramétrer la catégorie de bien'
          ]);
      
-         // Création de la catégorie
          $categorie = CategorieBien::create([
              'titre' => $validated['titre'],
              'description' => $validated['description']
          ]);
      
-         // Création des associations
          foreach ($validated['parametres'] as $parametreId) {
              AssociationCategorieParametre::create([
                  'id_categorie' => $categorie->id,
@@ -86,10 +84,8 @@ class CategoryBienController extends Controller
      */
     public function edit($id)
     {
-        // Récupérer la catégorie avec ses paramètres associés
         $categorie = CategorieBien::with('associations.parametre')->findOrFail($id);
 
-        // Récupérer tous les paramètres disponibles
         $parametres = ParametreCategorie::all();
 
         return view('admin.pages.category_bien.edit', compact('categorie', 'parametres'));
@@ -99,33 +95,60 @@ class CategoryBienController extends Controller
      * Update the specified resource in storage.
      */
 
-    public function update(Request $request, CategorieBien $categorieBien)
-    {
-        $validated = $request->validate([
-            'nom_categorie' => 'required|string|max:255|unique:categorie_biens,nom_categorie,' . $categorieBien->id,
-        ]);
-
-        $categorieBien->update($validated);
-
-        return redirect()->route('category_bien.index')->with('success', "Catégorie '{$request->nom_categorie}' modifiée avec succès.");
-    }
+    public function update(Request $request, $id)
+     {
+         $validated = $request->validate([
+             'titre' => 'required|string|max:255|unique:categorie_biens,titre,' . $id,
+             'description' => 'required|string|max:255',
+             'parametres' => 'required|array',
+             'parametres.*' => 'exists:parametre_categories,id',
+         ],
+         [
+             'titre.unique' => 'Cette catégorie de bien existe déjà.',
+             'parametres.required' => 'Veuillez paramétrer la catégorie de bien.'
+         ]);
+     
+         // Trouver la catégorie
+         $categorie = CategorieBien::findOrFail($id);
+     
+         // Mettre à jour la catégorie
+         $categorie->update([
+             'titre' => $validated['titre'],
+             'description' => $validated['description'],
+         ]);
+     
+         // Synchroniser les paramètres associés
+         AssociationCategorieParametre::where('id_categorie', $categorie->id)->delete();
+     
+         foreach ($validated['parametres'] as $parametreId) {
+             AssociationCategorieParametre::create([
+                 'id_categorie' => $categorie->id,
+                 'id_parametre' => $parametreId,
+             ]);
+         }
+     
+         return redirect()->route('category_bien.index')
+             ->with('success', "Catégorie de bien {$categorie->titre} mise à jour avec succès.");
+     }     
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($categorieBien)
+        public function destroy($categorieBien)
     {
         $category = CategorieBien::findOrFail($categorieBien);
- 
-        // Vérifier si la catégorie est utilisée dans des associations
-        if ($category->associations()->exists()) {
-            return redirect()->route('categories.index')->with('error', "Impossible de supprimer la catégorie de bien {$category->titre}.");
-        }
+
+        if ($category->biens()->exists() || $category->alertes()->exists()) {
+            return redirect()->route('parameter_category.index')
+                ->with('error', "Impossible de supprimer la catégorie de bien : {$category->titre}.");
+        }        
+
+        AssociationCategorieParametre::where('id_categorie', $category->id)->delete();
 
         $category->delete();
 
-        return redirect()->route('category_bien.index')->with('success', "Catégorie {$category->titre} supprimée avec succès.");
+        return redirect()->route('category_bien.index')->with('success', "Catégorie de bien {$category->titre} supprimée avec succès.");
     }
 
 }
