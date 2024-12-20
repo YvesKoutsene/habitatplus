@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
     //Pour les categorie de bien
     Route::resource('category_bien', CategoryBienController::class);
 
+    //Pour les paramètres de modeèles
+
 });
 
 require __DIR__.'/auth.php';

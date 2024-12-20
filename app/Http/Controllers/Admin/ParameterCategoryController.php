@@ -15,9 +15,11 @@ class ParameterCategoryController extends Controller
      */
     public function index()
     {
-        $parametres = ParametreCategorie::orderBy('created_at', 'asc')->get();
+        //$parametres = ParametreCategorie::orderBy('created_at', 'asc')->get();
+        $parametres = ParametreCategorie::orderBy('created_at', 'asc')->paginate(10);
         return view('admin.pages.parameter_category.index', compact('parametres'));
     }
+
 
     /**
      * Show the form for creating a new resource.

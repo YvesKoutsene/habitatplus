@@ -49,7 +49,7 @@
                     <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
                         <div class="d-flex justify-content-center py-4">
-                            <a href="#" class="logo d-flex align-items-center w-auto">
+                            <a href="" class="logo d-flex align-items-center w-auto"> <!--$roles-->
                                 <img src="\assets/img/logo.png" alt="">
                                 <span class="d-none d-lg-block">Habitat+</span>
                             </a>
@@ -66,14 +66,14 @@
                                     @csrf
 
                                     <div class="col-12">
-                                        <label for="yourEmail" class="form-label">Email<span class="text-danger">*</span></label>
+                                        <label for="yourEmail" class="form-label">Email<span class="text-danger" title="obligatoire">*</span></label>
                                         <input type="email" name="email" class="form-control" id="yourEmail" value="{{ old('email') }}" required autofocus>
                                         <div class="invalid-feedback">Veuillez entrer votre adresse e-mail valide!</div>
                                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourPassword" class="form-label">Mot de passe<span class="text-danger">*</span></label>
+                                        <label for="yourPassword" class="form-label">Mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                                         <div class="input-group">
                                             <input type="password" name="password" class="form-control" id="yourPassword" required autocomplete="current-password">
                                             <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('yourPassword')">
@@ -94,7 +94,7 @@
                                     <div class="col-12">
                                         <button class="btn btn-primary w-100" type="submit">Se connecter</button>
                                     </div>
-
+<!--
                                     <div class="col-12">
                                         <p class="small mb-0">Je n'ai pas de compte? <a href="{{ route('register') }}">S'inscrire</a></p>
                                     </div>
@@ -106,6 +106,7 @@
                                             </a>
                                         </div>
                                     @endif
+-->
                                 </form>
                             </div>
                         </div>

@@ -18,9 +18,13 @@ class CategoryBienController extends Controller
      */
     public function index()
     {
+        /*$categories = CategorieBien::with(['associations.parametre'])
+            ->orderBy('created_at', 'asc')
+            ->get();*/
+
         $categories = CategorieBien::with(['associations.parametre'])
             ->orderBy('created_at', 'asc')
-            ->get();
+            ->paginate(10);
     
         return view('admin.pages.category_bien.index', compact('categories'));
     }

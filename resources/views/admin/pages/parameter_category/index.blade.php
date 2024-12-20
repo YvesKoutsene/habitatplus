@@ -21,6 +21,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
+
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Liste des Paramètres</h5>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createParameterModal">
@@ -53,7 +54,7 @@
                                                 <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editParameterModal{{ $parametre->id }}">
                                                     <i class="bi bi-pencil-square" title="Editer"></i>
                                                 </button>
-                                                @if ($parametre->associations->isEmpty() )
+                                                @if ($parametre->associations->isEmpty())
                                                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $parametre->id }}">
                                                         <i class="bi bi-trash" title="Supprimer"></i>
                                                     </button>
@@ -124,6 +125,26 @@
                                 </tr>
                             </tfoot>
                         </table>
+
+                        <!-- Pagination personnalisée -->
+                        <nav aria-label="...">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item {{ $parametres->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $parametres->previousPageUrl() }}" tabindex="-1" aria-disabled="{{ $parametres->onFirstPage() }}">Précédent</a>
+                                </li>
+
+                                @for ($i = 1; $i <= $parametres->lastPage(); $i++)
+                                    <li class="page-item {{ $i == $parametres->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $parametres->url($i) }}">{{ $i }}</a>
+                                    </li>
+                                @endfor
+
+                                <li class="page-item {{ $parametres->hasMorePages() ? '' : 'disabled' }}">
+                                    <a class="page-link" href="{{ $parametres->nextPageUrl() }}">Suivant</a>
+                                </li>
+                            </ul>
+                        </nav>
+
                     @endif
                 </div>
             </div>

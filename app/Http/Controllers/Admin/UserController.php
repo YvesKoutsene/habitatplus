@@ -23,7 +23,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles')->orderBy('created_at', 'asc')->get(); 
+        //$users = User::with('roles')->orderBy('created_at', 'asc')->get(); 
+        $users = User::with('roles')->orderBy('created_at', 'asc')->paginate(10); 
+
         return view('admin.pages.users.index', compact('users'));
     }
 

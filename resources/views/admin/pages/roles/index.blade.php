@@ -135,6 +135,25 @@ use Carbon\Carbon;
                                 </tr>
                             </tfoot>
                         </table>
+
+                        <!-- Pagination personnalisée -->
+                    <nav aria-label="...">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item {{ $roles->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $roles->previousPageUrl() }}" tabindex="-1" aria-disabled="{{ $roles->onFirstPage() }}">Précédent</a>
+                                </li>
+
+                                @for ($i = 1; $i <= $roles->lastPage(); $i++)
+                                    <li class="page-item {{ $i == $roles->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $roles->url($i) }}">{{ $i }}</a>
+                                    </li>
+                                @endfor
+
+                                <li class="page-item {{ $roles->hasMorePages() ? '' : 'disabled' }}">
+                                    <a class="page-link" href="{{ $roles->nextPageUrl() }}">Suivant</a>
+                                </li>
+                            </ul>
+                    </nav>
                     @endif
                 </div>
             </div>

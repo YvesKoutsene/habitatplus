@@ -157,6 +157,26 @@
                                 </tr>
                             </tfoot>
                         </table>
+
+                        <!-- Pagination personnalisée -->
+                        <nav aria-label="...">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item {{ $categories->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $categories->previousPageUrl() }}" tabindex="-1" aria-disabled="{{ $categories->onFirstPage() }}">Précédent</a>
+                                </li>
+
+                                @for ($i = 1; $i <= $categories->lastPage(); $i++)
+                                    <li class="page-item {{ $i == $categories->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $categories->url($i) }}">{{ $i }}</a>
+                                    </li>
+                                @endfor
+
+                                <li class="page-item {{ $categories->hasMorePages() ? '' : 'disabled' }}">
+                                    <a class="page-link" href="{{ $categories->nextPageUrl() }}">Suivant</a>
+                                </li>
+                            </ul>
+                        </nav>
+
                     @endif
                 </div>
             </div>
