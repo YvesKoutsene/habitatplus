@@ -5,7 +5,7 @@
     <h1>Utilisateurs</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bi bi-house-door"></i></a></li>
             <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Liste Utilisateurs</a></li>
             <li class="breadcrumb-item active">Ajouter Utilisateur</li>
         </ol>

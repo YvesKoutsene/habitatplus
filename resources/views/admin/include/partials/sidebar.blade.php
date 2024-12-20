@@ -61,7 +61,7 @@
             </li>
             <li>
                 <a href="#">
-                    <i class="bi bi-circle"></i><span>Liste Paramètre</span>
+                    <i class="bi bi-circle"></i><span>Paramètre Modèle</span>
                 </a>
             </li>
             <!--

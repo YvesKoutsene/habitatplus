@@ -5,7 +5,7 @@
     <h1>Catégories</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bi bi-house-door"></i></a></li>
             <li class="breadcrumb-item">Categories</li>
             <li class="breadcrumb-item active">Lste Catégorie</li>
         </ol>
