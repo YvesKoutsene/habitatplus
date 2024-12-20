@@ -34,7 +34,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nom</th>
-                                    <th>Paramètres Associés</th>
+                                    <th>Description</th>
+                                    <th>Paramètres associés</th>
+                                    <th>Date création</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -42,16 +44,17 @@
                                 @foreach($categories as $categorie)
                                     <tr>
                                         <td>{{ $categorie->id }}</td>
-                                        <td>{{ ucfirst($categorie->nom_categorie) }}</td>
+                                        <td>{{ ucfirst($categorie->titre) }}</td>
+                                        <td>{{ ucfirst($categorie->desc) }}</td>
                                         <td>
                                             <ul class="list-unstyled">
-                                                @foreach($categorie->associations->take(3) as $association)
+                                                @foreach($categorie->associations->take(2) as $association)
                                                     <li>{{ $association->parametre->nom_parametre }}</li>
                                                 @endforeach
                                             </ul>
-                                            @if($categorie->associations->count() > 3)
+                                            @if($categorie->associations->count() > 2)
                                                 <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametresModal{{ $categorie->id }}">
-                                                    Voir tout ({{ $categorie->associations->count() }})
+                                                    Voir plus ({{ $categorie->associations->count() }})
                                                 </button>
 
                                                 <!-- Modal pour afficher tous les paramètres -->
@@ -59,7 +62,7 @@
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="parametresModalLabel{{ $categorie->id }}">Paramètres de {{ ucfirst($categorie->nom_categorie) }}</h5>
+                                                                <h5 class="modal-title" id="parametresModalLabel{{ $categorie->id }}">Paramètres de {{ ucfirst($categorie->titre) }}</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
@@ -70,7 +73,7 @@
                                                                 </ul>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -78,6 +81,7 @@
                                                 <!-- Fin de la modal -->
                                             @endif
                                         </td>
+                                        <td>{{ \Carbon\Carbon::parse($categorie->created_at)->format('d M Y') }}</td>
                                         <td>
                                             <div class="d-flex">
                                                 <a href="{{ route('category_bien.edit', $categorie->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" title="Modifier">
@@ -99,11 +103,11 @@
                                                                 Êtes-vous sûr de vouloir supprimer la catégorie "{{ $categorie->nom_categorie }}" ? Cette action est irréversible.
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
                                                                 <form action="{{ route('category_bien.destroy', $categorie->id) }}" method="POST" class="d-inline">
                                                                     @csrf
                                                                     @method('DELETE')
-                                                                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                                                                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
                                                                 </form>
                                                             </div>
                                                         </div>

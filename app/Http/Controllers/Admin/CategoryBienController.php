@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CategorieBien;
+use App\Models\AssociationCategorieParametre;
 
 use App\Models\ParametreCategorie;
 
@@ -43,15 +44,19 @@ class CategoryBienController extends Controller
      public function store(Request $request)
      {
          $validated = $request->validate([
-             'nom_categorie' => 'required|string|max:255|unique:categorie_biens,nom_categorie',
-             'description' => 'required|string|max:255|unique:categorie_biens,description',
+             'titre' => 'required|string|max:255|unique:categorie_biens,titre',
+             'description' => 'required|string|max:255|:categorie_biens,description',
              'parametres' => 'required|array', // On s'assure que des paramètres sont envoyés
              'parametres.*' => 'exists:parametre_categories,id', // Validation des IDs des paramètres
+         ],
+         [
+            'titre.unique' => 'Cette catégorie de bien existe déjà',
+            'parametres.required' => 'Veuillez paramétrer la catégorie de bien'
          ]);
      
          // Création de la catégorie
          $categorie = CategorieBien::create([
-             'nom_categorie' => $validated['nom_categorie'],
+             'titre' => $validated['titre'],
              'description' => $validated['description']
          ]);
      
@@ -64,7 +69,7 @@ class CategoryBienController extends Controller
          }
      
          return redirect()->route('category_bien.index')
-             ->with('success', "Catégorie de bien {$categorie->nom_categorie} créée avec succès.");
+             ->with('success', "Catégorie de bien {$categorie->titre} créée avec succès.");
      }     
 
 
@@ -103,16 +108,18 @@ class CategoryBienController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CategorieBien $categorieBien)
+    public function destroy($categorieBien)
     {
+        $category = CategorieBien::findOrFail($categorieBien);
+ 
         // Vérifier si la catégorie est utilisée dans des associations
-        if ($categorieBien->associations()->exists()) {
-            return redirect()->route('categories.index')->with('error', "La catégorie '{$categorieBien->nom_categorie}' ne peut pas être supprimée car elle est associée à des paramètres.");
+        if ($category->associations()->exists()) {
+            return redirect()->route('categories.index')->with('error', "Impossible de supprimer la catégorie de bien {$category->titre}.");
         }
 
-        $categorieBien->delete();
+        $category->delete();
 
-        return redirect()->route('category_bien.index')->with('success', "Catégorie '{$categorieBien->nom_categorie}' supprimée avec succès.");
+        return redirect()->route('category_bien.index')->with('success', "Catégorie {$category->titre} supprimée avec succès.");
     }
 
 }

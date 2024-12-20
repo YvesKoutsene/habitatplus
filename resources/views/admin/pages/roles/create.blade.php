@@ -86,7 +86,7 @@ use Carbon\Carbon;
                         </div>
 
                         <!-- Boutons -->
-                        <div class="text-center">
+                        <div class="d-flex justify-content-center gap-3"> <!--text-center-->
                             <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Créer</button>
                             <button type="reset" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Réinitialiser</button>
                             <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#previewModal" onclick="previewSelectedPermissions()"><i class="bi bi-eye"></i> Prévisualiser</button>

@@ -2,12 +2,12 @@
 @section('content')
 
 <div class="pagetitle">
-    <h1>Ajouter une Catégorie</h1>
+    <h1>Catégorie</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Accueil</a></li>
             <li class="breadcrumb-item"><a href="{{ route('category_bien.index') }}">Catégories Bien</a></li>
-            <li class="breadcrumb-item active">Ajouter Catégorie</li>
+            <li class="breadcrumb-item active">Créer Catégorie</li>
         </ol>
     </nav>
 </div>
@@ -24,13 +24,13 @@
 
                         <!-- Nom de la Catégorie -->
                         <div class="mb-4">
-                            <label for="nom_categorie" class="form-label">Nom de la Catégorie <span class="text-danger">*</span></label>
+                            <label for="nom_categorie" class="form-label">Nom<span class="text-danger">*</span></label>
                             <input 
                                 type="text" 
-                                name="nom_categorie" 
+                                name="titre" 
                                 id="nom_categorie" 
                                 class="form-control" 
-                                placeholder="Entrez le nom de la catégorie" 
+                                placeholder="Nom de la catégorie de bien" 
                                 required>
                             <div class="invalid-feedback">
                                 Veuillez fournir un nom pour la catégorie.
@@ -39,26 +39,27 @@
 
                         <!-- Description -->
                         <div class="mb-4">
-                            <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                            <label for="description" class="form-label">Description<span class="text-danger">*</span></label>
                             <textarea 
                                 name="description" 
                                 id="description" 
                                 class="form-control" 
-                                rows="3" 
-                                maxlength="100" 
-                                placeholder="Ajoutez une description (100 caractères maximum)" 
+                                rows="4" 
+                                maxlength="200" 
+                                placeholder="Ajoutez une description" 
                                 required></textarea>
                             <div class="invalid-feedback">
                                 Veuillez fournir une description valide.
                             </div>
-                            <small class="text-muted">100 caractères maximum.</small>
+                            <small class="text-muted">Ne pas dépasser 200 caractères maximum.</small>
                         </div>
 
                         <!-- Paramètres de Catégorie -->
                         <div class="mb-4">
-                            <label class="form-label">Paramètres Associés <span class="text-danger">*</span></label>
+                            <label class="form-label">Paramètres catégories<span class="text-danger">*</span></label>
                             <div class="row">
                                 @foreach($parametres as $parametre)
+                                <!--
                                     <div class="col-md-6 col-sm-12 mb-2">
                                         <div class="form-check">
                                             <input 
@@ -72,6 +73,22 @@
                                             </label>
                                         </div>
                                     </div>
+                                -->
+
+                                    <div class="col-md-6 col-sm-10 mb-2">
+                                        <div class="form-check form-switch">
+                                            <input 
+                                                class="form-check-input" 
+                                                type="checkbox"
+                                                name="parametres[]" 
+                                                id="parametre{{ $parametre->id }}" 
+                                                value="{{ $parametre->id }}">
+                                            <label class="form-check-label" for="parametre{{ $parametre->id }}">
+                                                {{ $parametre->nom_parametre }}
+                                            </label>
+                                        </div>
+                                    </div>
+
                                 @endforeach
                             </div>
                             <div class="invalid-feedback">
@@ -82,7 +99,7 @@
                         <!-- Boutons d'Action -->
                         <div class="d-flex justify-content-center gap-3">
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle"></i> Enregistrer
+                                <i class="bi bi-check-circle"></i> Créer
                             </button>
                             <button type="reset" class="btn btn-secondary">
                                 <i class="bi bi-x-circle"></i> Réinitialiser

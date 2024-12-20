@@ -21,4 +21,9 @@ class CategorieBien extends Model
     {
         return $this->hasMany(AssociationCategorieParametre::class, 'id_categorie');
     }
+
+    public function associations()
+    {
+        return $this->hasMany(AssociationCategorieParametre::class, 'id_categorie');
+    }
 }
