@@ -54,7 +54,7 @@ use Carbon\Carbon;
                                                 <span class="badge bg-success">{{ ucfirst($permission->name) }}</span>
                                             @endforeach
                                             @if($role->permissions->count() > 3)
-                                                <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#permissionsModal{{ $role->id }}">
+                                                <button class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#permissionsModal{{ $role->id }}"> <!--class="btn btn-link"-->
                                                     Voir plus ({{ $role->permissions->count() - 3 }})
                                                 </button>
                                             @endif
@@ -125,6 +125,15 @@ use Carbon\Carbon;
                                 </div>
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Permissions associées</th>
+                                    <th scope="col">Date création</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </tfoot>
                         </table>
                     @endif
                 </div>

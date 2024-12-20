@@ -33,7 +33,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Nom</th>
+                                    <th>Titre</th>
                                     <th>Description</th>
                                     <th>Paramètres associés</th>
                                     <th>Date création</th>
@@ -45,30 +45,28 @@
                                     <tr>
                                         <td>{{ $categorie->id }}</td>
                                         <td>{{ ucfirst($categorie->titre) }}</td>
-                                        <td>{{ ucfirst($categorie->desc) }}</td>
+                                        <td>{{ ucfirst($categorie->descr) }}</td>
                                         <td>
-                                            <ul class="list-unstyled">
-                                                @foreach($categorie->associations->take(2) as $association)
-                                                    <li>{{ $association->parametre->nom_parametre }}</li>
-                                                @endforeach
-                                            </ul>
+                                            @foreach($categorie->associations->take(2) as $association)
+                                            <span class="badge bg-success">{{ $association->parametre->nom_parametre }}</span>
+                                            @endforeach
                                             @if($categorie->associations->count() > 2)
-                                                <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametresModal{{ $categorie->id }}">
+                                                <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametresModal{{ $categorie->id }}"> <!--class="btn btn-link"-->
                                                     Voir plus ({{ $categorie->associations->count() }})
                                                 </button>
 
                                                 <!-- Modal pour afficher tous les paramètres -->
                                                 <div class="modal fade" id="parametresModal{{ $categorie->id }}" tabindex="-1" aria-labelledby="parametresModalLabel{{ $categorie->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="parametresModalLabel{{ $categorie->id }}">Paramètres de {{ ucfirst($categorie->titre) }}</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <ul class="list-unstyled">
+                                                                <ul class="list-group">
                                                                     @foreach($categorie->associations as $association)
-                                                                        <li>{{ $association->parametre->nom_parametre }}</li>
+                                                                        <li class="list-group-item" >{{ $association->parametre->nom_parametre }}</li>
                                                                     @endforeach
                                                                 </ul>
                                                             </div>
@@ -119,6 +117,16 @@
                                     </tr>
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Titre</th>
+                                    <th>Description</th>
+                                    <th>Paramètres associés</th>
+                                    <th>Date création</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </tfoot>
                         </table>
                     @endif
                 </div>

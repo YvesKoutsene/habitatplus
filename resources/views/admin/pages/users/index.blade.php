@@ -35,15 +35,15 @@ use Carbon\Carbon;
                     @else
                     <table class="table table-hover table-striped">
                         <thead>
-                        <tr>
-                            <th scope="col">Utilisateur</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Téléphone</th>
-                            <th scope="col">Rôle</th>
-                            <th scope="col">Crée le</th>
-                            <th scope="col">Statut</th>
-                            <th scope="col">Actions</th>
-                        </tr>
+                            <tr>
+                                <th scope="col">Utilisateur</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Téléphone</th>
+                                <th scope="col">Rôle</th>
+                                <th scope="col">Crée le</th>
+                                <th scope="col">Statut</th>
+                                <th scope="col">Actions</th>
+                            </tr>
                         </thead>
                         <tbody>
                         @foreach($users as $user)
@@ -126,6 +126,17 @@ use Carbon\Carbon;
                         </tr>
                         @endforeach
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th scope="col">Utilisateur</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Téléphone</th>
+                                <th scope="col">Rôle</th>
+                                <th scope="col">Crée le</th>
+                                <th scope="col">Statut</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </tfoot>
                     </table>
                     @endif
                 </div>
