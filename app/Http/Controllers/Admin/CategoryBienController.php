@@ -135,7 +135,7 @@ class CategoryBienController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-        public function destroy($categorieBien)
+    public function destroy($categorieBien)
     {
         $category = CategorieBien::findOrFail($categorieBien);
 

@@ -10,7 +10,7 @@ class CategorieBien extends Model
     //
     use HasFactory;
 
-    protected $fillable = ['titre', 'description', 'requis'];
+    protected $fillable = ['titre', 'description'];
 
     public function biens()
     {
@@ -25,7 +25,7 @@ class CategorieBien extends Model
 
     public function alertes()
     {
-         return $this->hasMany(AlerteRecherche::class, 'id_recherche');
+         return $this->hasMany(AlerteRecherche::class, 'id_alerte');
     }
  
 }

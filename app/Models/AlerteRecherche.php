@@ -17,8 +17,8 @@ class AlerteRecherche extends Model
         return $this->belongsTo(User::class, 'id_user');
     }
 
-    public function categories()
+    public function categorieBien()
     {
-        return $this->belongsTo(CategorieBien::class, 'id_categorie');
+        return $this->belongsTo(CategorieBien::class, 'id_categorie_bien');
     }
 }

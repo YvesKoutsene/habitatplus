@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('titre');
             $table->text('description');
-            $table->text('requis')->nullable();
             $table->timestamps();
         });
     }
