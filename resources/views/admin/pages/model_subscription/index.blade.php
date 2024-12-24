@@ -6,7 +6,7 @@
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bi bi-house-door"></i></a></li>
-            <li class="breadcrumb-item">Abonnements</li>
+            <li class="breadcrumb-item">Modèle Abonnement</li>
             <li class="breadcrumb-item active">Liste Modèles</li>
         </ol>
     </nav>
@@ -18,15 +18,15 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title">Liste des Modèles d'Abonnement</h5>
-                        <a href="{{ route('subscription_model.create') }}" class="btn btn-primary">
+                        <h5 class="card-title">Liste des Modèles</h5>
+                        <a href="{{ route('model_subscription.create') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle"></i> Créer modèle
                         </a>
                     </div>
 
-                    @if($subscriptionModels->isEmpty())
+                    @if($modeles->isEmpty())
                         <div class="alert alert-info">
-                            Aucun modèle d'abonnement disponible pour le moment. <a href="{{ route('subscription_model.create') }}" class="alert-link">Créer modèle</a>.
+                            Aucun modèle d'abonnement disponible pour le moment. <a href="{{ route('model_subscription.create') }}" class="alert-link">Créer modèle</a>.
                         </div>
                     @else
                         <table class="table table-hover table-striped">
@@ -43,10 +43,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($subscriptionModels as $model)
+                                @foreach($modeles as $model)
                                     <tr>
                                         <td>{{ $model->id }}</td>
-                                        <td>{{ ucfirst($model->name) }}</td>
+                                        <td>{{ ucfirst($model->nom) }}</td>
                                         <td>
                                             @if(strlen($model->description) > 8)
                                                 {{ ucfirst(substr($model->description, 0, 8)) }}...
@@ -59,7 +59,7 @@
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="descriptionModalLabel{{ $model->id }}">Description complète de {{ ucfirst($model->name) }}</h5>
+                                                                <h5 class="modal-title" id="descriptionModalLabel{{ $model->id }}">Description complète de {{ ucfirst($model->nom) }}</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
@@ -79,7 +79,7 @@
                                         <td>{{ $model->duration }}</td>
                                         <td>
                                             @foreach($model->parameters->take(2) as $parameter)
-                                            <span class="badge bg-success">{{ $parameter->name }} : {{ $parameter->value }}</span>
+                                            <span class="badge bg-success">{{ $parameter->nom_parametre }} : {{ $parameter->valeur }}</span>
                                             @endforeach
                                             @if($model->parameters->count() > 2)
                                                 <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametersModal{{ $model->id }}">
@@ -91,13 +91,13 @@
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="parametersModalLabel{{ $model->id }}">Paramètres de {{ ucfirst($model->name) }}</h5>
+                                                                <h5 class="modal-title" id="parametersModalLabel{{ $model->id }}">Paramètres de {{ ucfirst($model->nom) }}</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <ul class="list-group">
                                                                     @foreach($model->parameters as $parameter)
-                                                                        <li class="list-group-item">{{ $parameter->name }} : {{ $parameter->value }}</li>
+                                                                        <li class="list-group-item">{{ $parameter->nom_parametre }} : {{ $parameter->value }}</li>
                                                                     @endforeach
                                                                 </ul>
                                                             </div>
@@ -113,13 +113,15 @@
                                         <td>{{ \Carbon\Carbon::parse($model->created_at)->format('d M Y') }}</td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('subscription_model.edit', $model->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" title="Modifier">
+                                                <a href="{{ route('model_subscription.edit', $model->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" title="Modifier">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </a>
+                                                
+                                                @if (!$model->transactions->isEmpty())
                                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $model->id }}" data-bs-toggle="tooltip" title="Supprimer">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
-
+                                                @endif
                                                 <!-- Modal de confirmation de suppression -->
                                                 <div class="modal fade" id="deleteConfirmation{{ $model->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $model->id }}" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
@@ -133,7 +135,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                                                <form action="{{ route('subscription_model.destroy', $model->id) }}" method="POST" class="d-inline">
+                                                                <form action="{{ route('model_subscription.destroy', $model->id) }}" method="POST" class="d-inline">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
@@ -165,18 +167,18 @@
                         <!-- Pagination personnalisée -->
                         <nav aria-label="...">
                             <ul class="pagination justify-content-end">
-                                <li class="page-item {{ $subscriptionModels->onFirstPage() ? 'disabled' : '' }}">
-                                    <a class="page-link" href="{{ $subscriptionModels->previousPageUrl() }}" tabindex="-1" aria-disabled="{{ $subscriptionModels->onFirstPage() }}">Précédent</a>
+                                <li class="page-item {{ $modeles->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $modeles->previousPageUrl() }}" tabindex="-1" aria-disabled="{{ $modeles->onFirstPage() }}">Précédent</a>
                                 </li>
 
-                                @for ($i = 1; $i <= $subscriptionModels->lastPage(); $i++)
-                                    <li class="page-item {{ $i == $subscriptionModels->currentPage() ? 'active' : '' }}">
-                                        <a class="page-link" href="{{ $subscriptionModels->url($i) }}">{{ $i }}</a>
+                                @for ($i = 1; $i <= $modeles->lastPage(); $i++)
+                                    <li class="page-item {{ $i == $modeles->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $modeles->url($i) }}">{{ $i }}</a>
                                     </li>
                                 @endfor
 
-                                <li class="page-item {{ $subscriptionModels->hasMorePages() ? '' : 'disabled' }}">
-                                    <a class="page-link" href="{{ $subscriptionModels->nextPageUrl() }}">Suivant</a>
+                                <li class="page-item {{ $modeles->hasMorePages() ? '' : 'disabled' }}">
+                                    <a class="page-link" href="{{ $modeles->nextPageUrl() }}">Suivant</a>
                                 </li>
                             </ul>
                         </nav>
