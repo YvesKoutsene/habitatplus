@@ -39,7 +39,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Nom</th>
-                                    <th scope="col">Date de Création</th>
+                                    <th scope="col">Date création</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -72,7 +72,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                                                <form action="{{ route('parameter_category.destroy', $parametre->id) }}" method="POST">
+                                                                <form action="{{ route('parameter_model.destroy', $parametre->id) }}" method="POST">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
@@ -101,7 +101,7 @@
                                                         <div class="mb-3">
                                                             <label for="nom_parametre{{ $parametre->id }}" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
                                                             <input type="hidden" name="id" value="{{ $parametre->id }}">
-                                                            <input type="text" name="nom_parametre" class="form-control" placeholder="Nom du paramètre de model" id="nom_parametre{{ $parametre->id }}" value="{{ $parametre->nom_parametre }}" required>
+                                                            <input type="text" name="nom_parametre" class="form-control" placeholder="Nom du paramètre de modèle" id="nom_parametre{{ $parametre->id }}" value="{{ $parametre->nom_parametre }}" required>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-arrow-left"></i> Retour</button>
@@ -120,7 +120,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Nom</th>
-                                    <th scope="col">Date de Création</th>
+                                    <th scope="col">Date création</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </tfoot>
@@ -165,7 +165,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="nom_parametre" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
-                        <input type="text" name="nom_parametre" class="form-control" id="nom_parametre" required placeholder="Nom du paramètre de modele">
+                        <input type="text" name="nom_parametre" class="form-control" id="nom_parametre" required placeholder="Nom du paramètre de modèle">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>

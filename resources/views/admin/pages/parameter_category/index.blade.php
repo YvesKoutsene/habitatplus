@@ -39,7 +39,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Nom</th>
-                                    <th scope="col">Date de Création</th>
+                                    <th scope="col">Date création</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -120,7 +120,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Nom</th>
-                                    <th scope="col">Date de Création</th>
+                                    <th scope="col">Date création</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </tfoot>

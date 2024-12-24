@@ -93,9 +93,9 @@ class ParameterCategoryController extends Controller
 
         $parametre = ParametreCategorie::findOrFail($parametreCategorie);
 
-        if ($parametre->biens()->exists()) {
+        if ($parametre->associations()->exists()) { //biens()
             return redirect()->route('parameter_category.index')
-                ->with('error', "Le paramètre {$parametreCategorie->nom_parametre} ne peut pas être supprimé.");
+                ->with('error', "Le paramètre {$parametre->nom_parametre} ne peut pas être supprimé.");
         }
      
         $parametre->delete();

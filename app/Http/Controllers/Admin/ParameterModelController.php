@@ -44,15 +44,15 @@ class ParameterModelController extends Controller
         $parametre->nom_parametre = $request->nom_parametre;
         $parametre->save();
     
-        return redirect()->route('parameter_model.index')->with('success', "Paramètre {$parametreCategorie->nom_parametre} mis à jour avec succès.");
+        return redirect()->route('parameter_model.index')->with('success', "Paramètre {$parametre->nom_parametre} mis à jour avec succès.");
     }
     
     public function destroy($parametre)
     {
 
-        $parametre = ParametreModel::findOrFail($parametre);
+        $parametre = ParametreModele::findOrFail($parametre);
 
-        if ($parametre->biens()->exists()) {
+        if ($parametre->associations()->exists()) {
             return redirect()->route('parameter_model.index')
                 ->with('error', "Le paramètre {$parametre->nom_parametre} ne peut pas être supprimé.");
         }
