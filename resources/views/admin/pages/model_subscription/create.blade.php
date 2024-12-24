@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="pagetitle">
-    <h1>Modèles d'Abonnement</h1>
+    <h1>Modèles</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bi bi-house-door"></i></a></li>
@@ -17,7 +17,7 @@
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Informations sur le model</h5>
+                    <h5 class="card-title">Informations sur le modèle</h5>
                     
                     <form action="{{ route('model_subscription.store') }}" method="POST" class="needs-validation" novalidate>
                         @csrf
@@ -38,14 +38,14 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="prix_modele" class="form-label">Prix<span class="text-danger">*</span></label>
+                            <label for="prix_modele" class="form-label">Prix (FCFA)<span class="text-danger">*</span></label>
                             <input 
                                 type="number" 
                                 name="prix" 
                                 id="prix_modele" 
                                 class="form-control" 
                                 placeholder="Prix du modèle d'abonnement" 
-                                required>
+                                required min="0" oninput="validateInput()">
                             <div class="invalid-feedback">
                                 Veuillez fournir un prix pour le modèle.
                             </div>
@@ -58,7 +58,7 @@
                                 name="duree" 
                                 id="duree_modele" 
                                 class="form-control" 
-                                placeholder="Durée du modèle d'abonnement" 
+                                placeholder="Durée du modèle d'abonnement (Ex : 3 Mois)" 
                                 required>
                             <div class="invalid-feedback">
                                 Veuillez fournir une durée pour le modèle.
@@ -84,21 +84,23 @@
 
                         <!-- Paramètres de Catégorie -->
                         <div class="mb-4">
-                            <label class="form-label">Paramètres modèles<span class="text-danger">*</span></label>
                             <div id="parametres-container">
                                 <!-- Champ dynamique pour les paramètres -->
                                 <div class="row g-3 mb-2 parametre-item">
                                     <div class="col-md-6">
-                                        <label for="parametres[0][id]" class="form-label">Paramètre</label>
+                                        <label for="parametres[0][id]" class="form-label">Paramètre<span class="text-danger">*</span></label>
                                         <select name="parametres[0][id]" class="form-select" required>
                                             <option value="">-- Sélectionner un paramètre --</option>
                                             @foreach($parametres as $parametre)
                                                 <option value="{{ $parametre->id }}">{{ $parametre->nom_parametre }}</option>
                                             @endforeach
                                         </select>
+                                        <div class="invalid-feedback">
+                                            Veuillez ajouter au moins un paramètre.
+                                        </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="parametres[0][valeur]" class="form-label">Valeur</label>
+                                        <label for="parametres[0][valeur]" class="form-label">Valeur<span class="text-danger">*</span></label>
                                         <input type="number" name="parametres[0][valeur]" class="form-control" min="0" required>
                                     </div>
                                     <div class="col-md-2 d-flex align-items-end">
@@ -106,11 +108,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="invalid-feedback">
-                                Veuillez ajouter au moins un paramètre.
-                            </div>
 
-                            <button type="button" id="add-parametre" class="btn btn-secondary"><i class="bi bi-plus-circle"></i> Ajouter paramètre</button>
+                            <button type="button" id="add-parametre" class="btn btn-outline-secondary"><i class="bi bi-plus-circle"></i> Ajouter paramètre</button>
                         </div>
 
                         <!-- Boutons d'Action -->
@@ -133,14 +132,13 @@
     document.addEventListener('DOMContentLoaded', function () {
         let parametreIndex = 1;
 
-        // Ajouter un nouveau champ dynamique pour les paramètres
         document.getElementById('add-parametre').addEventListener('click', function () {
             const container = document.getElementById('parametres-container');
             const newParametre = document.createElement('div');
             newParametre.classList.add('row', 'g-3', 'mb-2', 'parametre-item');
             newParametre.innerHTML = `
                 <div class="col-md-6">
-                    <label for="parametres[${parametreIndex}][id]" class="form-label">Paramètre</label>
+                    <label for="parametres[${parametreIndex}][id]" class="form-label">Paramètre<span class="text-danger">*</span></label>
                     <select name="parametres[${parametreIndex}][id]" class="form-select" required>
                         <option value="">-- Sélectionner un paramètre --</option>
                         @foreach($parametres as $parametre)
@@ -149,7 +147,7 @@
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <label for="parametres[${parametreIndex}][valeur]" class="form-label">Valeur</label>
+                    <label for="parametres[${parametreIndex}][valeur]" class="form-label">Valeur<span class="text-danger">*</span></label>
                     <input type="number" name="parametres[${parametreIndex}][valeur]" class="form-control" min="0" required>
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
@@ -167,6 +165,13 @@
             }
         });
     });
+
+    // Validation des champs prix
+    function validateInput() {
+        const input = document.getElementById('prix_modele');
+        input.value = input.value.replace(/[^0-9]/g, '');
+    }
+
 </script>
 
 @endsection
