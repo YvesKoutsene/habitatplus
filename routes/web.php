@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ParameterCategoryController;
 use App\Http\Controllers\Admin\CategoryBienController;
 use App\Http\Controllers\Admin\ParameterModelController;
+use App\Http\Controllers\Admin\ModelSubscriptionController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,6 +45,10 @@ Route::middleware('auth')->group(function () {
 
     //Pour les paramètres de modèles
     Route::resource('parameter_model', ParameterModelController::class);
+
+    //Pour les modèles d'abonnement
+    Route::resource('model_subscription', ModelSubscriptionController::class);
+
 
 
 });

@@ -16,4 +16,13 @@ class ModeleAbonnement extends Model
     {
         return $this->hasMany(Transaction::class, 'id_modele_abonnement');
     }
+
+    //New by Jean-Yves 24/12/2024 à 17:45
+    public function parametres()
+    {
+        return $this->belongsToMany(ParametreModele::class, 'association_modele_parametres', 'id_modele', 'id_parametre')
+                    ->withPivot('id')
+                    ->with('valeurs');
+    }
+
 }

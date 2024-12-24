@@ -26,7 +26,7 @@ class ParameterCategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.pages.parameter_category.create');
+
     }
 
 
@@ -59,7 +59,7 @@ class ParameterCategoryController extends Controller
      */
     public function edit(ParametreCategorie $parametreCategorie)
     {
-        return view('admin.pages.parameter_category.edit', compact('parametreCategorie'));
+
     }
 
     /**
