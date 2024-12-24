@@ -73,7 +73,6 @@
                                                 {{ ucfirst($categorie->description) }}
                                             @endif
                                         </td>
-
                                         <td>
                                             @foreach($categorie->associations->take(2) as $association)
                                             <span class="badge bg-success">{{ $association->parametre->nom_parametre }}</span>

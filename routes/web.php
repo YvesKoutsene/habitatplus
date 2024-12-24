@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ParameterCategoryController;
 use App\Http\Controllers\Admin\CategoryBienController;
+use App\Http\Controllers\Admin\ParameterModelController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,7 +41,9 @@ Route::middleware('auth')->group(function () {
     //Pour les categorie de bien
     Route::resource('category_bien', CategoryBienController::class);
 
-    //Pour les paramètres de modeèles
+    //Pour les paramètres de modèles
+    Route::resource('parameter_model', ParameterModelController::class);
+
 
 });
 

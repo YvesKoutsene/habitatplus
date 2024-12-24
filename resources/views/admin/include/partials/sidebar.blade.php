@@ -3,7 +3,7 @@
     <li class="nav-item">
         <a class="nav-link " href="{{ route('dashboard') }}">
             <i class="bi bi-grid"></i>
-            <span>Dashboard</span>
+            <span>Tableau de bord</span>
         </a>
     </li><!-- End Dashboard Nav -->
 
@@ -60,7 +60,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('parameter_model.index') }}">
                     <i class="bi bi-circle"></i><span>Paramètre Modèle</span>
                 </a>
             </li>

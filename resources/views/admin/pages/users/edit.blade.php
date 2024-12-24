@@ -5,7 +5,7 @@
     <h1>Modifier Utilisateur</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bi bi-house-door"></i></a></li>
             <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Liste Utilisateurs</a></li>
             <li class="breadcrumb-item active">Modifier Utilisateur</li>
         </ol>
@@ -24,15 +24,17 @@
                     <div class="card-body">
                         <h5 class="card-title">Photo de profil</h5>
                         <div class="row mb-3">
-                            <label class="col-sm-4 col-form-label">Aperçu</label>
-                            <div class="col-sm-8 text-center">
-                                <img id="image-preview-img" src="{{ $user->photo_profil }}" alt="Aperçu de l'image" class="img-thumbnail" width="150">
+                            <div class="col-sm-12 text-center">
+                                <img id="image-preview-img" src="{{ $user->photo_profil }}" alt="Aperçu de l'image" class="img-thumbnail"  width="150">
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="formFile" class="col-sm-4 col-form-label">Téléverser</label>
-                            <div class="col-sm-8">
-                                <input class="form-control" type="file" id="formFile" name="photo_profil" onchange="previewImage(this)" accept="image/*" >
+                            <label for="formFile" class="col-sm-4 col-form-label"> </label>
+                            <div class="col-sm-4 text-center">
+                                <label for="uploadImage" class="btn btn-primary btn-sm" title="Téléverser une nouvelle image">
+                                    <i class="bi bi-upload"></i> Téléverser
+                                </label>
+                                <input type="file" name="photo_profil" id="uploadImage"  onchange="previewImage(this)" class="d-none" accept="image/*">
                             </div>
                         </div>
                     </div>

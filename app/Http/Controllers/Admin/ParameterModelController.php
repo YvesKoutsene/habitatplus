@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+use App\Models\ParametreModele; 
+use App\Models\AssociationModeleParametre; 
+
+class ParameterModelController extends Controller
+{
+    //
+
+    public function index()
+    {
+        $parametres = ParametreModele::orderBy('created_at', 'asc')->paginate(10);
+        return view('admin.pages.parameter_model.index', compact('parametres'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nom_parametre' => 'required|string|max:255|unique:parametre_categories,nom_parametre',
+        ],[
+            'nom_parametre.unique' => 'Ce paramètre de catégorie de bien existe déjà'
+        ]);
+
+        $parametre = ParametreModele::create($request->all());
+
+        return redirect()->route('parameter_model.index')->with('success', "Paramètre modèle {$parametre->nom_parametre} créé avec succès.");
+    }
+
+    public function update(Request $request, $id)
+    {
+        $parametre = ParametreModele::findOrFail($id);
+    
+        $request->validate([
+            'nom_parametre' => 'required|string|max:255|unique:parametre_categories,nom_parametre,' . $id . ',id',
+        ], [
+            'nom_parametre.unique' => 'Ce paramètre de modèle d\'abonnement existe déjà'
+        ]);
+    
+        $parametre->nom_parametre = $request->nom_parametre;
+        $parametre->save();
+    
+        return redirect()->route('parameter_model.index')->with('success', "Paramètre {$parametreCategorie->nom_parametre} mis à jour avec succès.");
+    }
+    
+    public function destroy($parametre)
+    {
+
+        $parametre = ParametreModel::findOrFail($parametre);
+
+        if ($parametre->biens()->exists()) {
+            return redirect()->route('parameter_model.index')
+                ->with('error', "Le paramètre {$parametre->nom_parametre} ne peut pas être supprimé.");
+        }
+     
+        $parametre->delete();
+     
+        return redirect()->route('parameter_model.index')->with('success', "Paramètre {$parametre->nom_parametre} supprimé avec succès.");
+    }
+
+}

@@ -43,7 +43,9 @@ class ProfileController extends Controller
             'current_password' => ['required'],
             'password' => ['required', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()],
         ],
-        ['password.confirmed' => 'Les mots de passe ne correspondent pas.']
+        ['password.confirmed' => 'Les mots de passe ne correspondent pas.',
+        'password.min' => 'Mot de passe faible (8 caractères minimuns)'
+        ]
         );
 
         // Récupération de l'utilisateur

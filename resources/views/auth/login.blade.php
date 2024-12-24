@@ -111,6 +111,10 @@
                             </div>
                         </div>
 
+                        <div class="credits">
+                            Conçu par<a href="#"> Jean-Yves</a>
+                        </div>
+
                     </div>
                 </div>
             </div>
