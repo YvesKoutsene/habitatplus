@@ -36,7 +36,7 @@
                                     <th>Nom</th>
                                     <th>Description</th>
                                     <th>Prix (FCFA)</th>
-                                    <th>Durée (Mois)</th>
+                                    <th>Durée</th>
                                     <th>Paramètres associés</th>
                                     <th>Date création</th>
                                     <th>Actions</th>
@@ -75,15 +75,15 @@
                                                 {{ ucfirst($model->description) }}
                                             @endif
                                         </td>
-                                        <td>{{ number_format($model->price, 0, ',', ' ') }}</td>
-                                        <td>{{ $model->duration }}</td>
+                                        <td>{{ number_format($model->prix, 0, ',', ' ') }}</td>
+                                        <td>{{ $model->duree }}</td>
                                         <td>
-                                            @foreach($model->parameters->take(2) as $parameter)
+                                            @foreach($model->parametres->take(2) as $parameter)
                                             <span class="badge bg-success">{{ $parameter->nom_parametre }} : {{ $parameter->valeur }}</span>
                                             @endforeach
-                                            @if($model->parameters->count() > 2)
+                                            @if($model->parametres->count() > 2)
                                                 <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametersModal{{ $model->id }}">
-                                                    Voir plus ({{ $model->parameters->count() }})
+                                                    Voir plus ({{ $model->parametres->count() }})
                                                 </button>
 
                                                 <!-- Modal pour afficher tous les paramètres -->
@@ -96,7 +96,7 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <ul class="list-group">
-                                                                    @foreach($model->parameters as $parameter)
+                                                                    @foreach($model->parametres as $parameter)
                                                                         <li class="list-group-item">{{ $parameter->nom_parametre }} : {{ $parameter->value }}</li>
                                                                     @endforeach
                                                                 </ul>
@@ -117,7 +117,7 @@
                                                     <i class="bi bi-pencil-square"></i>
                                                 </a>
                                                 
-                                                @if (!$model->transactions->isEmpty())
+                                                @if ($model->transactions->isEmpty())
                                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $model->id }}" data-bs-toggle="tooltip" title="Supprimer">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
@@ -156,8 +156,8 @@
                                     <th>Nom</th>
                                     <th>Description</th>
                                     <th>Prix (FCFA)</th>
-                                    <th>Durée (Mois)</th>
-                                    <th>Paramètres associés & Valeur</th>
+                                    <th>Durée</th>
+                                    <th>Paramètres associés</th>
                                     <th>Date création</th>
                                     <th>Actions</th>
                                 </tr>
