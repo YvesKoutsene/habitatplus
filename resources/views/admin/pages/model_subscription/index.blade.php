@@ -34,9 +34,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nom</th>
-                                    <th>Description</th>
                                     <th>Prix (FCFA)</th>
                                     <th>Durée</th>
+                                    <th>Description</th>
                                     <th>Paramètres associés</th>
                                     <th>Date création</th>
                                     <th>Actions</th>
@@ -47,6 +47,8 @@
                                     <tr>
                                         <td>{{ $model->id }}</td>
                                         <td>{{ ucfirst($model->nom) }}</td>
+                                        <td>{{ number_format($model->prix, 0, ',', ' ') }}</td>
+                                        <td>{{ $model->duree }}</td>
                                         <td>
                                             @if(strlen($model->description) > 8)
                                                 {{ ucfirst(substr($model->description, 0, 8)) }}...
@@ -59,7 +61,7 @@
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="descriptionModalLabel{{ $model->id }}">Description complète de {{ ucfirst($model->nom) }}</h5>
+                                                                <h5 class="modal-title" id="descriptionModalLabel{{ $model->id }}">Description complète du modèle {{ ucfirst($model->nom) }}</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
@@ -75,13 +77,11 @@
                                                 {{ ucfirst($model->description) }}
                                             @endif
                                         </td>
-                                        <td>{{ number_format($model->prix, 0, ',', ' ') }}</td>
-                                        <td>{{ $model->duree }}</td>
                                         <td>
-                                            @foreach($model->parametres->take(2) as $parameter)
-                                            <span class="badge bg-success">{{ $parameter->nom_parametre }} : {{ $parameter->valeur }}</span>
+                                            @foreach($model->parametres->take(1) as $parameter)
+                                            <span class="badge bg-success">{{ $parameter->nom_parametre }} : {{ $parameter->valeurs->first()->valeur }}</span>
                                             @endforeach
-                                            @if($model->parametres->count() > 2)
+                                            @if($model->parametres->count() > 1)
                                                 <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametersModal{{ $model->id }}">
                                                     Voir plus ({{ $model->parametres->count() }})
                                                 </button>
@@ -91,13 +91,13 @@
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="parametersModalLabel{{ $model->id }}">Paramètres de {{ ucfirst($model->nom) }}</h5>
+                                                                <h5 class="modal-title" id="parametersModalLabel{{ $model->id }}">Paramètres du modèle {{ ucfirst($model->nom) }}</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <ul class="list-group">
                                                                     @foreach($model->parametres as $parameter)
-                                                                        <li class="list-group-item">{{ $parameter->nom_parametre }} : {{ $parameter->value }}</li>
+                                                                        <li class="list-group-item">{{ $parameter->nom_parametre }} : {{ $parameter->valeurs->first()->valeur }}</li>
                                                                     @endforeach
                                                                 </ul>
                                                             </div>
@@ -131,7 +131,7 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Êtes-vous sûr de vouloir supprimer le modèle d'abonnement "{{ $model->name }}" ? Cette action est irréversible.
+                                                                Êtes-vous sûr de vouloir supprimer le modèle d'abonnement "{{ $model->nom }}" ? Cette action est irréversible.
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
@@ -154,9 +154,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nom</th>
-                                    <th>Description</th>
                                     <th>Prix (FCFA)</th>
                                     <th>Durée</th>
+                                    <th>Description</th>
                                     <th>Paramètres associés</th>
                                     <th>Date création</th>
                                     <th>Actions</th>
