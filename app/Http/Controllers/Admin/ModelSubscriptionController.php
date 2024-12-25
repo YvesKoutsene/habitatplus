@@ -165,6 +165,7 @@ class ModelSubscriptionController extends Controller
         foreach ($modele->parametres as $parametre) {
             $parametre->valeurs()->delete();
         }
+        
         $modele->parametres()->detach();
 
         $modele->delete();

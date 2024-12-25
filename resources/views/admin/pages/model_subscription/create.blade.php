@@ -36,18 +36,21 @@
                                 Veuillez fournir un nom pour le modèle.
                             </div>
                         </div>
-
-                        <div class="mb-4">
-                            <label for="prix_modele" class="form-label">Prix (FCFA)<span class="text-danger">*</span></label>
-                            <input 
-                                type="number" 
-                                name="prix" 
-                                id="prix_modele" 
-                                class="form-control" 
-                                placeholder="Prix du modèle d'abonnement" 
-                                required min="0" oninput="validateInput()">
-                            <div class="invalid-feedback">
-                                Veuillez fournir un prix pour le modèle.
+                        <div>
+                            <label for="prix_modele" class="form-label">Prix<span class="text-danger">*</span></label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">FCFA</span>
+                                <input 
+                                    type="text" 
+                                    name="prix" 
+                                    id="prix_modele" 
+                                    class="form-control" 
+                                    placeholder="Prix du modèle d'abonnement" 
+                                    required min="0" oninput="validateInput()">
+                                <span class="input-group-text">.00</span>
+                                <div class="invalid-feedback">
+                                    Veuillez fournir un prix pour le modèle.
+                                </div>
                             </div>
                         </div>
 
@@ -58,7 +61,7 @@
                                 name="duree" 
                                 id="duree_modele" 
                                 class="form-control" 
-                                placeholder="Durée du modèle d'abonnement (Ex : 3 Mois)" 
+                                placeholder="Durée du modèle d'abonnement (Ex : 02 Mois)" 
                                 required>
                             <div class="invalid-feedback">
                                 Veuillez fournir une durée pour le modèle.
@@ -95,31 +98,34 @@
                                                 <option value="{{ $parametre->id }}">{{ $parametre->nom_parametre }}</option>
                                             @endforeach
                                         </select>
-                                        <div class="invalid-feedback">
-                                            Veuillez ajouter au moins un paramètre.
-                                        </div>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="parametres[0][valeur]" class="form-label">Valeur<span class="text-danger">*</span></label>
-                                        <input type="number" name="parametres[0][valeur]" class="form-control" min="0" required>
+                                        <input type="number" name="parametres[0][valeur]" class="form-control" min="0" required required min="0" oninput="validateInput02()" id="valeur" placeholder="Valeur du paramètre">
                                     </div>
                                     <div class="col-md-2 d-flex align-items-end">
-                                        <button type="button" class="btn btn-danger remove-parametre">Supprimer</button>
+                                        <button type="button" class="btn btn-danger remove-parametre" disabled>Supprimer</button>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                            Veuillez ajouter au moins un paramètre.
                                     </div>
                                 </div>
                             </div>
-
-                            <button type="button" id="add-parametre" class="btn btn-outline-secondary"><i class="bi bi-plus-circle"></i> Ajouter paramètre</button>
                         </div>
 
                         <!-- Boutons d'Action -->
                         <div class="d-flex justify-content-center gap-3">
+                            <button type="button" id="add-parametre" class="btn btn-outline-secondary">
+                                <i class="bi bi-plus-circle"></i> Ajouter paramètre
+                            </button>
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-circle"></i> Créer
                             </button>
+                            <!--
                             <button type="reset" class="btn btn-secondary">
                                 <i class="bi bi-x-circle"></i> Réinitialiser
-                            </button>
+                            </button> 
+                            -->
                         </div>
                     </form>
                 </div>
@@ -128,105 +134,85 @@
     </div>
 </section>
 
-<!--
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-    let parametreIndex = 1;
-
-    document.getElementById('add-parametre').addEventListener('click', function () {
-        const container = document.getElementById('parametres-container');
-
-        const selectedValues = Array.from(document.querySelectorAll('[name^="parametres"]')).map(select => select.value);
-        const availableOptions = Array.from(document.querySelectorAll('select[name^="parametres"] option')).filter(
-            option => !selectedValues.includes(option.value) && option.value !== ""
-        );
-
-        if (availableOptions.length === 0) {
-            alert("Tous les paramètres disponibles ont déjà été sélectionnés.");
-            return;
-        }
-
-        const newParametre = document.createElement('div');
-        newParametre.classList.add('row', 'g-3', 'mb-2', 'parametre-item');
-        newParametre.innerHTML = `
-            <div class="col-md-6">
-                <label for="parametres[${parametreIndex}][id]" class="form-label">Paramètre<span class="text-danger">*</span></label>
-                <select name="parametres[${parametreIndex}][id]" class="form-select" required>
-                    <option value="">-- Sélectionner un paramètre --</option>
-                    ${availableOptions.map(option => `<option value="${option.value}">${option.text}</option>`).join('')}
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label for="parametres[${parametreIndex}][valeur]" class="form-label">Valeur<span class="text-danger">*</span></label>
-                <input type="number" name="parametres[${parametreIndex}][valeur]" class="form-control" min="0" required>
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button type="button" class="btn btn-danger remove-parametre">Supprimer</button>
-            </div>
-        `;
-        container.appendChild(newParametre);
-        parametreIndex++;
-    });
-
-        document.getElementById('parametres-container').addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-parametre')) {
-                e.target.closest('.parametre-item').remove();
-            }
-        });
-    });
-
-    function validateInput() {
-        const input = document.getElementById('prix_modele');
-        input.value = input.value.replace(/[^0-9]/g, '');
-    }
-
-</script>
--->
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         let parametreIndex = 1;
 
         document.getElementById('add-parametre').addEventListener('click', function () {
+            // Vérifiez si tous les champs de paramètres et de valeurs précédents sont remplis
+            if (!areAllFieldsFilled()) {
+                alert("Veuillez sélectionner un paramètre et entrer une valeur pour chaque champ avant d'ajouter un nouveau paramètre.");
+                return;
+            }
+
             const container = document.getElementById('parametres-container');
+
+            const selectedValues = Array.from(document.querySelectorAll('[name^="parametres"]')).map(select => select.value);
+            const availableOptions = Array.from(document.querySelectorAll('select[name^="parametres"] option')).filter(
+                option => !selectedValues.includes(option.value) && option.value !== ""
+            );
+
+            if (availableOptions.length === 0) {
+                alert("Tous les paramètres disponibles ont déjà été sélectionnés.");
+                return;
+            }
+
             const newParametre = document.createElement('div');
             newParametre.classList.add('row', 'g-3', 'mb-2', 'parametre-item');
-            newParametre.innerHTML = 
+            newParametre.innerHTML = `
                 <div class="col-md-6">
                     <label for="parametres[${parametreIndex}][id]" class="form-label">Paramètre<span class="text-danger">*</span></label>
                     <select name="parametres[${parametreIndex}][id]" class="form-select" required>
                         <option value="">-- Sélectionner un paramètre --</option>
-                        @foreach($parametres as $parametre)
-                            <option value="{{ $parametre->id }}">{{ $parametre->nom_parametre }}</option>
-                        @endforeach
+                        ${availableOptions.map(option => `<option value="${option.value}">${option.text}</option>`).join('')}
                     </select>
                 </div>
                 <div class="col-md-4">
                     <label for="parametres[${parametreIndex}][valeur]" class="form-label">Valeur<span class="text-danger">*</span></label>
-                    <input type="number" name="parametres[${parametreIndex}][valeur]" class="form-control" min="0" required>
+                    <input type="number" name="parametres[${parametreIndex}][valeur]" class="form-control" min="0" required placeholder="Valeur du paramètre" oninput="validateInput03()">
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
                     <button type="button" class="btn btn-danger remove-parametre">Supprimer</button>
                 </div>
-            ;
+            `;
             container.appendChild(newParametre);
             parametreIndex++;
         });
 
-        // Supprimer un champ dynamique
         document.getElementById('parametres-container').addEventListener('click', function (e) {
             if (e.target.classList.contains('remove-parametre')) {
                 e.target.closest('.parametre-item').remove();
             }
         });
+
+        function areAllFieldsFilled() {
+            const parametreSelects = document.querySelectorAll('[name^="parametres"][name$="[id]"]');
+            const valeurInputs = document.querySelectorAll('[name^="parametres"][name$="[valeur]"]');
+
+            for (let i = 0; i < parametreSelects.length; i++) {
+                if (!parametreSelects[i].value || !valeurInputs[i].value) {
+                    return false; // Si un champ n'est pas rempli, retourner false
+                }
+            }
+            return true; // Tous les champs sont remplis
+        }
     });
 
-    // Validation des champs prix
     function validateInput() {
         const input = document.getElementById('prix_modele');
         input.value = input.value.replace(/[^0-9]/g, '');
     }
 
+    function validateInput02() {
+        const input = document.getElementById('valeur');
+        input.value = input.value.replace(/[^0-9]/g, '');
+    }
+
+    function validateInput03() {
+        const input = document.getElementById('valeur02');
+        input.value = input.value.replace(/[^0-9]/g, '');
+    }
 </script>
+
 
 @endsection
