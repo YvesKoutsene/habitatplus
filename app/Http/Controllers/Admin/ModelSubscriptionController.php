@@ -50,9 +50,12 @@ class ModelSubscriptionController extends Controller
             'description' => 'nullable|string',
             'prix' => 'required|numeric|min:0',
             'duree' => 'required|string|max:50',
-            'parametres' => 'required|array', // Liste des paramètres
-            'parametres.*.id' => 'exists:parametre_modeles,id', // Chaque paramètre doit exister
-            'parametres.*.valeur' => 'required|numeric|min:0', // Chaque paramètre doit avoir une valeur
+            'parametres' => 'required|array',
+            'parametres.*.id' => 'exists:parametre_modeles,id', 
+            'parametres.*.valeur' => 'required|numeric|min:0', 
+        ],[
+            'nom.unique' => 'Ce modèle d\'abonnment existe déjà',
+            'parametres.required' => 'Veuillez ajouter au moins un paramètre'
         ]);
 
         // Créer le modèle d'abonnement
@@ -63,7 +66,6 @@ class ModelSubscriptionController extends Controller
             'duree' => $validated['duree'],
         ]);
 
-        // Associer les paramètres et leurs valeurs
         foreach ($validated['parametres'] as $parametre) {
             $association = AssociationModeleParametre::create([
                 'id_modele' => $modele->id,
@@ -116,12 +118,13 @@ class ModelSubscriptionController extends Controller
             'parametres' => 'required|array',
             'parametres.*.id' => 'exists:parametre_modeles,id',
             'parametres.*.valeur' => 'required|numeric|min:0',
+        ],[
+            'nom.unique' => 'Ce modèle d\'abonnment existe déjà',
+            'parametres.required' => 'Veuillez ajouter au moins un paramètre'
         ]);
 
-        // Trouver le modèle d'abonnement
         $modele = ModeleAbonnement::findOrFail($id);
 
-        // Mettre à jour le modèle
         $modele->update([
             'nom' => $validated['nom'],
             'description' => $validated['description'],
@@ -155,17 +158,15 @@ class ModelSubscriptionController extends Controller
 
         //Verifions s'il y'a un abonnement qui utilise ce modèle en passant par les transactions
         if ($modele->transactions()->exists()) {
-            return redirect()->route('parameter_category.index')
-                ->with('error', "Impossible de supprimer la catégorie de bien : {$category->titre}.");
+            return redirect()->route('model_subscription.index')
+                ->with('error', "Impossible de supprimer le modèle d'abonnement: {$modele->nom}.");
         }  
 
-        // Supprimer les valeurs et associations liées
         foreach ($modele->parametres as $parametre) {
             $parametre->valeurs()->delete();
         }
         $modele->parametres()->detach();
 
-        // Supprimer le modèle
         $modele->delete();
 
         return redirect()->route('model_subscriptions.index')->with('success', "Modèle d\'abonnement {$modele->nom} supprimé avec succès.");
