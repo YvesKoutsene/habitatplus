@@ -169,8 +169,12 @@
             option => !selectedValues.includes(option.value) && option.value !== ""
         );
 
-        if (availableOptions.length === 0) {
-            showAlert("Tous les paramètres disponibles ont déjà été sélectionnés.");
+        // Utiliser un Set pour éliminer les doublons
+        const uniqueOptions = Array.from(new Set(availableOptions.map(option => option.value)))
+                                   .map(value => availableOptions.find(option => option.value === value));
+
+        if (uniqueOptions.length === 0) {
+            showAlert("Vous avez atteint le nombre limite de paramètre disponible.");
             return;
         }
 
@@ -181,7 +185,7 @@
                 <label for="parametres[${parametreIndex}][id]" class="form-label">Paramètre<span class="text-danger">*</span></label>
                 <select name="parametres[${parametreIndex}][id]" class="form-select" required>
                     <option value="">-- Sélectionner un paramètre --</option>
-                    ${availableOptions.map(option => `<option value="${option.value}">${option.text}</option>`).join('')}
+                    ${uniqueOptions.map(option => `<option value="${option.value}">${option.text}</option>`).join('')}
                 </select>
             </div>
             <div class="col-md-4">
@@ -235,6 +239,7 @@
         const input = document.getElementById('valeur02');
         input.value = input.value.replace(/[^0-9]/g, '');
     }
+
 </script>
 
 
