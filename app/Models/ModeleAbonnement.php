@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ModeleAbonnement extends Model
 {
-    //
     use HasFactory;
 
     protected $fillable = ['nom', 'description', 'prix', 'duree'];
@@ -17,12 +16,16 @@ class ModeleAbonnement extends Model
         return $this->hasMany(Transaction::class, 'id_modele_abonnement');
     }
 
-    //New by Jean-Yves 24/12/2024 à 17:45
     public function parametres()
     {
         return $this->belongsToMany(ParametreModele::class, 'association_modele_parametres', 'id_modele', 'id_parametre')
-                    ->withPivot('id')
+                    ->withPivot('id') // Inclure l'ID de l'association
                     ->with('valeurs');
     }
 
+    public function parametresAvecValeurs()
+    {
+        return $this->hasMany(AssociationModeleParametre::class, 'id_modele')
+                    ->with('parametre', 'valeurs');
+    }
 }

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ValeurParametreModele extends Model
 {
-    //
     use HasFactory;
 
     protected $fillable = ['valeur', 'id_association_modele'];

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ParametreModele extends Model
 {
-    //
     use HasFactory;
 
     protected $fillable = ['nom_parametre'];
@@ -17,10 +16,8 @@ class ParametreModele extends Model
         return $this->hasMany(AssociationModeleParametre::class, 'id_parametre');
     }
 
-    //New by Jean-Yves 24/12/2024 à 17:45
     public function valeurs()
     {
-        return $this->hasMany(ValeurParametreModele::class, 'id_association_modele', 'id');
+        return $this->hasMany(ValeurParametreModele::class, 'id_association_modele');
     }
-
 }

@@ -78,38 +78,56 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @foreach($model->parametres->take(1) as $parameter)
-                                            <span class="badge bg-success">{{ $parameter->nom_parametre }} : {{ $parameter->valeurs->first()->valeur }}</span>
-                                            @endforeach
-                                            @if($model->parametres->count() > 1)
-                                                <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametersModal{{ $model->id }}">
-                                                    Voir plus ({{ $model->parametres->count() }})
-                                                </button>
+                                            @if($model->parametresAvecValeurs->isNotEmpty())
+                                                @foreach($model->parametresAvecValeurs->take(1) as $association)
+                                                    @if($association->parametre)
+                                                        <span class="badge bg-success">
+                                                            {{ $association->parametre->nom_parametre }} : 
+                                                            {{ $association->valeurs->first() ? $association->valeurs->first()->valeur : 'Aucune valeur' }}
+                                                        </span>
+                                                    @endif
+                                                @endforeach
 
-                                                <!-- Modal pour afficher tous les paramètres -->
-                                                <div class="modal fade" id="parametersModal{{ $model->id }}" tabindex="-1" aria-labelledby="parametersModalLabel{{ $model->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="parametersModalLabel{{ $model->id }}">Paramètres du modèle {{ ucfirst($model->nom) }}</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <ul class="list-group">
-                                                                    @foreach($model->parametres as $parameter)
-                                                                        <li class="list-group-item">{{ $parameter->nom_parametre }} : {{ $parameter->valeurs->first()->valeur }}</li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
+                                                @if($model->parametresAvecValeurs->count() > 1)
+                                                    <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametersModal{{ $model->id }}">
+                                                        Voir plus ({{ $model->parametresAvecValeurs->count() }})
+                                                    </button>
+
+                                                    <!-- Modal pour afficher tous les paramètres -->
+                                                    <div class="modal fade" id="parametersModal{{ $model->id }}" tabindex="-1" aria-labelledby="parametersModalLabel{{ $model->id }}" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="parametersModalLabel{{ $model->id }}">Paramètres du modèle {{ ucfirst($model->nom) }}</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <ul class="list-group">
+                                                                        @foreach($model->parametresAvecValeurs as $association)
+                                                                            @if($association->parametre)
+                                                                                <li class="list-group-item">
+                                                                                    {{ $association->parametre->nom_parametre }} : 
+                                                                                    {{ $association->valeurs->first() ? $association->valeurs->first()->valeur : 'Aucune valeur' }}
+                                                                                </li>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                                        <i class="bi bi-x-circle"></i> Fermer
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <!-- Fin de la modal -->
+                                                    <!-- Fin de la modal -->
+                                                @endif
+                                            @else
+                                                <span class="text-muted">Aucun paramètre associé</span>
                                             @endif
                                         </td>
+
                                         <td>{{ \Carbon\Carbon::parse($model->created_at)->format('d M Y') }}</td>
                                         <td>
                                             <div class="d-flex">
