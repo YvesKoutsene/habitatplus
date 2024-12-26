@@ -49,7 +49,7 @@
                                             @if(strlen($categorie->description) > 8)
                                                 {{ ucfirst(substr($categorie->description, 0, 8)) }}...
                                                 <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#descriptionModal{{ $categorie->id }}"> <!--class="btn btn-link"-->
-                                                    Lire la suite
+                                                    Lire suite
                                                 </button>
 
                                                 <!-- Modal -->
@@ -84,7 +84,7 @@
 
                                                 <!-- Modal pour afficher tous les paramètres -->
                                                 <div class="modal fade" id="parametresModal{{ $categorie->id }}" tabindex="-1" aria-labelledby="parametresModalLabel{{ $categorie->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg">
+                                                    <div class="modal-dialog"> <!--modal-lg-->
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="parametresModalLabel{{ $categorie->id }}">Paramètres de {{ ucfirst($categorie->titre) }}</h5>

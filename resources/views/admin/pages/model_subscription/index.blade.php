@@ -53,7 +53,7 @@
                                             @if(strlen($model->description) > 8)
                                                 {{ ucfirst(substr($model->description, 0, 8)) }}...
                                                 <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#descriptionModal{{ $model->id }}">
-                                                    Lire la suite
+                                                    Lire suite
                                                 </button>
 
                                                 <!-- Modal -->
@@ -95,7 +95,7 @@
 
                                                     <!-- Modal pour afficher tous les paramètres -->
                                                     <div class="modal fade" id="parametersModal{{ $model->id }}" tabindex="-1" aria-labelledby="parametersModalLabel{{ $model->id }}" aria-hidden="true">
-                                                        <div class="modal-dialog modal-lg">
+                                                        <div class="modal-dialog">  <!--modal-lg-->
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="parametersModalLabel{{ $model->id }}">Paramètres du modèle {{ ucfirst($model->nom) }}</h5>
