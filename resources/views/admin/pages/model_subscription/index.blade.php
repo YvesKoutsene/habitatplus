@@ -149,6 +149,7 @@
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
+                                                                <i class="bi bi-exclamation-triangle me-1"></i>
                                                                 <h5 class="modal-title" id="deleteConfirmationLabel{{ $model->id }}">Confirmation de Suppression</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
