@@ -9,7 +9,7 @@ use Carbon\Carbon;
     <h1>Utilisateurs</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bi bi-house-door"></i></a></li>
             <li class="breadcrumb-item">Utilisateurs</li>
             <li class="breadcrumb-item active">Liste Utilisateurs</li>
         </ol>
