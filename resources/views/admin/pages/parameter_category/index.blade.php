@@ -153,6 +153,18 @@
     </div>
 </section>
 
+<!-- Script pour activer la modale -->
+@if(request()->get('showModal') === 'create')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var myModal = new bootstrap.Modal(document.getElementById('createParameterModal'), {
+                keyboard: false
+            });
+            myModal.show();
+        });
+    </script>
+@endif
+
 <!-- Modal pour ajouter un paramètre -->
 <div class="modal fade" id="createParameterModal" tabindex="-1" aria-labelledby="createParameterModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -177,6 +189,6 @@
         </div>
     </div>
 </div>
-<!-- Fin du modal -->
+
 
 @endsection

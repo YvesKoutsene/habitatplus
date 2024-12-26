@@ -34,13 +34,11 @@
                     <i class="bi bi-circle"></i><span>Paramètre Categorie</span>
                 </a>
             </li>
-            <!--
             <li>
-                <a href="{{ route ('parameter_category.create') }}">
+                <a href="{{ route('parameter_category.index', ['showModal' => 'create']) }}">
                     <i class="bi bi-circle"></i><span>Ajouter Paramètre</span>
                 </a>
             </li>
-            -->
         </ul>
     </li><!-- End Components Nav -->
 
@@ -64,13 +62,11 @@
                     <i class="bi bi-circle"></i><span>Paramètre Modèle</span>
                 </a>
             </li>
-            <!--
             <li>
-                <a href="#">
+                <a href="{{ route('parameter_model.index', ['showModal' => 'create']) }}">
                     <i class="bi bi-circle"></i><span>Ajouter Paramètre</span>
                 </a>
             </li>
-            -->
         </ul>
     </li><!-- End Forms Nav -->
 
@@ -98,16 +94,6 @@
         </a>
         <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a href="{{ route('roles.index') }}">
-                    <i class="bi bi-circle"></i><span>Liste Rôle</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('roles.create') }}">
-                    <i class="bi bi-circle"></i><span>Créer Rôle</span>
-                </a>
-            </li>
-            <li>
                 <a href="{{ route('users.index') }}">
                     <i class="bi bi-circle"></i><span>Liste Utilisateur</span>
                 </a>
@@ -115,6 +101,16 @@
             <li>
                 <a href="{{ route('users.create') }}">
                     <i class="bi bi-circle"></i><span>Ajouter Utilisateur</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('roles.index') }}">
+                    <i class="bi bi-circle"></i><span>Liste Rôle</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('roles.create') }}">
+                    <i class="bi bi-circle"></i><span>Créer Rôle</span>
                 </a>
             </li>
         </ul>
