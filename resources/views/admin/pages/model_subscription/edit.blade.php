@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="pagetitle">
-    <h1>Modifier Modèle</h1>
+    <h1>Modèle</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bi bi-house-door"></i></a></li>
@@ -94,14 +94,14 @@
                         <!-- Paramètres de Catégorie -->
                         <div class="mb-4">
                             <div id="parametres-container">
-                                @foreach($modele->parametres as $index => $parametre)
+                                @foreach($modele->parametresAvecValeurs as $index => $association)
                                     <div class="row g-3 mb-2 parametre-item">
                                         <div class="col-md-6">
                                             <label for="parametres[{{ $index }}][id]" class="form-label">Paramètre<span class="text-danger">*</span></label>
                                             <select name="parametres[{{ $index }}][id]" class="form-select" required>
                                                 <option value="">-- Sélectionner un paramètre --</option>
                                                 @foreach($parametres as $p)
-                                                    <option value="{{ $p->id }}" {{ $p->id == $parametre->id ? 'selected' : '' }}>
+                                                    <option value="{{ $p->id }}" {{ $p->id == $association->parametre->id ? 'selected' : '' }}>
                                                         {{ $p->nom_parametre }}
                                                     </option>
                                                 @endforeach
@@ -109,7 +109,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="parametres[{{ $index }}][valeur]" class="form-label">Valeur<span class="text-danger">*</span></label>
-                                            <input type="number" name="parametres[{{ $index }}][valeur]" class="form-control" min="0" required placeholder="Valeur du paramètre" oninput="validateInput02()" value="{{ old('parametres.' . $index . '.valeur', $parametre->valeur) }}">
+                                            <input type="number" name="parametres[{{ $index }}][valeur]" class="form-control" min="0" required placeholder="Valeur du paramètre" oninput="validateInput02()" value="{{ old('parametres.' . $index . '.valeur', $association->valeurs->first()->valeur ?? '') }}">
                                         </div>
                                         <div class="col-md-2 d-flex align-items-end">
                                             <button type="button" class="btn btn-danger remove-parametre">Supprimer</button>
@@ -125,12 +125,13 @@
                                 <i class="bi bi-plus-circle"></i> Ajouter paramètre
                             </button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle"></i> Mettre à jour
+                                <i class="bi bi-check2-circle"></i> Mettre à jour
                             </button>
                             <a href="{{ route('model_subscription.index') }}" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left"></i> Retour
                             </a>
                         </div>
+
                     </form>
                 </div>
             </div>
@@ -157,7 +158,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        let parametreIndex = {{ count($modele->parametres) }};
+        let parametreIndex = {{ count($modele->parametresAvecValeurs) }};
 
         document.getElementById('add-parametre').addEventListener('click', function () {
             if (!areAllFieldsFilled()) {

@@ -69,7 +69,6 @@ class ModelSubscriptionController extends Controller
             'parametres.required' => 'Veuillez ajouter au moins un paramètre'
         ]);
 
-        // Vérification des doublons dans les paramètres
         $parametreIds = collect($validated['parametres'])->pluck('id');
         if ($parametreIds->count() !== $parametreIds->unique()->count()) {
             return redirect()->back()->withErrors(['parametres' => 'Vous ne pouvez pas ajouter un paramètre deux fois']);
@@ -165,7 +164,6 @@ class ModelSubscriptionController extends Controller
 
         public function update(Request $request, $id)
     {
-        // Validation des données
         $validated = $request->validate([
             'nom' => 'required|string|max:255|unique:modele_abonnements,nom,' . $id,
             'description' => 'nullable|string',
@@ -179,16 +177,13 @@ class ModelSubscriptionController extends Controller
             'parametres.required' => 'Veuillez ajouter au moins un paramètre'
         ]);
 
-        // Vérification des doublons dans les paramètres
         $parametreIds = collect($validated['parametres'])->pluck('id');
         if ($parametreIds->count() !== $parametreIds->unique()->count()) {
             return redirect()->back()->withErrors(['parametres' => 'Vous ne pouvez pas ajouter un paramètre deux fois.']);
         }
 
-        // Récupération du modèle d'abonnement
         $modele = ModeleAbonnement::findOrFail($id);
 
-        // Mise à jour des attributs du modèle
         $modele->update([
             'nom' => $validated['nom'],
             'description' => $validated['description'],
@@ -196,13 +191,10 @@ class ModelSubscriptionController extends Controller
             'duree' => $validated['duree'],
         ]);
 
-        // Récupération des paramètres actuels
         $parametresExistants = $modele->parametres()->with('valeurs')->get();
 
-        // Création d'un tableau pour les IDs des paramètres existants
         $idsExistants = $parametresExistants->pluck('id')->toArray();
 
-        // Mise à jour ou création des associations
         foreach ($validated['parametres'] as $parametre) {
             if (in_array($parametre['id'], $idsExistants)) {
                 // Si le paramètre existe déjà, on met à jour la valeur
@@ -225,7 +217,6 @@ class ModelSubscriptionController extends Controller
             }
         }
 
-        // Optionnel : Suppression des paramètres non présents dans la nouvelle liste
         $nouveauxIds = collect($validated['parametres'])->pluck('id')->toArray();
         foreach ($parametresExistants as $parametreExist) {
             if (!in_array($parametreExist->id, $nouveauxIds)) {
@@ -234,7 +225,6 @@ class ModelSubscriptionController extends Controller
             }
         }
 
-        // Redirection avec message de succès
         return redirect()->route('model_subscription.index')->with('success', "Modèle d'abonnement {$modele->nom} mis à jour avec succès.");
     }
 
