@@ -168,15 +168,15 @@
 
 <style>
     .sidebar-nav .nav-item .nav-link.active {
-        background-color: #007bff; /* Couleur de fond pour l'élément actif */
-        color: white; /* Couleur du texte pour l'élément actif */
+        background-color: #007bff;
+        color: white; 
     }
 
     .sidebar-nav .nav-item .nav-link.active:hover {
-        background-color: #0056b3; /* Couleur de fond au survol pour l'élément actif */
+        background-color: #0056b3;
     }
 
     .sidebar-nav .nav-item .nav-content.show {
-        display: block; /* Assurez-vous que le sous-menu est affiché */
+        display: block; 
     }
 </style>
