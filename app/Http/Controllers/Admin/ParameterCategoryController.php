@@ -13,13 +13,44 @@ class ParameterCategoryController extends Controller
    /**
      * Display a listing of the resource.
      */
-    public function index()
+    /*public function index()
     {
-        //$parametres = ParametreCategorie::orderBy('created_at', 'asc')->get();
         $parametres = ParametreCategorie::orderBy('created_at', 'asc')->paginate(10);
         return view('admin.pages.parameter_category.index', compact('parametres'));
-    }
+    }*/
 
+    /*public function index(Request $request)
+    {
+        $search = $request->input('search', '');
+
+        $query = ParametreCategorie::query();
+
+        if ($search) {
+            $query->whereRaw('LOWER(nom_parametre) LIKE ?', ['%' . strtolower($search) . '%']);
+        }
+
+        $parametres = $query->orderBy('created_at', 'asc')->paginate(10);
+
+        return view('admin.pages.parameter_category.index', compact('parametres', 'search'));
+    }*/
+
+    public function index(Request $request)
+    {
+        $search = $request->input('search', '');
+        $perPage = $request->input('perPage', 10); // Valeur par défaut à 10
+
+        $query = ParametreCategorie::query();
+
+        if ($search) {
+            $query->whereRaw('LOWER(nom_parametre) LIKE ?', ['%' . strtolower($search) . '%']);
+        }
+
+        // Pagination dynamique
+        $parametres = $query->orderBy('created_at', 'asc')->paginate($perPage);
+
+        return view('admin.pages.parameter_category.index', compact('parametres', 'search', 'perPage'));
+    }
+    
 
     /**
      * Show the form for creating a new resource.
