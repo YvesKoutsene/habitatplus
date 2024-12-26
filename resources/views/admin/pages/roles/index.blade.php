@@ -50,12 +50,12 @@ use Carbon\Carbon;
                                     <td>{{ ucfirst($role->name) }}</td>
                                     <td>
                                         @if($role->permissions->isNotEmpty())
-                                            @foreach($role->permissions->take(3) as $permission)
+                                            @foreach($role->permissions->take(2) as $permission)
                                                 <span class="badge bg-success">{{ ucfirst($permission->name) }}</span>
                                             @endforeach
-                                            @if($role->permissions->count() > 3)
+                                            @if($role->permissions->count() >3)
                                                 <button class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#permissionsModal{{ $role->id }}"> <!--class="btn btn-link"-->
-                                                    Voir plus ({{ $role->permissions->count() - 3 }})
+                                                    Voir plus ({{ $role->permissions->count() - 2 }})
                                                 </button>
                                             @endif
                                         @else

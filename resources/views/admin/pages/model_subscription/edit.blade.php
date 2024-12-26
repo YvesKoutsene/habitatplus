@@ -51,7 +51,7 @@
                                     placeholder="Prix du modèle d'abonnement" 
                                     required min="0" 
                                     oninput="validateInput()" 
-                                    value="{{ old('prix', $modele->prix) }}">
+                                    value="{{ old('prix', number_format($modele->prix, 0, ',', ' ')) }}">
                                 <span class="input-group-text">.00</span>
                                 <div class="invalid-feedback">
                                     Veuillez fournir un prix pour le modèle.

@@ -37,7 +37,7 @@
                                     <th>Prix (FCFA)</th>
                                     <th>Durée</th>
                                     <th>Description</th>
-                                    <th>Paramètres associés</th>
+                                    <th>Paramètres/valeurs</th>
                                     <th>Date création</th>
                                     <th>Actions</th>
                                 </tr>
@@ -82,7 +82,9 @@
                                                 @foreach($model->parametresAvecValeurs->take(1) as $association)
                                                     @if($association->parametre)
                                                         <span class="badge bg-success">
-                                                            {{ $association->parametre->nom_parametre }} : 
+                                                            {{ $association->parametre->nom_parametre }} 
+                                                        </span> :
+                                                        <span class="badge bg-warning">
                                                             {{ $association->valeurs->first() ? $association->valeurs->first()->valeur : 'Aucune valeur' }}
                                                         </span>
                                                     @endif
@@ -105,9 +107,11 @@
                                                                     <ul class="list-group">
                                                                         @foreach($model->parametresAvecValeurs as $association)
                                                                             @if($association->parametre)
-                                                                                <li class="list-group-item">
-                                                                                    {{ $association->parametre->nom_parametre }} : 
+                                                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                    {{ $association->parametre->nom_parametre }} 
+                                                                                    <span class="badge bg-primary rounded-pill">
                                                                                     {{ $association->valeurs->first() ? $association->valeurs->first()->valeur : 'Aucune valeur' }}
+                                                                                    </span>
                                                                                 </li>
                                                                             @endif
                                                                         @endforeach
@@ -175,7 +179,7 @@
                                     <th>Prix (FCFA)</th>
                                     <th>Durée</th>
                                     <th>Description</th>
-                                    <th>Paramètres associés</th>
+                                    <th>Paramètres/valeurs</th>
                                     <th>Date création</th>
                                     <th>Actions</th>
                                 </tr>
