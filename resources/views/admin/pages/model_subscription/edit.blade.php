@@ -118,7 +118,6 @@
                                 @endforeach
                             </div>
                         </div>
-
                         <!-- Boutons d'Action -->
                         <div class="d-flex justify-content-center gap-3">
                             <button type="button" id="add-parametre" class="btn btn-outline-secondary">
@@ -131,7 +130,6 @@
                                 <i class="bi bi-arrow-left"></i> Retour
                             </a>
                         </div>
-
                     </form>
                 </div>
             </div>

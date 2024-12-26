@@ -16,17 +16,6 @@ class ModelSubscriptionController extends Controller
     /**
      * Display a listing of the resource.
      */
- 
-    /*public function index()
-    {
-        $modeles = ModeleAbonnement::with([
-            'parametres' => function($query) {
-                $query->with('valeurs');
-            }
-        ])->paginate(10);
-
-        return view('admin.pages.model_subscription.index', compact('modeles'));
-    }*/
 
     public function index()
     {
@@ -137,6 +126,11 @@ class ModelSubscriptionController extends Controller
             'parametres.required' => 'Veuillez ajouter au moins un paramètre'
         ]);
 
+        $parametreIds = collect($validated['parametres'])->pluck('id');
+        if ($parametreIds->count() !== $parametreIds->unique()->count()) {
+            return redirect()->back()->withErrors(['parametres' => 'Vous ne pouvez pas ajouter un paramètre deux fois.']);
+        }
+
         $modele = ModeleAbonnement::findOrFail($id);
 
         $modele->update([
@@ -162,7 +156,7 @@ class ModelSubscriptionController extends Controller
         return redirect()->route('model_subscription.index')->with('success', "Modèle d'abonnement {$modele->nom}  mis à jour avec succès.");
     }*/
 
-        public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $validated = $request->validate([
             'nom' => 'required|string|max:255|unique:modele_abonnements,nom,' . $id,
