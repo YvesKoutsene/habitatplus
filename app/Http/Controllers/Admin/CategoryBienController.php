@@ -16,16 +16,29 @@ class CategoryBienController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    
+    public function index(Request $request)
     {
+        $search = $request->input('search', '');
+        $perPage = $request->input('perPage', 10); 
 
-        $categories = CategorieBien::with(['associations.parametre'])
-            ->orderBy('created_at', 'asc')
-            ->paginate(10);
-    
-        return view('admin.pages.category_bien.index', compact('categories'));
+        $query = CategorieBien::with(['associations.parametre'])
+            ->orderBy('created_at', 'asc');
+
+        // Gestion de la recherche
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->whereRaw('LOWER(titre) LIKE ?', ['%' . strtolower($search) . '%']) 
+                ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+        }
+
+        // Pagination dynamique
+        $categories = $query->paginate($perPage);
+
+        return view('admin.pages.category_bien.index', compact('categories', 'search', 'perPage'));
     }
-    
+
 
     /**
      * Show the form for creating a new resource.

@@ -19,21 +19,6 @@ class ParameterCategoryController extends Controller
         return view('admin.pages.parameter_category.index', compact('parametres'));
     }*/
 
-    /*public function index(Request $request)
-    {
-        $search = $request->input('search', '');
-
-        $query = ParametreCategorie::query();
-
-        if ($search) {
-            $query->whereRaw('LOWER(nom_parametre) LIKE ?', ['%' . strtolower($search) . '%']);
-        }
-
-        $parametres = $query->orderBy('created_at', 'asc')->paginate(10);
-
-        return view('admin.pages.parameter_category.index', compact('parametres', 'search'));
-    }*/
-
     public function index(Request $request)
     {
         $search = $request->input('search', '');
@@ -50,7 +35,7 @@ class ParameterCategoryController extends Controller
 
         return view('admin.pages.parameter_category.index', compact('parametres', 'search', 'perPage'));
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
