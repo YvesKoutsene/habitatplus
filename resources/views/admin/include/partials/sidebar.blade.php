@@ -8,17 +8,17 @@
     </li><!-- End Dashboard Nav -->
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href=#"">
+        <a class="nav-link collapsed" href="#">
             <i class="bi bi-megaphone"></i>
             <span>Annonce</span>
         </a>
     </li><!-- End Profile Page Nav -->
 
     <li class="nav-item">
-        <a class="nav-link collapsed {{ request()->is('category_bien*') ? 'active' : '' }}" data-bs-target="#components-nav" data-bs-toggle="collapse" href=#"">
+        <a class="nav-link collapsed {{ request()->is('category_bien*') || request()->is('parameter_category*') ? 'active' : '' }}" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-tag"></i><span>Categorie Bien</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="components-nav" class="nav-content collapse {{ request()->is('category_bien*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+        <ul id="components-nav" class="nav-content collapse {{ request()->is('category_bien*') || request()->is('parameter_category*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
             <li>
                 <a class="{{ request()->routeIs('category_bien.index') ? 'active' : '' }}" href="{{ route('category_bien.index') }}">
                     <i class="bi bi-circle"></i><span>Liste Categorie</span>
@@ -35,7 +35,7 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->routeIs('parameter_category.index', ['showModal' => 'create']) ? 'active' : '' }}" href="{{ route('parameter_category.index', ['showModal' => 'create']) }}">
+                <a href="{{ route('parameter_category.index', ['showModal' => 'create']) }}">
                     <i class="bi bi-circle"></i><span>Ajouter Paramètre</span>
                 </a>
             </li>
@@ -43,10 +43,10 @@
     </li><!-- End Components Nav -->
 
     <li class="nav-item">
-        <a class="nav-link collapsed {{ request()->is('model_subscription*') ? 'active' : '' }}" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed {{ request()->is('model_subscription*') || request()->is('parameter_model*') ? 'active' : '' }}" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-credit-card-2-back"></i><span>Modèle Abonnement</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="forms-nav" class="nav-content collapse {{ request()->is('model_subscription*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+        <ul id="forms-nav" class="nav-content collapse {{ request()->is('model_subscription*') || request()->is('parameter_model*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
             <li>
                 <a class="{{ request()->routeIs('model_subscription.index') ? 'active' : '' }}" href="{{ route('model_subscription.index') }}">
                     <i class="bi bi-circle"></i><span>Liste Modèle</span>
@@ -63,7 +63,7 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->routeIs('parameter_model.index', ['showModal' => 'create']) ? 'active' : '' }}" href="{{ route('parameter_model.index', ['showModal' => 'create']) }}">
+                <a href="{{ route('parameter_model.index', ['showModal' => 'create']) }}">
                     <i class="bi bi-circle"></i><span>Ajouter Paramètre</span>
                 </a>
             </li>
@@ -89,10 +89,10 @@
     </li><!-- End Tables Nav -->
 
     <li class="nav-item">
-        <a class="nav-link collapsed {{ request()->is('users*') || request()->routeIs('users.index') || request()->routeIs('users.create') ? 'active' : '' }}" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed {{ request()->is('users*') || request()->routeIs('users.index') || request()->routeIs('users.create') || request()->routeIs('roles.index') || request()->routeIs('roles.create') ? 'active' : '' }}" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-people"></i><span>Utilisateur</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="icons-nav" class="nav-content collapse {{ request()->is('users*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+        <ul id="icons-nav" class="nav-content collapse {{ request()->is('users*') || request()->routeIs('roles*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
             <li>
                 <a class="{{ request()->routeIs('users.index') ? 'active' : '' }}" href="{{ route('users.index') }}">
                     <i class="bi bi-circle"></i><span>Liste Utilisateur</span>
@@ -117,23 +117,23 @@
     </li><!-- End Icons Nav -->
 
     <li class="nav-item">
-        <a class="nav-link collapsed"  href="#">
+        <a class="nav-link collapsed" href="#">
             <i class="bi bi-chat-quote"></i>
             <span>Ticket Ouvert</span>
         </a>
     </li>
 
     <li class="nav-item">
-        <a class="nav-link collapsed"  href="#">
+        <a class="nav-link collapsed" href="#">
             <i class="bi bi-flag"></i>
             <span>Rapport</span>
         </a>
     </li>
 
     <li class="nav-heading">Annexes</li>
-
+    
     <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route('profile.edit') }}">
+        <a class="nav-link collapsed {{ request()->routeIs('profile.edit') ? 'active' : '' }}" href="{{ route('profile.edit') }}">
             <i class="bi bi-person"></i>
             <span>Profil</span>
         </a>
@@ -147,7 +147,7 @@
     </li><!-- End F.A.Q Page Nav -->
 
     <li class="nav-item">
-        <a class="nav-link collapsed"  href="#">
+        <a class="nav-link collapsed" href="#">
             <i class="bi bi-question-circle"></i>
             <span>Aide?</span>
         </a>
@@ -165,7 +165,6 @@
 
 </ul>
 
-
 <style>
     .sidebar-nav .nav-item .nav-link.active {
         background-color: #007bff; /* Couleur de fond pour l'élément actif */
@@ -179,5 +178,4 @@
     .sidebar-nav .nav-item .nav-content.show {
         display: block; /* Assurez-vous que le sous-menu est affiché */
     }
-
 </style>
