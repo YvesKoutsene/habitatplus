@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
 
     //Pour les modèles d'abonnement
     Route::resource('model_subscription', ModelSubscriptionController::class);
+    
 
 
 
