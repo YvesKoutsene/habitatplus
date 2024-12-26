@@ -1,7 +1,8 @@
 <ul class="sidebar-nav" id="sidebar-nav">
 
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+        <!-- <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}"> -->
+            <a class="nav-link collapsed {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
             <i class="bi bi-grid"></i>
             <span>Tableau de bord</span>
         </a>
@@ -131,7 +132,7 @@
     </li>
 
     <li class="nav-heading">Annexes</li>
-    
+
     <li class="nav-item">
         <a class="nav-link collapsed {{ request()->routeIs('profile.edit') ? 'active' : '' }}" href="{{ route('profile.edit') }}">
             <i class="bi bi-person"></i>
