@@ -127,6 +127,9 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-circle"></i> Mettre à jour
                             </button>
+                            <a href="{{ route('model_subscription.index') }}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Retour
+                            </a>
                         </div>
                     </form>
                 </div>
