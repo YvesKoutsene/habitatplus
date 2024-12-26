@@ -12,11 +12,22 @@ class ParameterModelController extends Controller
 {
     //
 
-    public function index()
+    public function index(Request $request)
     {
-        $parametres = ParametreModele::orderBy('created_at', 'asc')->paginate(10);
-        return view('admin.pages.parameter_model.index', compact('parametres'));
+        $search = $request->input('search', '');
+        $perPage = $request->input('perPage', 10); 
+
+        $query = ParametreModele::query();
+
+        if ($search) {
+            $query->whereRaw('LOWER(nom_parametre) LIKE ?', ['%' . strtolower($search) . '%']);
+        }
+
+        $parametres = $query->orderBy('created_at', 'asc')->paginate($perPage);
+
+        return view('admin.pages.parameter_model.index', compact('parametres', 'search', 'perPage'));
     }
+
 
     public function store(Request $request)
     {

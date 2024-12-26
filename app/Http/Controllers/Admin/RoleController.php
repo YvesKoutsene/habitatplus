@@ -14,12 +14,22 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    
+    public function index(Request $request)
     {
-        $roles = Role::with('permissions')->orderBy('created_at', 'asc')->paginate(10);
-        $permissions = Permission::all();
-        return view('admin.pages.roles.index', compact('roles', 'permissions'));
+        $search = $request->input('search', '');
+        $perPage = $request->input('perPage', 10); // Valeur par défaut à 10
 
+        $query = Role::with('permissions');
+
+        if ($search) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+        }
+
+        $roles = $query->orderBy('created_at', 'asc')->paginate($perPage);
+        $permissions = Permission::all();
+
+        return view('admin.pages.roles.index', compact('roles', 'search', 'perPage', 'permissions'));
     }
 
     /**

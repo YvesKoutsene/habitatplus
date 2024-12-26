@@ -17,7 +17,7 @@ class ModelSubscriptionController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index()
+    /*public function index()
     {
         // Charger les modèles avec leurs paramètres et leurs valeurs associées
         $modeles = ModeleAbonnement::with(['parametres' => function ($query) {
@@ -29,7 +29,34 @@ class ModelSubscriptionController extends Controller
             ->paginate(10);
     
         return view('admin.pages.model_subscription.index', compact('modeles'));
-    }   
+    } */  
+
+    public function index(Request $request)
+    {
+        $search = $request->input('search', '');
+        $perPage = $request->input('perPage', 10); 
+
+        $query = ModeleAbonnement::with(['parametres' => function ($query) {
+            $query->with(['valeurs' => function ($query) {
+                $query->select('valeur', 'id_association_modele');
+            }]);
+        }])
+            ->orderBy('created_at', 'asc');
+
+         // Gestion de la recherche
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->whereRaw('LOWER(nom) LIKE ?', ['%' . strtolower($search) . '%']) // Remplacez par le nom réel de votre colonne
+                ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%'])
+                ->orWhereRaw('LOWER(duree) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+        }
+
+        $modeles = $query->paginate($perPage);
+
+        return view('admin.pages.model_subscription.index', compact('modeles', 'search', 'perPage'));
+    }
+
 
     /**
      * Show the form for creating a new resource.

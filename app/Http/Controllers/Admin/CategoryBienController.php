@@ -25,7 +25,6 @@ class CategoryBienController extends Controller
         $query = CategorieBien::with(['associations.parametre'])
             ->orderBy('created_at', 'asc');
 
-        // Gestion de la recherche
         if ($search) {
             $query->where(function($q) use ($search) {
                 $q->whereRaw('LOWER(titre) LIKE ?', ['%' . strtolower($search) . '%']) 
@@ -33,7 +32,6 @@ class CategoryBienController extends Controller
             });
         }
 
-        // Pagination dynamique
         $categories = $query->paginate($perPage);
 
         return view('admin.pages.category_bien.index', compact('categories', 'search', 'perPage'));

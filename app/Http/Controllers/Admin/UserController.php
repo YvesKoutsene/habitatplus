@@ -21,12 +21,27 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //$users = User::with('roles')->orderBy('created_at', 'asc')->get(); 
-        $users = User::with('roles')->orderBy('created_at', 'asc')->paginate(10); 
 
-        return view('admin.pages.users.index', compact('users'));
+    public function index(Request $request)
+    {
+        $search = $request->input('search', '');
+        $perPage = $request->input('perPage', 10); 
+
+        $query = User::with('roles')->orderBy('created_at', 'asc');
+
+         // Gestion de la recherche
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']) // Remplacez par le nom réel de votre colonne
+                ->orWhereRaw('LOWER(email) LIKE ?', ['%' . strtolower($search) . '%'])
+                ->orWhereRaw('LOWER(pays) LIKE ?', ['%' . strtolower($search) . '%'])
+                ->orWhereRaw('LOWER(numero) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+        }
+
+        $users = $query->paginate($perPage);
+
+        return view('admin.pages.users.index', compact('users', 'search', 'perPage'));
     }
 
 
