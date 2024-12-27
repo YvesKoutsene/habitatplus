@@ -56,15 +56,18 @@
 
                         <div class="mb-4">
                             <label for="duree_modele" class="form-label">Duree<span class="text-danger">*</span></label>
-                            <input 
-                                type="text" 
-                                name="duree" 
-                                id="duree_modele" 
-                                class="form-control" 
-                                placeholder="Durée du modèle d'abonnement (Ex : 02 Mois)" 
-                                required>
-                            <div class="invalid-feedback">
-                                Veuillez fournir une durée pour le modèle.
+                            <div class="input-group mb-3">
+                                <input 
+                                    type="number" 
+                                    name="duree" 
+                                    id="valeur03" 
+                                    class="form-control" 
+                                    placeholder="Durée du modèle d'abonnement" 
+                                    required min="0" oninput="validateInput04()">
+                                    <span class="input-group-text">Mois</span>
+                                <div class="invalid-feedback">
+                                    Veuillez fournir une durée pour le modèle.
+                                </div>
                             </div>
                         </div>
 
@@ -237,6 +240,11 @@
 
     function validateInput03() {
         const input = document.getElementById('valeur02');
+        input.value = input.value.replace(/[^0-9]/g, '');
+    }
+
+    function validateInput04() {
+        const input = document.getElementById('valeur03');
         input.value = input.value.replace(/[^0-9]/g, '');
     }
 

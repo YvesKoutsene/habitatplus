@@ -10,15 +10,15 @@ class ValeurAbonnement extends Model
     //
     use HasFactory;
 
-    protected $fillable = ['valeur', 'statut', 'id_abonnement', 'id_valeur'];
+    protected $fillable = ['valeur', 'statut', 'id_abonnement', 'id_association_modele'];
 
     public function abonnement()
     {
         return $this->belongsTo(Abonnement::class, 'id_abonnement');
     }
 
-    public function valeurParametre()
+    public function association()
     {
-        return $this->belongsTo(ValeurParametreModele::class, 'id_valeur');
+        return $this->belongsTo(AssociationModeleParametre::class, 'id_association_modele');
     }
 }

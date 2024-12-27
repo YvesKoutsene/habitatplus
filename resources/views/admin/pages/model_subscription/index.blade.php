@@ -52,7 +52,7 @@
                                     <th>#</th>
                                     <th>Nom</th>
                                     <th>Prix (FCFA)</th>
-                                    <th>Durée</th>
+                                    <th>Durée (Mois)</th>
                                     <th>Description</th>
                                     <th>Paramètres/valeurs</th>
                                     <th>Date création</th>
@@ -95,8 +95,8 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($model->parametresAvecValeurs->isNotEmpty())
-                                                @foreach($model->parametresAvecValeurs->take(1) as $association)
+                                            @if($model->parametres->isNotEmpty())
+                                                @foreach($model->parametres->take(1) as $association)
                                                     @if($association->parametre)
                                                         <span class="badge bg-success">
                                                             {{ $association->parametre->nom_parametre }} 
@@ -107,9 +107,9 @@
                                                     @endif
                                                 @endforeach
 
-                                                @if($model->parametresAvecValeurs->count() > 1)
+                                                @if($model->parametres->count() > 1)
                                                     <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametersModal{{ $model->id }}">
-                                                        Voir plus ({{ $model->parametresAvecValeurs->count() }})
+                                                        Voir plus ({{ $model->parametres->count() }})
                                                     </button>
 
                                                     <!-- Modal pour afficher tous les paramètres -->
@@ -122,7 +122,7 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <ul class="list-group">
-                                                                        @foreach($model->parametresAvecValeurs as $association)
+                                                                        @foreach($model->parametres as $association)
                                                                             @if($association->parametre)
                                                                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                                                                     {{ $association->parametre->nom_parametre }} 
@@ -195,7 +195,7 @@
                                     <th>#</th>
                                     <th>Nom</th>
                                     <th>Prix (FCFA)</th>
-                                    <th>Durée</th>
+                                    <th>Durée (Mois)</th>
                                     <th>Description</th>
                                     <th>Paramètres/valeurs</th>
                                     <th>Date création</th>

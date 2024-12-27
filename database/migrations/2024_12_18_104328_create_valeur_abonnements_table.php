@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('valeur');
             $table->string('statut');
             $table->foreignId('id_abonnement')->constrained('abonnements')->onDelete('cascade');
-            $table->foreignId('id_valeur')->constrained('valeur_parametre_modeles')->onDelete('cascade');
+            $table->foreignId('id_association_modele')->constrained('association_modele_parametres')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -18,6 +18,6 @@ class ParametreModele extends Model
 
     public function valeurs()
     {
-        return $this->hasMany(ValeurParametreModele::class, 'id_association_modele');
+        return $this->hasMany(AssociationModeleParametre::class, 'id_modele');
     }
 }

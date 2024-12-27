@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nom');
             $table->text('description');
             $table->decimal('prix', 10, 2);
-            $table->string('duree');
+            $table->integer('duree');
             $table->timestamps();
         });
     }

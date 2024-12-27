@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('association_modele_parametres', function (Blueprint $table) {
             $table->id();
+            $table->integer('valeur');
             $table->foreignId('id_modele')->constrained('modele_abonnements')->onDelete('cascade');
             $table->foreignId('id_parametre')->constrained('parametre_modeles')->onDelete('cascade');
             $table->timestamps();

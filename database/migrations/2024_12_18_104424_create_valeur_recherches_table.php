@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('valeur_recherches', function (Blueprint $table) {
             $table->id();
-            $table->string('valeur');
+            $table->integer('valeur');
             $table->foreignId('id_alerte')->constrained('alerte_recherches')->onDelete('cascade');
             $table->foreignId('id_association_categorie')->constrained('association_categorie_parametres')->onDelete('cascade');
             $table->timestamps();

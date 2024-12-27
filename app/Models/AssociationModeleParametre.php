@@ -9,7 +9,7 @@ class AssociationModeleParametre extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id_modele', 'id_parametre'];
+    protected $fillable = ['id_modele', 'id_parametre', 'valeur'];
 
     public function modele()
     {
@@ -21,8 +21,4 @@ class AssociationModeleParametre extends Model
         return $this->belongsTo(ParametreModele::class, 'id_parametre');
     }
 
-    public function valeurs()
-    {
-        return $this->hasMany(ValeurParametreModele::class, 'id_association_modele');
-    }
 }

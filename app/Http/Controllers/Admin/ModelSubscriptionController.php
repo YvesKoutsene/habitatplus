@@ -4,51 +4,28 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Models\AssociationModeleParametre;
 use App\Models\ParametreModele;
 use App\Models\ModeleAbonnement;
-use App\Models\ValeurParametreModele;
-
 
 class ModelSubscriptionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-
-    /*public function index()
-    {
-        // Charger les modèles avec leurs paramètres et leurs valeurs associées
-        $modeles = ModeleAbonnement::with(['parametres' => function ($query) {
-            $query->with(['valeurs' => function ($query) {
-                $query->select('valeur', 'id_association_modele');
-            }]);
-        }])
-            ->orderBy('created_at', 'asc')
-            ->paginate(10);
-    
-        return view('admin.pages.model_subscription.index', compact('modeles'));
-    } */  
-
     public function index(Request $request)
     {
         $search = $request->input('search', '');
-        $perPage = $request->input('perPage', 10); 
+        $perPage = $request->input('perPage', 10);
 
-        $query = ModeleAbonnement::with(['parametres' => function ($query) {
-            $query->with(['valeurs' => function ($query) {
-                $query->select('valeur', 'id_association_modele');
-            }]);
-        }])
+        $query = ModeleAbonnement::with('parametres')
             ->orderBy('created_at', 'asc');
 
-         // Gestion de la recherche
+        // Gestion de la recherche
         if ($search) {
-            $query->where(function($q) use ($search) {
-                $q->whereRaw('LOWER(nom) LIKE ?', ['%' . strtolower($search) . '%']) // Remplacez par le nom réel de votre colonne
-                ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%'])
-                ->orWhereRaw('LOWER(duree) LIKE ?', ['%' . strtolower($search) . '%']);
+            $query->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(nom) LIKE ?', ['%' . strtolower($search) . '%'])
+                  ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%']);
             });
         }
 
@@ -56,7 +33,6 @@ class ModelSubscriptionController extends Controller
 
         return view('admin.pages.model_subscription.index', compact('modeles', 'search', 'perPage'));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -68,7 +44,6 @@ class ModelSubscriptionController extends Controller
         return view('admin.pages.model_subscription.create', compact('parametres'));
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
@@ -78,18 +53,18 @@ class ModelSubscriptionController extends Controller
             'nom' => 'required|string|max:255|unique:modele_abonnements,nom',
             'description' => 'nullable|string',
             'prix' => 'required|numeric|min:0',
-            'duree' => 'required|string|max:50',
+            'duree' => 'required|numeric|min:1',
             'parametres' => 'required|array',
-            'parametres.*.id' => 'exists:parametre_modeles,id', 
-            'parametres.*.valeur' => 'required|numeric|min:0', 
-        ],[
-            'nom.unique' => 'Ce modèle d\'abonnment existe déjà',
-            'parametres.required' => 'Veuillez ajouter au moins un paramètre'
+            'parametres.*.id' => 'exists:parametre_modeles,id',
+            'parametres.*.valeur' => 'required|numeric|min:0',
+        ], [
+            'nom.unique' => "Ce modèle d'abonnement existe déjà",
+            'parametres.required' => 'Veuillez ajouter au moins un paramètre',
         ]);
 
         $parametreIds = collect($validated['parametres'])->pluck('id');
         if ($parametreIds->count() !== $parametreIds->unique()->count()) {
-            return redirect()->back()->withErrors(['parametres' => 'Vous ne pouvez pas ajouter un paramètre deux fois']);
+            return redirect()->back()->withErrors(['parametres' => 'Vous ne pouvez pas ajouter un paramètre deux fois.']);
         }
 
         // Créer le modèle d'abonnement
@@ -100,28 +75,16 @@ class ModelSubscriptionController extends Controller
             'duree' => $validated['duree'],
         ]);
 
+        // Ajouter les paramètres avec leurs valeurs
         foreach ($validated['parametres'] as $parametre) {
-            $association = AssociationModeleParametre::create([
+            AssociationModeleParametre::create([
                 'id_modele' => $modele->id,
                 'id_parametre' => $parametre['id'],
-            ]);
-
-            ValeurParametreModele::create([
                 'valeur' => $parametre['valeur'],
-                'id_association_modele' => $association->id,
             ]);
         }
 
         return redirect()->route('model_subscription.index')->with('success', "Modèle d'abonnement {$modele->nom} créé avec succès.");
-    }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
@@ -129,30 +92,27 @@ class ModelSubscriptionController extends Controller
      */
     public function edit($id)
     {
-        $modele = ModeleAbonnement::with(['parametres.valeurs'])->findOrFail($id);
-
+        $modele = ModeleAbonnement::with('parametres')->findOrFail($id);
         $parametres = ParametreModele::all();
 
         return view('admin.pages.model_subscription.edit', compact('modele', 'parametres'));
     }
 
-
     /**
      * Update the specified resource in storage.
      */
-
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
             'nom' => 'required|string|max:255|unique:modele_abonnements,nom,' . $id,
             'description' => 'nullable|string',
             'prix' => 'required|numeric|min:0',
-            'duree' => 'required|string|max:50',
+            'duree' => 'required|numeric|min:1',
             'parametres' => 'required|array',
             'parametres.*.id' => 'exists:parametre_modeles,id',
             'parametres.*.valeur' => 'required|numeric|min:0',
         ], [
-            'nom.unique' => 'Ce modèle d\'abonnement existe déjà.',
+            'nom.unique' => "Ce modèle d'abonnement existe déjà.",
             'parametres.required' => 'Veuillez ajouter au moins un paramètre.',
         ]);
 
@@ -161,8 +121,9 @@ class ModelSubscriptionController extends Controller
             return redirect()->back()->withErrors(['parametres' => 'Vous ne pouvez pas ajouter un paramètre deux fois.']);
         }
 
-        $modele = ModeleAbonnement::with('parametresAvecValeurs.valeurs')->findOrFail($id);
+        $modele = ModeleAbonnement::findOrFail($id);
 
+        // Mettre à jour les informations du modèle
         $modele->update([
             'nom' => $validated['nom'],
             'description' => $validated['description'],
@@ -170,39 +131,27 @@ class ModelSubscriptionController extends Controller
             'duree' => $validated['duree'],
         ]);
 
+        // Synchroniser les paramètres et leurs valeurs
+        $existingAssociations = $modele->parametres->keyBy('id');
         foreach ($validated['parametres'] as $parametre) {
-            $association = $modele->parametresAvecValeurs->firstWhere('id_parametre', $parametre['id']);
+            $association = $existingAssociations->get($parametre['id']);
 
             if ($association) {
-                $valeur = $association->valeurs->first();
-                if ($valeur) {
-                    $valeur->update(['valeur' => $parametre['valeur']]);
-                } else {
-                    ValeurParametreModele::create([
-                        'valeur' => $parametre['valeur'],
-                        'id_association_modele' => $association->id,
-                    ]);
-                }
+                // Mettre à jour la valeur si l'association existe
+                $association->update(['valeur' => $parametre['valeur']]);
             } else {
-                $newAssociation = AssociationModeleParametre::create([
+                // Créer une nouvelle association si elle n'existe pas
+                AssociationModeleParametre::create([
                     'id_modele' => $modele->id,
                     'id_parametre' => $parametre['id'],
-                ]);
-
-                ValeurParametreModele::create([
                     'valeur' => $parametre['valeur'],
-                    'id_association_modele' => $newAssociation->id,
                 ]);
             }
         }
 
-        $validParametreIds = $validated['parametres'];
-        foreach ($modele->parametresAvecValeurs as $association) {
-            if (!in_array($association->id_parametre, array_column($validParametreIds, 'id'))) {
-                $association->valeurs()->delete();
-                $association->delete();
-            }
-        }
+        // Supprimer les associations obsolètes
+        $validIds = collect($validated['parametres'])->pluck('id');
+        $modele->parametres()->whereNotIn('id_parametre', $validIds)->delete();
 
         return redirect()->route('model_subscription.index')->with('success', "Modèle d'abonnement {$modele->nom} mis à jour avec succès.");
     }
@@ -212,21 +161,16 @@ class ModelSubscriptionController extends Controller
      */
     public function destroy($id)
     {
-        $modele = ModeleAbonnement::with(['parametresAvecValeurs.valeurs'])->findOrFail($id);
+        $modele = ModeleAbonnement::findOrFail($id);
 
         if ($modele->transactions()->exists()) {
             return redirect()->route('model_subscription.index')
                 ->with('error', "Impossible de supprimer le modèle d'abonnement {$modele->nom}.");
         }
 
-        foreach ($modele->parametresAvecValeurs as $association) {
-            $association->valeurs()->delete(); 
-            $association->delete(); 
-        }
-
+        $modele->parametres()->delete();
         $modele->delete();
 
         return redirect()->route('model_subscription.index')->with('success', "Modèle d'abonnement {$modele->nom} supprimé avec succès.");
     }
-
 }
