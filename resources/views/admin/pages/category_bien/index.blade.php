@@ -144,7 +144,7 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Êtes-vous sûr de vouloir supprimer la catégorie "{{ $categorie->nom_categorie }}" ? Cette action est irréversible.
+                                                                Êtes-vous sûr de vouloir supprimer la catégorie "{{ $categorie->titre }}" ? Cette action est irréversible.
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>

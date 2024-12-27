@@ -37,7 +37,7 @@
             </li>
             <li>
                 <a href="{{ route('parameter_category.index', ['showModal' => 'create']) }}">
-                    <i class="bi bi-circle"></i><span>Ajouter Paramètre</span>
+                    <i class="bi bi-plus-circle"></i><span>Ajouter Paramètre</span>
                 </a>
             </li>
         </ul>
@@ -65,7 +65,7 @@
             </li>
             <li>
                 <a href="{{ route('parameter_model.index', ['showModal' => 'create']) }}">
-                    <i class="bi bi-circle"></i><span>Ajouter Paramètre</span>
+                    <i class="bi bi-plus-circle"></i><span>Ajouter Paramètre</span>
                 </a>
             </li>
         </ul>
@@ -149,7 +149,7 @@
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="#">
-            <i class="bi bi-question-circle"></i>
+            <i class="bi bi-patch-question"></i>
             <span>Aide?</span>
         </a>
     </li><!-- End Contact Page Nav -->
