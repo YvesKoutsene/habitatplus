@@ -102,6 +102,7 @@ class ModelSubscriptionController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
@@ -152,28 +153,24 @@ class ModelSubscriptionController extends Controller
         return redirect()->route('model_subscription.index')->with('success', "Modèle d'abonnement {$modele->nom} mis à jour avec succès.");
     }
 
+    
+
     /**
      * Remove the specified resource from storage.
      */
 
     public function destroy($id)
     {
-        // Récupération du modèle avec ses associations
         $modele = ModeleAbonnement::with('parametres')->findOrFail($id);
         if ($modele->transactions()->exists()) {
             return redirect()->route('model_subscription.index')
                 ->with('error', "Impossible de supprimer le modèle d'abonnement {$modele->nom}.");
         }
 
-        // Suppression des associations de paramètres spécifiques à ce modèle
-        foreach ($modele->parametres as $association) {
-            $association->delete();
-        }
+        $modele->parametres()->detach(); 
 
-        // Suppression du modèle
         $modele->delete();
 
-        // Redirection avec message de succès
         return redirect()->route('model_subscription.index')->with('success', "Modèle d'abonnement {$modele->nom} supprimé avec succès.");
     }
 
