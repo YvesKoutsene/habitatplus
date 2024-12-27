@@ -51,7 +51,7 @@
                                     placeholder="Prix du modèle d'abonnement" 
                                     required min="0" 
                                     oninput="validateInput()" 
-                                    value="{{ old('prix', number_format($modele->prix, 0, ',', ' ')) }}">
+                                    value="{{ old('prix', number_format($modele->prix, 0, ',', '')) }}">
                                 <span class="input-group-text">.00</span>
                                 <div class="invalid-feedback">
                                     Veuillez fournir un prix pour le modèle.
@@ -61,16 +61,19 @@
 
                         <div class="mb-4">
                             <label for="duree_modele" class="form-label">Durée<span class="text-danger">*</span></label>
-                            <input 
-                                type="text" 
-                                name="duree" 
-                                id="duree_modele" 
-                                class="form-control" 
-                                placeholder="Durée du modèle d'abonnement (Ex : 02 Mois)" 
-                                required
-                                value="{{ old('duree', $modele->duree) }}">
-                            <div class="invalid-feedback">
-                                Veuillez fournir une durée pour le modèle.
+                            <div class="input-group mb-3">
+                                <input 
+                                    type="number" 
+                                    name="duree" 
+                                    id="valeur03" 
+                                    class="form-control" 
+                                    placeholder="Durée du modèle d'abonnement" 
+                                    required
+                                    value="{{ old('duree', $modele->duree) }}" oninput="validateInput04()">
+                                <span class="input-group-text">Mois</span>
+                                <div class="invalid-feedback">
+                                    Veuillez fournir une durée pour le modèle.
+                                </div>
                             </div>
                         </div>
 
@@ -94,14 +97,14 @@
                         <!-- Paramètres de Catégorie -->
                         <div class="mb-4">
                             <div id="parametres-container">
-                                @foreach($modele->parametresAvecValeurs as $index => $association)
+                                @foreach($modele->parametres as $index => $parametre)
                                     <div class="row g-3 mb-2 parametre-item">
                                         <div class="col-md-6">
                                             <label for="parametres[{{ $index }}][id]" class="form-label">Paramètre<span class="text-danger">*</span></label>
                                             <select name="parametres[{{ $index }}][id]" class="form-select" required>
                                                 <option value="">-- Sélectionner un paramètre --</option>
                                                 @foreach($parametres as $p)
-                                                    <option value="{{ $p->id }}" {{ $p->id == $association->parametre->id ? 'selected' : '' }}>
+                                                    <option value="{{ $p->id }}" {{ $p->id == $parametre->id ? 'selected' : '' }}>
                                                         {{ $p->nom_parametre }}
                                                     </option>
                                                 @endforeach
@@ -109,7 +112,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="parametres[{{ $index }}][valeur]" class="form-label">Valeur<span class="text-danger">*</span></label>
-                                            <input type="number" name="parametres[{{ $index }}][valeur]" class="form-control" min="0" required placeholder="Valeur du paramètre" oninput="validateInput02()" value="{{ old('parametres.' . $index . '.valeur', $association->valeurs->first()->valeur ?? '') }}">
+                                            <input type="number" name="parametres[{{ $index }}][valeur]" class="form-control" min="0" required placeholder="Valeur du paramètre" oninput="validateInput02()" value="{{ old("parametres.$index.valeur", $parametre->pivot->valeur ?? '') }}">
                                         </div>
                                         <div class="col-md-2 d-flex align-items-end">
                                             <button type="button" class="btn btn-danger remove-parametre">Supprimer</button>
@@ -118,6 +121,8 @@
                                 @endforeach
                             </div>
                         </div>
+
+                        
                         <!-- Boutons d'Action -->
                         <div class="d-flex justify-content-center gap-3">
                             <button type="button" id="add-parametre" class="btn btn-outline-secondary">
@@ -157,7 +162,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        let parametreIndex = {{ count($modele->parametresAvecValeurs) }};
+        let parametreIndex = {{ count($modele->parametres) }};
 
         document.getElementById('add-parametre').addEventListener('click', function () {
             if (!areAllFieldsFilled()) {
@@ -172,7 +177,6 @@
                 option => !selectedValues.includes(option.value) && option.value !== ""
             );
 
-            // Utiliser un Set pour éliminer les doublons
             const uniqueOptions = Array.from(new Set(availableOptions.map(option => option.value)))
                                        .map(value => availableOptions.find(option => option.value === value));
 
@@ -193,7 +197,7 @@
                 </div>
                 <div class="col-md-4">
                     <label for="parametres[${parametreIndex}][valeur]" class="form-label">Valeur<span class="text-danger">*</span></label>
-                    <input type="number" name="parametres[${parametreIndex}][valeur]" class="form-control" min="0" required placeholder="Valeur du paramètre" oninput="validateInput03()">
+                    <input type="number" name="parametres[${parametreIndex}][valeur]" class="form-control" min="0" required placeholder="Valeur du paramètre" oninput="validateInput03()" id="valeur02">
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
                     <button type="button" class="btn btn-danger remove-parametre">Supprimer</button>
@@ -240,6 +244,11 @@
 
     function validateInput03() {
         const input = document.getElementById('valeur02');
+        input.value = input.value.replace(/[^0-9]/g, '');
+    }
+
+    function validateInput04() {
+        const input = document.getElementById('valeur03');
         input.value = input.value.replace(/[^0-9]/g, '');
     }
 

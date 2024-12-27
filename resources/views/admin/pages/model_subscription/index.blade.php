@@ -46,6 +46,8 @@
                             Aucun modèle d'abonnement disponible pour le moment. <a href="{{ route('model_subscription.create') }}" class="alert-link">Créer modèle</a>.
                         </div>
                     @else
+
+
                         <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
@@ -72,8 +74,6 @@
                                                 <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#descriptionModal{{ $model->id }}">
                                                     Lire suite
                                                 </button>
-
-                                                <!-- Modal -->
                                                 <div class="modal fade" id="descriptionModal{{ $model->id }}" tabindex="-1" aria-labelledby="descriptionModalLabel{{ $model->id }}" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -96,13 +96,13 @@
                                         </td>
                                         <td>
                                             @if($model->parametres->isNotEmpty())
-                                                @foreach($model->parametres->take(1) as $association)
-                                                    @if($association->parametre)
+                                                @foreach($model->parametres->take(1) as $parametre)
+                                                    @if($parametre)
                                                         <span class="badge bg-success">
-                                                            {{ $association->parametre->nom_parametre }} 
+                                                        {{ $parametre->nom_parametre }} 
                                                         </span> :
                                                         <span class="badge bg-warning">
-                                                            {{ $association->valeurs->first() ? $association->valeurs->first()->valeur : 'Aucune valeur' }}
+                                                        {{ $parametre->pivot->valeur }}
                                                         </span>
                                                     @endif
                                                 @endforeach
@@ -111,10 +111,8 @@
                                                     <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametersModal{{ $model->id }}">
                                                         Voir plus ({{ $model->parametres->count() }})
                                                     </button>
-
-                                                    <!-- Modal pour afficher tous les paramètres -->
                                                     <div class="modal fade" id="parametersModal{{ $model->id }}" tabindex="-1" aria-labelledby="parametersModalLabel{{ $model->id }}" aria-hidden="true">
-                                                        <div class="modal-dialog">  <!--modal-lg-->
+                                                        <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="parametersModalLabel{{ $model->id }}">Paramètres du modèle {{ ucfirst($model->nom) }}</h5>
@@ -122,12 +120,12 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <ul class="list-group">
-                                                                        @foreach($model->parametres as $association)
-                                                                            @if($association->parametre)
+                                                                        @foreach($model->parametres as $parametre)
+                                                                            @if($parametre)
                                                                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                                                    {{ $association->parametre->nom_parametre }} 
+                                                                                    {{ $parametre->nom_parametre }} 
                                                                                     <span class="badge bg-primary rounded-pill">
-                                                                                    {{ $association->valeurs->first() ? $association->valeurs->first()->valeur : 'Aucune valeur' }}
+                                                                                        {{ $parametre->pivot->valeur }}
                                                                                     </span>
                                                                                 </li>
                                                                             @endif
@@ -142,49 +140,44 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- Fin de la modal -->
                                                 @endif
                                             @else
                                                 <span class="text-muted">Aucun paramètre associé</span>
                                             @endif
                                         </td>
-
                                         <td>{{ \Carbon\Carbon::parse($model->created_at)->format('d M Y') }}</td>
                                         <td>
                                             <div class="d-flex">
                                                 <a href="{{ route('model_subscription.edit', $model->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" title="Modifier">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </a>
-                                                
                                                 @if ($model->transactions->isEmpty())
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $model->id }}" data-bs-toggle="tooltip" title="Supprimer">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                                @endif
-                                                <!-- Modal de confirmation de suppression -->
-                                                <div class="modal fade" id="deleteConfirmation{{ $model->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $model->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <i class="bi bi-exclamation-triangle me-1"></i>
-                                                                <h5 class="modal-title" id="deleteConfirmationLabel{{ $model->id }}">Confirmation de Suppression</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Êtes-vous sûr de vouloir supprimer le modèle d'abonnement "{{ $model->nom }}" ? Cette action est irréversible.
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                                                <form action="{{ route('model_subscription.destroy', $model->id) }}" method="POST" class="d-inline">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
-                                                                </form>
+                                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $model->id }}" data-bs-toggle="tooltip" title="Supprimer">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                    <div class="modal fade" id="deleteConfirmation{{ $model->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $model->id }}" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <i class="bi bi-exclamation-triangle me-1"></i>
+                                                                    <h5 class="modal-title" id="deleteConfirmationLabel{{ $model->id }}">Confirmation de Suppression</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Êtes-vous sûr de vouloir supprimer le modèle "{{ $model->nom }}" ? Cette action est irréversible.
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                                                                    <form action="{{ route('model_subscription.destroy', $model->id) }}" method="POST" class="d-inline">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
+                                                                    </form>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <!-- Fin de la modal -->
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -204,25 +197,23 @@
                             </tfoot>
                         </table>
 
-                        <!-- Pagination personnalisée -->
+                        
+
                         <nav aria-label="...">
                             <ul class="pagination justify-content-end">
                                 <li class="page-item {{ $modeles->onFirstPage() ? 'disabled' : '' }}">
                                     <a class="page-link" href="{{ $modeles->previousPageUrl() }}" tabindex="-1" aria-disabled="{{ $modeles->onFirstPage() }}">Précédent</a>
                                 </li>
-
                                 @for ($i = 1; $i <= $modeles->lastPage(); $i++)
                                     <li class="page-item {{ $i == $modeles->currentPage() ? 'active' : '' }}">
                                         <a class="page-link" href="{{ $modeles->url($i) }}">{{ $i }}</a>
                                     </li>
                                 @endfor
-
                                 <li class="page-item {{ $modeles->hasMorePages() ? '' : 'disabled' }}">
                                     <a class="page-link" href="{{ $modeles->nextPageUrl() }}">Suivant</a>
                                 </li>
                             </ul>
                         </nav>
-
                     @endif
                 </div>
             </div>

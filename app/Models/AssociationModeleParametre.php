@@ -21,4 +21,9 @@ class AssociationModeleParametre extends Model
         return $this->belongsTo(ParametreModele::class, 'id_parametre');
     }
 
+    public function modeleAbonnement()
+    {
+        return $this->belongsTo(ModeleAbonnement::class, 'id_modele');
+    }
+
 }

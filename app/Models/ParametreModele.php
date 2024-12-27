@@ -20,4 +20,10 @@ class ParametreModele extends Model
     {
         return $this->hasMany(AssociationModeleParametre::class, 'id_modele');
     }
+
+    public function modeles()
+    {
+        return $this->belongsToMany(ModeleAbonnement::class, 'association_modele_parametres', 'id_parametre', 'id_modele')
+                    ->withPivot('valeur');
+    }
 }

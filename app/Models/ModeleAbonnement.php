@@ -19,13 +19,7 @@ class ModeleAbonnement extends Model
     public function parametres()
     {
         return $this->belongsToMany(ParametreModele::class, 'association_modele_parametres', 'id_modele', 'id_parametre')
-                    ->withPivot('id') // Inclure l'ID de l'association
-                    ->with('valeurs');
+                    ->withPivot('valeur');
     }
 
-    public function parametresAvecValeurs()
-    {
-        return $this->hasMany(AssociationModeleParametre::class, 'id_modele')
-                    ->with('parametre', 'valeurs');
-    }
 }
