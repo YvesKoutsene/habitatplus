@@ -50,6 +50,7 @@ class ModelSubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -102,8 +103,8 @@ class ModelSubscriptionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    
-    public function update(Request $request, $id)
+
+    /*public function update(Request $request, $id)
     {
         $validated = $request->validate([
             'nom' => 'required|string|max:255|unique:modele_abonnements,nom,' . $id,
@@ -151,9 +152,78 @@ class ModelSubscriptionController extends Controller
         $modele->parametres()->whereNotIn('id_parametre', $validIds)->delete();
 
         return redirect()->route('model_subscription.index')->with('success', "Modèle d'abonnement {$modele->nom} mis à jour avec succès.");
-    }
+    }*/
 
+    public function update(Request $request, $id)
+    {
+        // Récupérer le modèle d'abonnement à partir de l'ID
+        $modele = ModeleAbonnement::findOrFail($id);
     
+        // Validation des données du formulaire
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255|unique:modele_abonnements,nom,' . $modele->id,
+            'description' => 'nullable|string',
+            'prix' => 'required|numeric|min:0',
+            'duree' => 'required|numeric|min:1',
+            'parametres' => 'required|array',
+            'parametres.*.id' => 'exists:parametre_modeles,id',
+            'parametres.*.valeur' => 'required|numeric|min:0',
+        ], [
+            'nom.unique' => "Ce modèle d'abonnement existe déjà",
+            'parametres.required' => 'Veuillez ajouter au moins un paramètre',
+        ]);
+    
+        // Vérification qu'il n'y a pas de doublon dans les paramètres
+        $parametreIds = collect($validated['parametres'])->pluck('id');
+        if ($parametreIds->count() !== $parametreIds->unique()->count()) {
+            return redirect()->back()->withErrors(['parametres' => 'Vous ne pouvez pas ajouter un paramètre deux fois.']);
+        }
+    
+        // Mise à jour des informations du modèle d'abonnement
+        $modele->update([
+            'nom' => $validated['nom'],
+            'description' => $validated['description'],
+            'prix' => $validated['prix'],
+            'duree' => $validated['duree'],
+        ]);
+    
+        // Récupérer les associations actuelles
+        $currentAssociations = $modele->parametres()->get();
+    
+        // Créer une collection des nouveaux paramètres pour faciliter les comparaisons
+        $newAssociations = collect($validated['parametres'])->keyBy('id');
+    
+        // Analyser les associations actuelles et les comparer avec les nouvelles
+        foreach ($currentAssociations as $association) {
+            // Si cette association a été supprimée par l'utilisateur (non présente dans les nouvelles données), on la supprime
+            if (!$newAssociations->has($association->id_parametre)) {
+                $association->delete();
+            } else {
+                // Si la valeur du paramètre a changé, on met à jour l'association
+                $newValue = $newAssociations->get($association->id_parametre)['valeur'];
+                if ($association->valeur !== $newValue) {
+                    $association->update(['valeur' => $newValue]);
+                }
+    
+                // Supprimer l'association traitée de la collection des nouvelles associations
+                $newAssociations->forget($association->id_parametre);
+            }
+        }
+    
+        // Ajouter toutes les nouvelles associations qui n'existent pas encore
+        foreach ($newAssociations as $parametre) {
+            AssociationModeleParametre::create([
+                'id_modele' => $modele->id,
+                'id_parametre' => $parametre['id'],
+                'valeur' => $parametre['valeur'],
+            ]);
+        }
+    
+        // Redirection avec un message de succès
+        return redirect()->route('model_subscription.index')->with('success', "Modèle d'abonnement {$modele->nom} mis à jour avec succès.");
+    }
+    
+
 
     /**
      * Remove the specified resource from storage.
