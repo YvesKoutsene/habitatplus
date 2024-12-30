@@ -11,6 +11,13 @@ use App\Http\Controllers\Admin\ParameterModelController;
 use App\Http\Controllers\Admin\ModelSubscriptionController;
 use App\Http\Controllers\Admin\CategoryTicketController;
 
+use App\Http\Middleware\CustomMiddleware;
+use App\Http\Middleware\CheckPermission;
+
+app('router')->aliasMiddleware('custom', CustomMiddleware::class);
+app('router')->aliasMiddleware('permission', CheckPermission::class);
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,7 +27,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'custom:Administrateur', 'permission:accéder à admin panel'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -52,8 +59,6 @@ Route::middleware('auth')->group(function () {
 
     //Pour les catégories de ticket
     Route::resource('category_ticket', CategoryTicketController::class);
-
-
 
 });
 
