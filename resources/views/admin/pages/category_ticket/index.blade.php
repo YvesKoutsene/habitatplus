@@ -136,7 +136,7 @@
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="editCategoryModalLabel{{ $categorie->id }}">Modifier Paramètre</h5>
+                                                    <h5 class="modal-title" id="editCategoryModalLabel{{ $categorie->id }}">Modifier Catégorie</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
@@ -147,6 +147,21 @@
                                                             <label for="nom_categorie{{ $categorie->id }}" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
                                                             <input type="hidden" name="id" value="{{ $categorie->id }}">
                                                             <input type="text" name="nom_categorie" class="form-control" placeholder="Nom de categorie de ticket" id="nom_categorie{{ $categorie->id }}" value="{{ $categorie->nom_categorie }}" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="description" class="form-label">Description<span class="text-danger">*</span></label>
+                                                            <textarea 
+                                                                name="description" 
+                                                                id="description" 
+                                                                class="form-control" 
+                                                                rows="3" 
+                                                                maxlength="200" 
+                                                                placeholder="Ajoutez une description" 
+                                                                required>{{ old('description',  $categorie->description) }}</textarea>
+                                                            <div class="invalid-feedback">
+                                                                Veuillez fournir une description valide.
+                                                            </div>
+                                                            <small class="text-muted">Ne pas dépasser 200 caractères maximum.</small>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-arrow-left"></i> Retour</button>
@@ -179,7 +194,7 @@
                                     <a class="page-link" href="{{ $categories->previousPageUrl() }}" tabindex="-1" aria-disabled="{{ $categories->onFirstPage() }}">Précédent</a>
                                 </li>
 
-                                @for ($i = 1; $i <= $categorie->lastPage(); $i++)
+                                @for ($i = 1; $i <= $categories->lastPage(); $i++)
                                     <li class="page-item {{ $i == $categories->currentPage() ? 'active' : '' }}">
                                         <a class="page-link" href="{{ $categories->url($i) }}">{{ $i }}</a>
                                     </li>
@@ -225,18 +240,15 @@
                         <label for="nom_categorie" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
                         <input type="text" name="nom_categorie" class="form-control" id="nom_categorie" required placeholder="Nom de categorie de ticket">
                     </div>
-
                     <div class="mb-3">
-                        <label for="description" class="form-label">Description<span class="text-danger">*</span></label>
+                        <label for="description" class="form-label">Description<span class="text-danger" title="obligatoire">*</span></label>
                         <textarea 
                             name="description" 
                             id="description" 
                             class="form-control" 
                             rows="3" 
                             maxlength="200" 
-                            placeholder="Ajoutez une description" 
-                            required>
-                        </textarea>
+                            placeholder="Ajoutez une description" required></textarea>
                         <div class="invalid-feedback">
                             Veuillez fournir une description valide.
                         </div>

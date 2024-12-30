@@ -94,7 +94,7 @@
         </a>
         <ul id="ticket-nav" class="nav-content collapse {{ request()->is('category_ticket*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
             <li>
-                <a class="{{ request()->routeIs('category_ticket.index') ? 'active' : '' }}" href="{{ route('category_ticket.index') }}">
+                <a class="" href="#">
                     <i class="bi bi-circle"></i><span>Ticket Ouvert</span>
                 </a>
             </li>
