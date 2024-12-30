@@ -1,8 +1,7 @@
 <ul class="sidebar-nav" id="sidebar-nav">
 
     <li class="nav-item">
-        <!-- <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}"> -->
-            <a class="nav-link collapsed {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
             <i class="bi bi-grid"></i>
             <span>Tableau de bord</span>
         </a>
@@ -13,7 +12,7 @@
             <i class="bi bi-megaphone"></i>
             <span>Annonce</span>
         </a>
-    </li><!-- End Profile Page Nav -->
+    </li><!-- End Announcement Nav -->
 
     <li class="nav-item">
         <a class="nav-link collapsed {{ request()->is('category_bien*') || request()->is('parameter_category*') ? 'active' : '' }}" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
@@ -41,7 +40,7 @@
                 </a>
             </li>
         </ul>
-    </li><!-- End Components Nav -->
+    </li><!-- End Categorie Bien Nav -->
 
     <li class="nav-item">
         <a class="nav-link collapsed {{ request()->is('model_subscription*') || request()->is('parameter_model*') ? 'active' : '' }}" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
@@ -69,11 +68,11 @@
                 </a>
             </li>
         </ul>
-    </li><!-- End Forms Nav -->
+    </li><!-- End Modèle Abonnement Nav -->
 
     <li class="nav-item">
-        <a class="nav-link collapsed {{ request()->is('payment*') ? 'active' : '' }}" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-cash-stack"></i><span>Payement</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link collapsed {{ request()->is('payment*') || request()->is('transaction*') ? 'active' : '' }}" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-cash-stack"></i><span>Paiement</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse {{ request()->is('payment*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
             <li>
@@ -87,7 +86,30 @@
                 </a>
             </li>
         </ul>
-    </li><!-- End Tables Nav -->
+    </li><!-- End Paiement Nav -->
+
+    <li class="nav-item">
+        <a class="nav-link collapsed {{ request()->routeIs('ticket*') || request()->is('category_ticket*') ? 'active' : '' }}" data-bs-target="#ticket-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-chat-quote"></i><span>Ticket</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="ticket-nav" class="nav-content collapse {{ request()->is('category_ticket*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            <li>
+                <a class="{{ request()->routeIs('category_ticket.index') ? 'active' : '' }}" href="{{ route('category_ticket.index') }}">
+                    <i class="bi bi-circle"></i><span>Ticket Ouvert</span>
+                </a>
+            </li>
+            <li>
+                <a class="{{ request()->routeIs('category_ticket.index') ? 'active' : '' }}" href="{{ route('category_ticket.index') }}">
+                    <i class="bi bi-circle"></i><span>Catégorie Ticket</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('category_ticket.index', ['showModal' => 'create']) }}">
+                    <i class="bi bi-circle"></i><span>Ajouter Catégorie</span>
+                </a>
+            </li>
+        </ul>
+    </li><!-- End Ticket Nav -->
 
     <li class="nav-item">
         <a class="nav-link collapsed {{ request()->is('users*') || request()->routeIs('users.index') || request()->routeIs('users.create') || request()->routeIs('roles.index') || request()->routeIs('roles.create') ? 'active' : '' }}" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
@@ -115,21 +137,14 @@
                 </a>
             </li>
         </ul>
-    </li><!-- End Icons Nav -->
-
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-            <i class="bi bi-chat-quote"></i>
-            <span>Ticket Ouvert</span>
-        </a>
-    </li>
+    </li><!-- End Utilisateur Nav -->
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="#">
             <i class="bi bi-flag"></i>
             <span>Rapport</span>
         </a>
-    </li>
+    </li><!-- End Rapport Nav -->
 
     <li class="nav-heading">Annexes</li>
 
@@ -138,21 +153,21 @@
             <i class="bi bi-person"></i>
             <span>Profil</span>
         </a>
-    </li><!-- End Profile Page Nav -->
+    </li><!-- End Profil Nav -->
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="#">
             <i class="bi bi-gear"></i>
             <span>Paramètre</span>
         </a>
-    </li><!-- End F.A.Q Page Nav -->
+    </li><!-- End Paramètre Nav -->
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="#">
             <i class="bi bi-patch-question"></i>
             <span>Aide?</span>
         </a>
-    </li><!-- End Contact Page Nav -->
+    </li><!-- End Aide Nav -->
 
     <li class="nav-item">
         <a href="javascript:void(0);" id="logout-link" class="nav-link collapsed" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -162,7 +177,7 @@
         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
             @csrf
         </form>
-    </li>
+    </li><!-- End Deconnexion Nav -->
 
 </ul>
 
@@ -176,7 +191,7 @@
         background-color: #0056b3;
     }
 
-    .sidebar-nav .nav-item .nav-content.show {
-        display: block; 
+    .sidebar-nav .nav-content .nav-link {
+        padding-left: 30px; /* Ajustement pour le sous-menu */
     }
 </style>

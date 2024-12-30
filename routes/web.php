@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ParameterCategoryController;
 use App\Http\Controllers\Admin\CategoryBienController;
 use App\Http\Controllers\Admin\ParameterModelController;
 use App\Http\Controllers\Admin\ModelSubscriptionController;
+use App\Http\Controllers\Admin\CategoryTicketController;
 
 
 Route::get('/', function () {
@@ -48,7 +49,9 @@ Route::middleware('auth')->group(function () {
 
     //Pour les modèles d'abonnement
     Route::resource('model_subscription', ModelSubscriptionController::class);
-    
+
+    //Pour les catégories de ticket
+    Route::resource('category_ticket', CategoryTicketController::class);
 
 
 

@@ -25,6 +25,7 @@ class ModelSubscriptionController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->whereRaw('LOWER(nom) LIKE ?', ['%' . strtolower($search) . '%'])
+                ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%'])
                 ->orWhereHas('parametres', function ($qParam) use ($search) {
                     $qParam->whereRaw('LOWER(nom_parametre) LIKE ?', ['%' . strtolower($search) . '%']);
                 });

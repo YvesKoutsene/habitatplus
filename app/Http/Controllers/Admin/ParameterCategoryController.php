@@ -13,16 +13,11 @@ class ParameterCategoryController extends Controller
    /**
      * Display a listing of the resource.
      */
-    /*public function index()
-    {
-        $parametres = ParametreCategorie::orderBy('created_at', 'asc')->paginate(10);
-        return view('admin.pages.parameter_category.index', compact('parametres'));
-    }*/
 
     public function index(Request $request)
     {
         $search = $request->input('search', '');
-        $perPage = $request->input('perPage', 10); // Valeur par défaut à 10
+        $perPage = $request->input('perPage', 10);
 
         $query = ParametreCategorie::query();
 
