@@ -44,7 +44,7 @@
                             <div class="input-group mb-3">
                                 <span class="input-group-text">FCFA</span>
                                 <input 
-                                    type="text" 
+                                    type="number" 
                                     name="prix" 
                                     id="prix_modele" 
                                     class="form-control" 
