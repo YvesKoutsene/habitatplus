@@ -24,11 +24,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        /*if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($request->only('email', 'password'))) {
             return back()->withErrors([
-                'email' => 'Les informations d\'identification fournies sont incorrectes.',
+                'email' => 'Email ou mot de passe incorrect.',
             ]);
-        }*/
+        }
 
         $request->authenticate();
 

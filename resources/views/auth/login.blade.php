@@ -69,7 +69,9 @@
                                         <label for="yourEmail" class="form-label">Email<span class="text-danger" title="obligatoire">*</span></label>
                                         <input type="email" name="email" class="form-control" id="yourEmail" value="{{ old('email') }}" required autofocus>
                                         <div class="invalid-feedback">Veuillez entrer votre adresse e-mail valide!</div>
+                                        <!--
                                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                        -->
                                     </div>
 
                                     <div class="col-12">
@@ -80,7 +82,9 @@
                                                 <i class="bi bi-eye" id="eye-icon-password"></i>
                                             </button>
                                             <div class="invalid-feedback">Veuillez entrer votre mot de passe!</div>
-                                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                            <!--
+                                            <x-input-error :messages="$errors->get('password')" class="mt-2" /> 
+                                            -->
                                         </div>
                                     </div>
 
