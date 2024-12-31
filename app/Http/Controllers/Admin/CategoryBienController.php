@@ -120,16 +120,13 @@ class CategoryBienController extends Controller
              'parametres.required' => 'Veuillez paramétrer la catégorie de bien.'
          ]);
      
-         // Trouver la catégorie
          $categorie = CategorieBien::findOrFail($id);
      
-         // Mettre à jour la catégorie
          $categorie->update([
              'titre' => $validated['titre'],
              'description' => $validated['description'],
          ]);
      
-         // Synchroniser les paramètres associés
          AssociationCategorieParametre::where('id_categorie', $categorie->id)->delete();
      
          foreach ($validated['parametres'] as $parametreId) {

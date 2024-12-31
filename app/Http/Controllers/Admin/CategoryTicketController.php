@@ -26,7 +26,6 @@ class CategoryTicketController extends Controller
             });
         }
  
-        // Pagination dynamique
         $categories = $query->orderBy('created_at', 'asc')->paginate($perPage);
 
         return view('admin.pages.category_ticket.index', compact('categories', 'search', 'perPage'));

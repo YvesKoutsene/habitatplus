@@ -29,7 +29,6 @@ class UserController extends Controller
 
         $query = User::with('roles')->orderBy('created_at', 'asc');
 
-         // Gestion de la recherche
         if ($search) {
             $query->where(function($q) use ($search) {
                 $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']) 
@@ -57,6 +56,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    
     // Fonction d'enregistrement d'utilisateur
     public function store(Request $request)
     {

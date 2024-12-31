@@ -24,13 +24,18 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        /*if (!Auth::attempt($request->only('email', 'password'))) {
+            return back()->withErrors([
+                'email' => 'Les informations d\'identification fournies sont incorrectes.',
+            ]);
+        }*/
+
         $request->authenticate();
 
         $request->session()->regenerate();
 
         session()->flash('success', 'Content de vous revoir!');
 
-        //return redirect()->intended(route('dashboard', absolute: false));
         return redirect()->intended(route('profile.edit', absolute: false));
     }
 

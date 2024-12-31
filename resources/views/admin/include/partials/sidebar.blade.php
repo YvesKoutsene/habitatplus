@@ -1,7 +1,7 @@
 <ul class="sidebar-nav" id="sidebar-nav">
 
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}"> <!-- collapsed -->
             <i class="bi bi-grid"></i>
             <span>Tableau de bord</span>
         </a>
@@ -232,6 +232,6 @@
     }
 
     .sidebar-nav .nav-content .nav-link {
-        padding-left: 30px; /* Ajustement pour le sous-menu */
+        padding-left: 30px; 
     }
 </style>

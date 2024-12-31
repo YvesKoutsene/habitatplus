@@ -25,7 +25,6 @@
                             </a>
                         @endcan
                     </div>
-
                     @if(!$modeles->isEmpty())
                         <div class="d-flex mb-3 justify-content-between">
                             <form action="{{ route('model_subscription.index') }}" method="GET" class="d-flex">
@@ -42,7 +41,6 @@
                             </form>
                         </div>
                     @endif
-
                     @if($modeles->isEmpty())
                         <div class="alert alert-info">
                             Aucun modèle d'abonnement disponible pour le moment. 
@@ -51,8 +49,6 @@
                             @endcan
                         </div>
                     @else
-
-
                         <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
@@ -111,7 +107,6 @@
                                                         </span>
                                                     @endif
                                                 @endforeach
-
                                                 @if($model->parametres->count() > 1)
                                                     <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametersModal{{ $model->id }}">
                                                         Voir plus ({{ $model->parametres->count() -1 }})
@@ -205,9 +200,6 @@
                                 </tr>
                             </tfoot>
                         </table>
-
-                        
-
                         <nav aria-label="...">
                             <ul class="pagination justify-content-end">
                                 <li class="page-item {{ $modeles->onFirstPage() ? 'disabled' : '' }}">

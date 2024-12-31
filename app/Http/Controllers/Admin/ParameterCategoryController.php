@@ -25,7 +25,6 @@ class ParameterCategoryController extends Controller
             $query->whereRaw('LOWER(nom_parametre) LIKE ?', ['%' . strtolower($search) . '%']);
         }
 
-        // Pagination dynamique
         $parametres = $query->orderBy('created_at', 'asc')->paginate($perPage);
 
         return view('admin.pages.parameter_category.index', compact('parametres', 'search', 'perPage'));
