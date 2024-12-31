@@ -124,7 +124,7 @@ class RoleController extends Controller
         }
 
         $role->update(['name' => $request->name]);
-        $role->syncPermissions($validPermissions);  // Utilisez les permissions valides
+        $role->syncPermissions($validPermissions); 
 
         return redirect()->route('roles.index')->with('success', "Rôle {$role->name} mis à jour avec succès.");
     }

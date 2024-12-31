@@ -32,7 +32,7 @@ class UserController extends Controller
          // Gestion de la recherche
         if ($search) {
             $query->where(function($q) use ($search) {
-                $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']) // Remplacez par le nom réel de votre colonne
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']) 
                 ->orWhereRaw('LOWER(email) LIKE ?', ['%' . strtolower($search) . '%'])
                 ->orWhereRaw('LOWER(pays) LIKE ?', ['%' . strtolower($search) . '%'])
                 ->orWhereRaw('LOWER(numero) LIKE ?', ['%' . strtolower($search) . '%']);
@@ -81,7 +81,6 @@ class UserController extends Controller
 
         $profilePath = null;
 
-        // Gestion de l'upload de l'image
         if ($request->hasFile('photo_profil')) {
             $profile = $request->file('photo_profil');
             $profileName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $profile->getClientOriginalName());
@@ -169,7 +168,6 @@ class UserController extends Controller
 
         $profilePath = $user->photo_profil;
 
-        // Gestion de l'upload de l'image
         if ($request->hasFile('photo_profil')) {
             $profile = $request->file('photo_profil');
             $profileName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $profile->getClientOriginalName());
