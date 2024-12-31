@@ -19,9 +19,11 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Liste des Modèles</h5>
-                        <a href="{{ route('model_subscription.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i> Créer modèle
-                        </a>
+                        @can('créer modèles d\'abonnements')
+                            <a href="{{ route('model_subscription.create') }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Créer modèle
+                            </a>
+                        @endcan
                     </div>
 
                     @if(!$modeles->isEmpty())
@@ -43,7 +45,10 @@
 
                     @if($modeles->isEmpty())
                         <div class="alert alert-info">
-                            Aucun modèle d'abonnement disponible pour le moment. <a href="{{ route('model_subscription.create') }}" class="alert-link">Créer modèle</a>.
+                            Aucun modèle d'abonnement disponible pour le moment. 
+                            @can('créer modèles d\'abonnements')
+                                <a href="{{ route('model_subscription.create') }}" class="alert-link">Créer modèle</a>.
+                            @endcan
                         </div>
                     @else
 
@@ -148,9 +153,11 @@
                                         <td>{{ \Carbon\Carbon::parse($model->created_at)->format('d M Y') }}</td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('model_subscription.edit', $model->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" title="Modifier">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </a>
+                                                @can('editer modèles d\'abonnements')
+                                                    <a href="{{ route('model_subscription.edit', $model->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" title="Modifier">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </a>
+                                                @endcan
                                                 @if ($model->transactions->isEmpty())
                                                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $model->id }}" data-bs-toggle="tooltip" title="Supprimer">
                                                         <i class="bi bi-trash"></i>
