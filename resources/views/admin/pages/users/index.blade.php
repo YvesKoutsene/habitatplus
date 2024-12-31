@@ -23,9 +23,11 @@ use Carbon\Carbon;
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Liste des utilisateurs</h5>
-                        <a href="{{ route('users.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i> Ajouter utilisateur
-                        </a>
+                        @can ('ajouter utilisateurs')
+                            <a href="{{ route('users.create') }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Ajouter utilisateur
+                            </a>
+                        @endcan
                     </div>
 
                     @if(!$users->isEmpty())
@@ -47,7 +49,10 @@ use Carbon\Carbon;
 
                     @if($users->isEmpty())
                     <div class="alert alert-info">
-                        Aucun utilisateur disponible pour le moment. <a href="{{ route('users.create') }}" class="alert-link"> Ajouter utilisateur</a>.
+                        Aucun utilisateur disponible pour le moment. 
+                        @can ('ajouter utilisateurs')
+                            <a href="{{ route('users.create') }}" class="alert-link"> Ajouter utilisateur</a>.
+                        @endcan
                     </div>
                     @else
                     <table class="table table-hover table-striped">
@@ -83,36 +88,42 @@ use Carbon\Carbon;
 
                             <td>
                                 <div class="d-flex">
-                                    @if(!$user->roles->pluck('name')->contains('Abonné'))
-                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    @endif
+                                    @can ('editer utilisateurs')
+                                        @if(!$user->roles->pluck('name')->contains('Abonné'))
+                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        @endif
+                                    @endcan
 
-                                    @if(auth()->id() !== $user->id)
-                                    @if($user->statut == 'actif')
-                                    <form action="{{ route('users.suspend', $user->id) }}" method="POST" class="me-2">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Suspendre">
-                                            <i class="bi bi-slash-circle"></i>
-                                        </button>
-                                    </form>
-                                    @else
-                                    <form action="{{ route('users.reactivate', $user->id) }}" method="POST" class="me-2">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver">
-                                            <i class="bi bi-check-circle"></i>
-                                        </button>
-                                    </form>
-                                    @endif
-                                    @if(!$user->roles->pluck('name')->contains('Abonné'))
-                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $user->id }}" data-bs-placement="top" title="Supprimer">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                    @endif
+                                    @can ('suspendre/réactiver utilisateurs')
+                                        @if(auth()->id() !== $user->id)
+                                        @if($user->statut == 'actif')
+                                        <form action="{{ route('users.suspend', $user->id) }}" method="POST" class="me-2">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Suspendre">
+                                                <i class="bi bi-slash-circle"></i>
+                                            </button>
+                                        </form>
+                                        @else
+                                        <form action="{{ route('users.reactivate', $user->id) }}" method="POST" class="me-2">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver">
+                                                <i class="bi bi-check-circle"></i>
+                                            </button>
+                                        </form>
+                                        @endif
+                                    @endcan
 
+                                    @can('suspendre/réactiver utilisateurs')
+                                        @if(!$user->roles->pluck('name')->contains('Abonné'))
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $user->id }}" data-bs-placement="top" title="Supprimer">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                        @endif
+                                    @endcan
                                     <!-- Modal de confirmation de suppression -->
                                     <div class="modal fade" id="deleteConfirmation{{ $user->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $user->id }}" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">

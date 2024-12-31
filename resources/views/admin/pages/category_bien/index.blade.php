@@ -96,12 +96,12 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @foreach($categorie->associations->take(2) as $association)
+                                            @foreach($categorie->associations->take(1) as $association)
                                             <span class="badge bg-success">{{ $association->parametre->nom_parametre }}</span>
                                             @endforeach
-                                            @if($categorie->associations->count() > 2)
+                                            @if($categorie->associations->count() > 1)
                                                 <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametresModal{{ $categorie->id }}"> <!--class="btn btn-link"-->
-                                                    Voir plus ({{ $categorie->associations->count() }})
+                                                    Voir plus ({{ $categorie->associations->count() -1 }})
                                                 </button>
 
                                                 <!-- Modal pour afficher tous les paramètres -->

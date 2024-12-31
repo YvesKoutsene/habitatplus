@@ -24,9 +24,11 @@
 
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Liste des Catégories</h5>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
-                            <i class="bi bi-plus-circle"></i> Ajouter catégorie
-                        </button>
+                        @can ('créer catégories ticket')
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
+                                <i class="bi bi-plus-circle"></i> Ajouter catégorie
+                            </button>
+                        @endcan
                     </div>
 
                     @if(!$categories->isEmpty())
@@ -48,7 +50,10 @@
 
                     @if($categories->isEmpty())
                         <div class="alert alert-info">
-                            Aucune catégorie de ticket disponible pour le moment. <button class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#createCategoryModal">Ajouter catégorie</button>.
+                            Aucune catégorie de ticket disponible pour le moment. 
+                            @can ('créer catégories ticket')
+                                <button class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#createCategoryModal">Ajouter catégorie</button>.
+                            @endcan
                         </div>
                     @else
                         <table class="table table-hover table-striped">
@@ -95,14 +100,18 @@
                                         <td>{{ Carbon::parse($categorie->created_at)->format('d M Y') }}</td>
                                         <td>
                                             <div class="d-flex">
-                                                <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $categorie->id }}">
-                                                    <i class="bi bi-pencil-square" title="Editer"></i>
-                                                </button>
-                                                @if ($categorie->tickets->isEmpty())
-                                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $categorie->id }}">
-                                                        <i class="bi bi-trash" title="Supprimer"></i>
+                                                @can ('editer catégories ticket')
+                                                    <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $categorie->id }}">
+                                                        <i class="bi bi-pencil-square" title="Editer"></i>
                                                     </button>
-                                                @endif
+                                                @endcan
+                                                @can ('supprimer catégories ticket')
+                                                    @if ($categorie->tickets->isEmpty())
+                                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $categorie->id }}">
+                                                            <i class="bi bi-trash" title="Supprimer"></i>
+                                                        </button>
+                                                    @endif
+                                                @endcan
                                                 <!-- Modal de confirmation de suppression -->
                                                 <div class="modal fade" id="deleteConfirmation{{ $categorie->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $categorie->id }}" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">

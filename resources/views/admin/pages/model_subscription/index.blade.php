@@ -114,7 +114,7 @@
 
                                                 @if($model->parametres->count() > 1)
                                                     <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametersModal{{ $model->id }}">
-                                                        Voir plus ({{ $model->parametres->count() }})
+                                                        Voir plus ({{ $model->parametres->count() -1 }})
                                                     </button>
                                                     <div class="modal fade" id="parametersModal{{ $model->id }}" tabindex="-1" aria-labelledby="parametersModalLabel{{ $model->id }}" aria-hidden="true">
                                                         <div class="modal-dialog">
@@ -158,33 +158,35 @@
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
                                                 @endcan
-                                                @if ($model->transactions->isEmpty())
-                                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $model->id }}" data-bs-toggle="tooltip" title="Supprimer">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                    <div class="modal fade" id="deleteConfirmation{{ $model->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $model->id }}" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <i class="bi bi-exclamation-triangle me-1"></i>
-                                                                    <h5 class="modal-title" id="deleteConfirmationLabel{{ $model->id }}">Confirmation de Suppression</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    Êtes-vous sûr de vouloir supprimer le modèle "{{ $model->nom }}" ? Cette action est irréversible.
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                                                    <form action="{{ route('model_subscription.destroy', $model->id) }}" method="POST" class="d-inline">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
-                                                                    </form>
+                                                @can('supprimer modèles d\'abonnements')
+                                                    @if ($model->transactions->isEmpty())
+                                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $model->id }}" data-bs-toggle="tooltip" title="Supprimer">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                        <div class="modal fade" id="deleteConfirmation{{ $model->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $model->id }}" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <i class="bi bi-exclamation-triangle me-1"></i>
+                                                                        <h5 class="modal-title" id="deleteConfirmationLabel{{ $model->id }}">Confirmation de Suppression</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        Êtes-vous sûr de vouloir supprimer le modèle "{{ $model->nom }}" ? Cette action est irréversible.
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                                                                        <form action="{{ route('model_subscription.destroy', $model->id) }}" method="POST" class="d-inline">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                @endif
+                                                    @endif
+                                                @endcan
                                             </div>
                                         </td>
                                     </tr>

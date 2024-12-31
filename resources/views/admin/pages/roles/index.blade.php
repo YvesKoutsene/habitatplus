@@ -23,9 +23,11 @@ use Carbon\Carbon;
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Liste des rôles</h5>
-                        <a href="{{ route('roles.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i> Créer rôle
-                        </a>
+                        @can('créer rôles')
+                            <a href="{{ route('roles.create') }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Créer rôle
+                            </a>
+                        @endcan
                     </div>
 
                     @if(!$roles->isEmpty())
@@ -47,7 +49,10 @@ use Carbon\Carbon;
 
                     @if($roles->isEmpty())
                         <div class="alert alert-info">
-                            Aucun rôle disponible pour le moment. <a href="{{ route('roles.create') }}" class="alert-link"> Créer rôle</a>.
+                            Aucun rôle disponible pour le moment. 
+                            @can('créer rôles')
+                                <a href="{{ route('roles.create') }}" class="alert-link"> Créer rôle</a>.
+                            @endcan
                         </div>
                     @else
                         <table class="table table-hover table-striped">
@@ -67,12 +72,12 @@ use Carbon\Carbon;
                                     <td>{{ ucfirst($role->name) }}</td>
                                     <td>
                                         @if($role->permissions->isNotEmpty())
-                                            @foreach($role->permissions->take(2) as $permission)
+                                            @foreach($role->permissions->take(1) as $permission)
                                                 <span class="badge bg-success">{{ ucfirst($permission->name) }}</span>
                                             @endforeach
-                                            @if($role->permissions->count() >3)
+                                            @if($role->permissions->count() >1)
                                                 <button class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#permissionsModal{{ $role->id }}"> <!--class="btn btn-link"-->
-                                                    Voir plus ({{ $role->permissions->count() - 2 }})
+                                                    Voir plus ({{ $role->permissions->count() - 1 }})
                                                 </button>
                                             @endif
                                         @else
@@ -84,12 +89,16 @@ use Carbon\Carbon;
                                     <td>
                                     @if($role->name != 'Administrateur' && $role->name != 'Abonné')
                                     <div class="d-flex">
-                                        <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $role->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                        @can('editer rôles')
+                                            <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                        @endcan
+                                        @can('supprimer rôles')
+                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $role->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        @endcan
 
                                         <!-- Modal de confirmation de suppression -->
                                         <div class="modal fade" id="deleteConfirmation{{ $role->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $role->id }}" aria-hidden="true">
