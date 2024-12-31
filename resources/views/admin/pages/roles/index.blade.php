@@ -95,9 +95,11 @@ use Carbon\Carbon;
                                             </a>
                                         @endcan
                                         @can('supprimer rôles')
+                                            @if($role && $role->users->isEmpty())
                                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $role->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
                                                 <i class="bi bi-trash"></i>
                                             </button>
+                                            @endif
                                         @endcan
 
                                         <!-- Modal de confirmation de suppression -->

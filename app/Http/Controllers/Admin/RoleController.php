@@ -139,10 +139,10 @@ class RoleController extends Controller
             return redirect()->route('roles.index')->with('error', 'Vous ne pouvez pas supprimer ce rôle.');
         }
 
-        /*if ($role->associations()->exists()) {
+        if ($role && $role->users()->exists()) {
             return redirect()->route('roles.index')
                 ->with('error', "Le role {$role->name} ne peut pas être supprimé.");
-        }*/
+        }
 
         $role->delete();
         return redirect()->route('roles.index')->with('success', "Rôle {$role->name} supprimé avec succès.");
