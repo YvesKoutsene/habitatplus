@@ -19,9 +19,11 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Liste des Catégories</h5>
+                        @can('créer catégories')
                         <a href="{{ route('category_bien.create') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle"></i> Créer catégorie
                         </a>
+                        @endcan
                     </div>
 
                     @if(!$categories->isEmpty())
@@ -43,7 +45,10 @@
 
                     @if($categories->isEmpty())
                         <div class="alert alert-info">
-                            Aucune catégorie de bien disponible pour le moment. <a href="{{ route('category_bien.create') }}" class="alert-link">Créer catégorie</a>.
+                            Aucune catégorie de bien disponible pour le moment. 
+                            @can('créer catégories') 
+                                <a href="{{ route('category_bien.create') }}" class="alert-link">Créer catégorie</a>. 
+                            @endcan
                         </div>
                     @else
                         <table class="table table-hover table-striped">
@@ -126,14 +131,18 @@
                                         <td>{{ \Carbon\Carbon::parse($categorie->created_at)->format('d M Y') }}</td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('category_bien.edit', $categorie->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" title="Modifier">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </a>
-                                                @if ($categorie->biens->isEmpty() && $categorie->alertes->isEmpty())
-                                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $categorie->id }}" data-bs-toggle="tooltip" title="Supprimer">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                @endif
+                                                @can('editer catégories')
+                                                    <a href="{{ route('category_bien.edit', $categorie->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" title="Modifier">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('supprimer catégories')
+                                                    @if ($categorie->biens->isEmpty() && $categorie->alertes->isEmpty())
+                                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $categorie->id }}" data-bs-toggle="tooltip" title="Supprimer">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    @endif
+                                                @endcan
                                                 <!-- Modal de confirmation de suppression -->
                                                 <div class="modal fade" id="deleteConfirmation{{ $categorie->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $categorie->id }}" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">

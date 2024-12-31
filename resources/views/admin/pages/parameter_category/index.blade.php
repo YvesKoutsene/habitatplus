@@ -24,9 +24,11 @@
 
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Liste des Paramètres</h5>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createParameterModal">
-                            <i class="bi bi-plus-circle"></i> Ajouter paramètre
-                        </button>
+                        @can('supprimer catégories')
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createParameterModal">
+                                <i class="bi bi-plus-circle"></i> Ajouter paramètre
+                            </button>
+                        @endcan
                     </div>
 
                     @if(!$parametres->isEmpty())

@@ -14,62 +14,83 @@
         </a>
     </li><!-- End Announcement Nav -->
 
+    @if(Auth::user()->can('voir catégories') || Auth::user()->can('créer catégories') || Auth::user()->can('voir paramètres catégories') || Auth::user()->can('ajouter paramètres catégories'))
     <li class="nav-item">
         <a class="nav-link collapsed {{ request()->is('category_bien*') || request()->is('parameter_category*') ? 'active' : '' }}" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-tag"></i><span>Categorie Bien</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse {{ request()->is('category_bien*') || request()->is('parameter_category*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            @can('voir catégories')
             <li>
                 <a class="{{ request()->routeIs('category_bien.index') ? 'active' : '' }}" href="{{ route('category_bien.index') }}">
                     <i class="bi bi-circle"></i><span>Liste Categorie</span>
                 </a>
             </li>
+            @endcan
+            @can('créer catégories')
             <li>
                 <a class="{{ request()->routeIs('category_bien.create') ? 'active' : '' }}" href="{{ route('category_bien.create') }}">
                     <i class="bi bi-circle"></i><span>Créer Categorie</span>
                 </a>
             </li>
+            @endcan
+            @can('voir paramètres catégories')
             <li>
                 <a class="{{ request()->routeIs('parameter_category.index') ? 'active' : '' }}" href="{{ route('parameter_category.index') }}">
                     <i class="bi bi-circle"></i><span>Paramètre Categorie</span>
                 </a>
             </li>
+            @endcan
+            @can('ajouter paramètres catégories')
             <li>
                 <a href="{{ route('parameter_category.index', ['showModal' => 'create']) }}">
                     <i class="bi bi-plus-circle"></i><span>Ajouter Paramètre</span>
                 </a>
             </li>
+            @endcan
         </ul>
     </li><!-- End Categorie Bien Nav -->
+    @endif
 
+    @if(Auth::user()->can('voir modèles d\'abonnements') || Auth::user()->can('créer modèles d\'abonnements') || Auth::user()->can('voir paramètres modèles d\'abonnements') || Auth::user()->can('ajouter paramètres modèles d\'abonnements') )
     <li class="nav-item">
         <a class="nav-link collapsed {{ request()->is('model_subscription*') || request()->is('parameter_model*') ? 'active' : '' }}" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-credit-card-2-back"></i><span>Modèle Abonnement</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="forms-nav" class="nav-content collapse {{ request()->is('model_subscription*') || request()->is('parameter_model*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            @can('voir modèles d\'abonnements')
             <li>
                 <a class="{{ request()->routeIs('model_subscription.index') ? 'active' : '' }}" href="{{ route('model_subscription.index') }}">
                     <i class="bi bi-circle"></i><span>Liste Modèle</span>
                 </a>
             </li>
+            @endcan
+            @can('créer modèles d\'abonnements')
             <li>
                 <a class="{{ request()->routeIs('model_subscription.create') ? 'active' : '' }}" href="{{ route('model_subscription.create') }}">
                     <i class="bi bi-circle"></i><span>Créer Modèle</span>
                 </a>
             </li>
+            @endcan
+            @can('voir paramètres modèles d\'abonnements')
             <li>
                 <a class="{{ request()->routeIs('parameter_model.index') ? 'active' : '' }}" href="{{ route('parameter_model.index') }}">
                     <i class="bi bi-circle"></i><span>Paramètre Modèle</span>
                 </a>
             </li>
+            @endcan
+            @can('ajouter paramètres modèles d\'abonnements')
             <li>
                 <a href="{{ route('parameter_model.index', ['showModal' => 'create']) }}">
                     <i class="bi bi-plus-circle"></i><span>Ajouter Paramètre</span>
                 </a>
             </li>
+            @endcan
         </ul>
     </li><!-- End Modèle Abonnement Nav -->
+    @endif
 
+    @if(Auth::user()->can('voir transactions/abonnements'))
     <li class="nav-item">
         <a class="nav-link collapsed {{ request()->is('payment*') || request()->is('transaction*') ? 'active' : '' }}" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-cash-stack"></i><span>Paiement</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -87,57 +108,76 @@
             </li>
         </ul>
     </li><!-- End Paiement Nav -->
+    @endif
 
+    @if(Auth::user()->can('voir ticket') || Auth::user()->can('voir catégories ticket') || Auth::user()->can('créer catégories ticket') )
     <li class="nav-item">
         <a class="nav-link collapsed {{ request()->routeIs('ticket*') || request()->is('category_ticket*') ? 'active' : '' }}" data-bs-target="#ticket-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-chat-quote"></i><span>Ticket</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="ticket-nav" class="nav-content collapse {{ request()->is('category_ticket*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            @can('voir tickets')
             <li>
                 <a class="" href="#">
                     <i class="bi bi-circle"></i><span>Ticket Ouvert</span>
                 </a>
             </li>
+            @endcan
+            @can('voir catégories ticket')
             <li>
                 <a class="{{ request()->routeIs('category_ticket.index') ? 'active' : '' }}" href="{{ route('category_ticket.index') }}">
                     <i class="bi bi-circle"></i><span>Catégorie Ticket</span>
                 </a>
             </li>
+            @endcan
+            @can('créer catégories ticket')
             <li>
                 <a href="{{ route('category_ticket.index', ['showModal' => 'create']) }}">
                     <i class="bi bi-circle"></i><span>Ajouter Catégorie</span>
                 </a>
             </li>
+            @endcan
         </ul>
     </li><!-- End Ticket Nav -->
+    @endif
 
+    @if(Auth::user()->can('voir utilisateurs') || Auth::user()->can('ajouter utilisateurs') || Auth::user()->can('voir rôles') || Auth::user()->can('créer rôles') )
     <li class="nav-item">
         <a class="nav-link collapsed {{ request()->is('users*') || request()->routeIs('users.index') || request()->routeIs('users.create') || request()->routeIs('roles.index') || request()->routeIs('roles.create') ? 'active' : '' }}" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-people"></i><span>Utilisateur</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="icons-nav" class="nav-content collapse {{ request()->is('users*') || request()->routeIs('roles*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            @can('voir utilisateurs')
             <li>
                 <a class="{{ request()->routeIs('users.index') ? 'active' : '' }}" href="{{ route('users.index') }}">
                     <i class="bi bi-circle"></i><span>Liste Utilisateur</span>
                 </a>
             </li>
+            @endcan
+            @can('ajouter utilisateurs')
             <li>
                 <a class="{{ request()->routeIs('users.create') ? 'active' : '' }}" href="{{ route('users.create') }}">
                     <i class="bi bi-circle"></i><span>Ajouter Utilisateur</span>
                 </a>
             </li>
+            @endcan
+            @can('voir rôles')
             <li>
                 <a class="{{ request()->routeIs('roles.index') ? 'active' : '' }}" href="{{ route('roles.index') }}">
                     <i class="bi bi-circle"></i><span>Liste Rôle</span>
                 </a>
             </li>
+            @endcan
+            @can('créer rôles')
             <li>
                 <a class="{{ request()->routeIs('roles.create') ? 'active' : '' }}" href="{{ route('roles.create') }}">
                     <i class="bi bi-circle"></i><span>Créer Rôle</span>
                 </a>
             </li>
+            @endcan
         </ul>
     </li><!-- End Utilisateur Nav -->
+    @endif
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="#">
