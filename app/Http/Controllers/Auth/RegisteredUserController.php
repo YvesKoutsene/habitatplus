@@ -70,6 +70,5 @@ class RegisteredUserController extends Controller
 
         return redirect(route('dashboard', absolute: false));
         //return redirect()->route('login')->with('success', "Compte créé avec succès, connectez-vous");
-        //return redirect(route('dashboard', absolute: false))->with('success', "Nous vous avons envoyé un e-mail de confirmation à cette adresse.");
     }
 }

@@ -52,7 +52,7 @@
                                 <div class="pt-4 pb-2">
                                     <h5 class="card-title text-center pb-0 fs-4">Vérifiez votre E-mail</h5>
                                     <p class="text-center small">
-                                        {{ __('Merci de vous être inscrit ! Veuillez vérifier votre e-mail en cliquant sur le lien que nous avons envoyé. Si vous ne l'avez pas reçu, demandez-en un autre.') }}
+                                        {{ __("Merci de vous être inscrit ! Veuillez vérifier votre e-mail en cliquant sur le lien que nous avons envoyé. Si vous ne l'avez pas reçu, demandez-en un autre.") }}
                                     </p>
                                 </div>
 

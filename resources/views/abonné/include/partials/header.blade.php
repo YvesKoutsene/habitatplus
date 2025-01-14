@@ -89,7 +89,7 @@
 
         <div class="search-bar mx-auto">
             <form action="{{ url('/recherche') }}" method="GET" class="d-flex">
-                <input type="text" name="query" class="form-control me-2" placeholder="Rechercher...">
+                <input type="text" name="query" class="form-control me-2" placeholder="Rechercher sur habitat+">
                 <button type="submit" class="btn shadow-sm">
                     <i class="bi bi-search"></i>
                 </button>
@@ -99,20 +99,43 @@
         <nav>
 
             <ul class="nav">
-                <li class="nav-item mb-2">
+                <li class="nav-item dropdown">
                     @auth
-                    <a class="nav-link text-black fw-bold px-3 d-flex align-items-center" href="#">
-                        <i class="bi bi-person-circle me-2 text-black"></i>{{ auth()->user()->name }}
+                    <a class="nav-link dropdown-toggle text-black-50 px-3 d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle me-2 text-black-50"></i>{{ auth()->user()->name }}
                     </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown">
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="{{ route('dashboard') }}">
+                                <i class="bi bi-person me-2"></i> Mon Espace
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="">
+                                <i class="bi bi-gear me-2"></i> Paramètres
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item d-flex align-items-center text-danger">
+                                    <i class="bi bi-box-arrow-right me-2"></i> Déconnexion
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
                     @else
-                    <!-- Bouton pour ouvrir la modale -->
-                    <a class="nav-link text-black fw-bold px-3 d-flex align-items-center" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
-                        <i class="bi bi-person-circle me-2 text-black"></i>Se connecter
+                    <a class="nav-link text-black-50  px-3 d-flex align-items-center" href="#" data-bs-toggle="modal" data-bs-target="#authModal">
+                        <i class="bi bi-person-circle me-2 text-black-50"></i>S'inscrire
                     </a>
                     @endauth
                 </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link text-white fw-bold px-3 d-flex align-items-center bg-danger btn-publish me-2" href="">
+
+                <li class="nav-item">
+                    <a class="nav-link text-white px-3 d-flex align-items-center bg-danger btn-publish me-2" href="">
                         <i class="bi bi-megaphone me-2"></i>Publier annonce
                     </a>
                 </li>
@@ -122,10 +145,41 @@
     </div>
 </header>
 
-@include('abonné.pages.auth.register')
-@include('abonné.pages.auth.login')
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
+
+<style>
+    .dropdown-menu {
+        border-radius: 15px;
+        padding: 0.5rem 0;
+        background-color: #f9f9f9;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .dropdown-item {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+        color: #333;
+        transition: all 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+        background-color: #007bff;
+        color: white;
+        border-radius: 10px;
+    }
+
+    .dropdown-divider {
+        margin: 0.5rem 0;
+        border-top: 1px solid #e5e5e5;
+    }
+
+    .dropdown-menu-end {
+        right: 0;
+        left: auto;
+    }
+
+    .nav-link.dropdown-toggle::after {
+        margin-left: 0.5rem;
+    }
+</style>
 </html>

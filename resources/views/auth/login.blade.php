@@ -55,7 +55,7 @@
                                     <p class="text-center small">Entrez votre email et votre mot de passe</p>
                                 </div>
 
-                                <form method="POST" action="{{ route('login') }}" class="row g-3 needs-validation" novalidate>
+                                <form method="POST" action="{{ route('log') }}" class="row g-3 needs-validation" novalidate>
                                     @csrf
 
                                     <div class="col-12">
@@ -80,18 +80,18 @@
                                             -->
                                         </div>
                                     </div>
-
+<!--
                                     <div class="col-12">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="remember" id="rememberMe" value="true">
                                             <label class="form-check-label" for="rememberMe">Se rappeler de moi</label>
                                         </div>
                                     </div>
-
+-->
                                     <div class="col-12">
                                         <button class="btn btn-primary w-100" type="submit">Se connecter</button>
                                     </div>
-
+<!--
                                     <div class="col-12">
                                         <p class="small mb-0">Je n'ai pas de compte? <a href="{{ route('register') }}">S'inscrire</a></p>
                                     </div>
@@ -103,7 +103,7 @@
                                             </a>
                                         </div>
                                     @endif
-
+-->
                                 </form>
                             </div>
                         </div>

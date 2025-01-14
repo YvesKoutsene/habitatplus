@@ -10,17 +10,22 @@ use App\Http\Controllers\Admin\CategoryBienController;
 use App\Http\Controllers\Admin\ParameterModelController;
 use App\Http\Controllers\Admin\ModelSubscriptionController;
 use App\Http\Controllers\Admin\CategoryTicketController;
+use App\Http\Controllers\HomeController;
 
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware(['check.email.verified']);
 
-Route::get('/dashboard', function () {
+/*Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');*/
 
-Route::middleware('auth')->group(function () {
+Route::get('/dashboard', [HomeController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
