@@ -57,9 +57,6 @@ Route::middleware('auth')->group(function () {
     //Pour les categories de ticket
     Route::resource('category_ticket', CategoryTicketController::class);
 
-
-
-
 });
 
 require __DIR__.'/auth.php';

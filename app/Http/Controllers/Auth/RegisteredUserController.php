@@ -41,6 +41,7 @@ class RegisteredUserController extends Controller
         ],
         [
             'password.confirmed' => 'Les mots de passe ne correspondent pas.',
+            'email.unique' => 'Cette adresse email existe déjà'
         ]
         );
 
@@ -65,9 +66,10 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        //Auth::login($user);
+        Auth::login($user);
 
-        //return redirect(route('dashboard', absolute: false));
-        return redirect()->route('login')->with('success', "Compte créé avec succès, connectez-vous");
+        return redirect(route('dashboard', absolute: false));
+        //return redirect()->route('login')->with('success', "Compte créé avec succès, connectez-vous");
+        //return redirect(route('dashboard', absolute: false))->with('success', "Nous vous avons envoyé un e-mail de confirmation à cette adresse.");
     }
 }

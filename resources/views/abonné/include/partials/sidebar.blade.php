@@ -1,11 +1,20 @@
 <aside class="bg-light p-3">
-    <h3 class="text-black">Filtrer</h3>
+    <h3 class="text-black text-center">Filtrer</h3>
     <form action="{{ url('/recherche') }}" method="GET">
         <div class="mb-3">
             <label for="type" class="form-label text-black">Type de bien</label>
             <select name="type" id="type" class="form-select">
                 <option value="vente">Vente</option>
                 <option value="location">Location</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="type" class="form-label text-black">Catégorie de bien</label>
+            <select name="type" id="type" class="form-select">
+                <option value="maison">Maison</option>
+                <option value="terrain">Terrain</option>
+                <option value="---">---</option>
             </select>
         </div>
 
@@ -20,8 +29,8 @@
         </div>
 
         <div class="d-flex justify-content-center gap-3">
-            <button type="reset" class="btn btn-secondary">Réinitialiser</button>
             <button type="submit" class="btn btn-primary">Valider</button>
+            <button type="reset" class="btn btn-danger">Réinitialiser</button>
         </div>
     </form>
 </aside>

@@ -56,7 +56,7 @@
                 setTimeout(function() {
                     $('.alert').remove();
                 }, 300);
-            }, 4000);
+            }, 5000);
         });
     </script>
 

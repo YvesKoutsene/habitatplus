@@ -30,10 +30,17 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
+        //New by Jyl
+        /*$user = Auth::user();
+        if (!$user->hasVerifiedEmail()) {
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Votre compte n\'est pas vérifié.',
+            ]);
+        }*/
+
         $request->authenticate();
-
         $request->session()->regenerate();
-
         session()->flash('success', 'Content de vous revoir!');
 
         return redirect()->intended(route('profile.edit', absolute: false));

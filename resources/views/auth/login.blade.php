@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8">
@@ -29,13 +29,6 @@
     <!-- Template Main CSS File -->
     <link href="\assets/css/style.css" rel="stylesheet">
 
-    <!-- =======================================================
-    * Template Name: NiceAdmin
-    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-    * Updated: Apr 20 2024 with Bootstrap v5.3.3
-    * Author: BootstrapMade.com
-    * License: https://bootstrapmade.com/license/
-    ======================================================== -->
 </head>
 
 <body>
@@ -98,7 +91,7 @@
                                     <div class="col-12">
                                         <button class="btn btn-primary w-100" type="submit">Se connecter</button>
                                     </div>
-<!--
+
                                     <div class="col-12">
                                         <p class="small mb-0">Je n'ai pas de compte? <a href="{{ route('register') }}">S'inscrire</a></p>
                                     </div>
@@ -110,7 +103,7 @@
                                             </a>
                                         </div>
                                     @endif
--->
+
                                 </form>
                             </div>
                         </div>

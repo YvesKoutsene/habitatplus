@@ -100,7 +100,7 @@
 
             <ul class="nav">
                 <li class="nav-item mb-2">
-                    <a class="nav-link text-black fw-bold px-3 d-flex align-items-center me-2" href="{{ auth()->check() ? '#' : route('login') }}">
+                    <a class="nav-link text-black fw-bold px-3 d-flex align-items-center" href="{{ auth()->check() ? '#' : route('login') }}">
                         @auth
                         <i class="bi bi-person-circle me-2 text-black"></i>{{ auth()->user()->name }}
                         @else
