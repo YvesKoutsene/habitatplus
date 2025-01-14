@@ -100,15 +100,18 @@
 
             <ul class="nav">
                 <li class="nav-item mb-2">
-                    <a class="nav-link text-black fw-bold px-3 d-flex align-items-center" href="{{ auth()->check() ? '#' : route('login') }}">
-                        @auth
+                    @auth
+                    <a class="nav-link text-black fw-bold px-3 d-flex align-items-center" href="#">
                         <i class="bi bi-person-circle me-2 text-black"></i>{{ auth()->user()->name }}
-                        @else
-                        <i class="bi bi-person-circle me-2 text-black"></i>Se connecter
-                        @endauth
                     </a>
+                    @else
+                    <!-- Bouton pour ouvrir la modale -->
+                    <a class="nav-link text-black fw-bold px-3 d-flex align-items-center" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="bi bi-person-circle me-2 text-black"></i>Se connecter
+                    </a>
+                    @endauth
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-2">
                     <a class="nav-link text-white fw-bold px-3 d-flex align-items-center bg-danger btn-publish me-2" href="">
                         <i class="bi bi-megaphone me-2"></i>Publier annonce
                     </a>
@@ -119,6 +122,10 @@
     </div>
 </header>
 
+@include('abonné.pages.auth.register')
+@include('abonné.pages.auth.login')
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
