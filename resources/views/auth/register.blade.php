@@ -73,7 +73,7 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="inputState" class="form-label">Téléphone</label>
+                                        <label for="inputState" class="form-label">Téléphone<span class="text-danger">*</span></label>
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <select id="inputState" class="form-select" onchange="updatePhoneLength()" name="pays">
@@ -129,10 +129,9 @@
                         </div>
 <!--
                         <div class="credits">
-                            Conçu par <a href="https://www.instagram.com/jeanyveslorenzi/">Jean-Yves</a>
+                            Conçu par<a href="https://github.com/YvesKoutsene" target="_blank"> Jean-Yves</a>
                         </div>
-                        -->
-
+-->
                     </div>
                 </div>
             </div>

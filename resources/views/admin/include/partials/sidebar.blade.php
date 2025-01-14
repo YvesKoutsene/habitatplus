@@ -5,14 +5,14 @@
             <i class="bi bi-grid"></i>
             <span>Tableau de bord</span>
         </a>
-    </li><!-- End Dashboard Nav -->
+    </li>
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="#">
             <i class="bi bi-megaphone"></i>
             <span>Annonce</span>
         </a>
-    </li><!-- End Announcement Nav -->
+    </li>
 
     @if( Auth::user()->typeUser === 0 || Auth::user()->can('voir catégories') || Auth::user()->can('créer catégories') || Auth::user()->can('voir paramètres catégories') || Auth::user()->can('ajouter paramètres catégories'))
     <li class="nav-item">
@@ -49,7 +49,7 @@
             </li>
             @endif
         </ul>
-    </li><!-- End Categorie Bien Nav -->
+    </li>
     @endif
 
     @if( Auth::user()->typeUser === 0 || Auth::user()->can('voir modèles d\'abonnements') || Auth::user()->can('créer modèles d\'abonnements') || Auth::user()->can('voir paramètres modèles d\'abonnements') || Auth::user()->can('ajouter paramètres modèles d\'abonnements') )
@@ -87,7 +87,7 @@
             </li>
             @endif
         </ul>
-    </li><!-- End Modèle Abonnement Nav -->
+    </li>
     @endif
 
     @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir transactions/abonnements'))
@@ -107,7 +107,7 @@
                 </a>
             </li>
         </ul>
-    </li><!-- End Paiement Nav -->
+    </li>
     @endif
 
     @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir ticket') || Auth::user()->can('voir catégories ticket') || Auth::user()->can('créer catégories ticket') )
@@ -138,7 +138,7 @@
             </li>
             @endif
         </ul>
-    </li><!-- End Ticket Nav -->
+    </li>
     @endif
 
     @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir utilisateurs') || Auth::user()->can('ajouter utilisateurs') || Auth::user()->can('voir rôles') || Auth::user()->can('créer rôles') )
@@ -176,7 +176,7 @@
             </li>
             @endif
         </ul>
-    </li><!-- End Utilisateur Nav -->
+    </li>
     @endif
 
     <li class="nav-item">
@@ -184,7 +184,7 @@
             <i class="bi bi-flag"></i>
             <span>Rapport</span>
         </a>
-    </li><!-- End Rapport Nav -->
+    </li>
 
     <li class="nav-heading">Annexes</li>
 

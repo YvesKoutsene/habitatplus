@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitat+ Footer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #198754, #145b37);
+            padding: 40px 0;
+            font-size: 14px;
+        }
+
+        .footer h2,
+        .footer h5 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .footer p,
+        .footer a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #ffdd57;
+        }
+
+        .footer-links a {
+            margin-right: 15px;
+            font-size: 20px;
+            display: inline-block;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            transform: scale(1.2);
+            color: #ffdd57;
+        }
+
+        .footer hr {
+            border: none;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 30px 0;
+        }
+
+        .footer .list-inline-item {
+            margin-right: 10px;
+        }
+
+        .footer .text-end {
+            text-align: end;
+        }
+
+        @media (max-width: 768px) {
+            .footer .text-end {
+                text-align: start;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <h2>Habitat+</h2>
+            </div>
+
+            <div class="col-md-3">
+                <h5>À propos</h5>
+                <p>Votre plateforme de confiance pour trouver des biens immobiliers adaptés à vos besoins.
+                    Votre plateforme de confiance pour trouver des biens immobiliers adaptés à vos besoins.
+                </p>
+            </div>
+
+            <div class="col-md-3">
+                <h5>Nous contacter</h5>
+                <ul class="list-unstyled">
+                    <li>Email : <a href="mailto:info@dis.tg">info@dis.tg</a></li>
+                    <li>Téléphone : <a href="tel:+22893816766">+228 93816766</a></li>
+                    <li>Adresse : 123 Rue, Sun-City, Togo</li>
+                </ul>
+            </div>
+
+            <div class="col-md-3">
+                <h5>Nous suivre</h5>
+                <ul class="list-inline footer-links">
+                    <li class="list-inline-item">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-6">
+                &copy; 2024 <strong>Habitat+</strong>. Tous droits réservés.
+            </div>
+            <div class="col-md-6 text-end">
+                <ul class="list-inline footer-links">
+                    <li class="list-inline-item">
+                        <a href="#">Politique de confidentialité</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#">Conditions d'utilisation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+
+</html>

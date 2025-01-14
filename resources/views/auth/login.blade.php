@@ -83,7 +83,7 @@
                                             </button>
                                             <div class="invalid-feedback">Veuillez entrer votre mot de passe!</div>
                                             <!--
-                                            <x-input-error :messages="$errors->get('password')" class="mt-2" /> 
+                                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                             -->
                                         </div>
                                     </div>
@@ -116,7 +116,7 @@
                         </div>
 
                         <div class="credits">
-                            Conçu par<a href="#"> Jean-Yves</a>
+                            Conçu par<a href="https://github.com/YvesKoutsene" target="_blank"> Jean-Yves</a>
                         </div>
 
                     </div>
