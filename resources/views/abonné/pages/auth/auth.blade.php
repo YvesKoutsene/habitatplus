@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="tab-pane fade" id="loginSection" role="tabpanel" aria-labelledby="login-tab">
-                        <form action="{{ route('log') }}" method="POST">
+                        <form action="{{ route('login') }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label for="login_email" class="form-label text-black">Email<span class="text-danger" title="obligatoire">*</span></label>

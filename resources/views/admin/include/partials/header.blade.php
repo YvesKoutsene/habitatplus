@@ -189,11 +189,23 @@
                 </li>
 
                 <li>
+                    <a class="dropdown-item d-flex align-items-center" href="{{ route('acceuil') }}">
+                        <i class="bi bi-house"></i>
+                        <span>Acceuil</span>
+                    </a>
+                </li>
+
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+
+                <li>
                     <a class="dropdown-item d-flex align-items-center" href="{{ route('profile.edit') }}">
                         <i class="bi bi-person"></i>
                         <span>Mon Profil</span>
                     </a>
                 </li>
+
                 <li>
                     <hr class="dropdown-divider">
                 </li>

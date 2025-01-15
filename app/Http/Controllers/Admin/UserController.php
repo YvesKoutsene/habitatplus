@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 
+use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+
+
 class UserController extends Controller
 {
 
@@ -243,6 +248,37 @@ class UserController extends Controller
 
         $user->delete();
         return redirect()->route('users.index')->with('success', "Utilisateur {$user->name} supprimé avec succès.");
+    }
+
+    //Fonction pour renvoyer la vue d'auth d'admin et super admib
+    public function loginpage(): View
+    {
+        return view('admin.pages.users.login');
+    }
+
+    //Fonction d'authentification d'un admin et super admin
+    public function authAdmin(LoginRequest $request): RedirectResponse
+    {
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return back()->withErrors([
+                'email' => 'Email ou mot de passe incorrect.',
+            ]);
+        }
+
+        $user = Auth::user();
+
+        if ($user->typeUser !== 0 && $user->typeUser !== 1) {
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Compte admin non trouvé.',
+            ]);
+        }
+
+        $request->authenticate();
+        $request->session()->regenerate();
+        session()->flash('success', 'Connexion réussie!');
+
+        return redirect('/');
     }
 
 }

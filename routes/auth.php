@@ -10,18 +10,20 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\UserController;
 
 Route::middleware('guest')->group(function () {
+
+    //New by Jean-Yves
+    Route::get('habitat+/administrator/v2025/login', [UserController::class, 'loginpage'])->name('log-admin');
+    Route::post('habitat+/administrator/v2025/login', [UserController::class, 'authAdmin'])->name('auth-admin');
+
     Route::get('register', [RegisteredUserController::class, 'create'])
-                ->name('register');
+        ->name('register');
+    Route::post('register', [RegisteredUserController::class, 'store'])->name('register');
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
-
-    //Route::get('login', [AuthenticatedSessionController::class, 'create'])
-    Route::get('habitat+/administrator/v2025/login', [AuthenticatedSessionController::class, 'create'])
-                ->name('login');
-
-    Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('log');
+    Route::get('login', [AuthenticatedSessionController::class, 'create']);
+    Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login');
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
                 ->name('password.request');
@@ -37,7 +39,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    /*Route::get('verify-email', EmailVerificationPromptController::class)
+    Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');
 
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
@@ -47,7 +49,6 @@ Route::middleware('auth')->group(function () {
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
                 ->middleware('throttle:6,1')
                 ->name('verification.send');
-    */
 
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
                 ->name('password.confirm');
@@ -60,13 +61,3 @@ Route::middleware('auth')->group(function () {
                 ->name('logout');
 });
 
-Route::get('verify-email', EmailVerificationPromptController::class)
-    ->name('verification.notice');
-
-Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-    ->middleware(['signed', 'throttle:6,1'])
-    ->name('verification.verify');
-
-Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-    ->middleware('throttle:6,1')
-    ->name('verification.send');

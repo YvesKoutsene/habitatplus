@@ -16,7 +16,7 @@ class VerifyEmailController extends Controller
     public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {
         if ($request->user()->hasVerifiedEmail()) {
-            session()->flash('success', 'Connexion réussie!');
+            session()->flash('success', 'Compte vérifié avec succès!');
             return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
 
         }

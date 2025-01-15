@@ -81,14 +81,14 @@
 <header class="bg-gradient text-white py-3 shadow-sm">
     <div class="container d-flex justify-content-between align-items-center">
         <div class="logo d-flex align-items-center">
-            <a href="" class="d-flex align-items-center text-white text-decoration-none h4">
+            <a href="{{ route('acceuil') }}" class="d-flex align-items-center text-white text-decoration-none h4">
                 <img src="\assets/img/logo.png" alt="Logo" class="me-2 logo-img">
                 <span class="d-none d-lg-block fw-bold text-black">Habitat+</span>
             </a>
         </div>
 
         <div class="search-bar mx-auto">
-            <form action="{{ url('/recherche') }}" method="GET" class="d-flex">
+            <form action="" method="GET" class="d-flex">
                 <input type="text" name="query" class="form-control me-2" placeholder="Rechercher sur habitat+">
                 <button type="submit" class="btn shadow-sm">
                     <i class="bi bi-search"></i>

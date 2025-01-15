@@ -15,7 +15,7 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', function () {
     return view('welcome');
-})->middleware(['check.email.verified']);
+})->name('acceuil')->middleware(['check.email.verified']);
 
 /*Route::get('/dashboard', function () {
     return view('dashboard');

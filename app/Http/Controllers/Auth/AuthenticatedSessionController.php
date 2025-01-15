@@ -32,10 +32,10 @@ class AuthenticatedSessionController extends Controller
 
         //New by Jyl
         $user = Auth::user();
-        if (!$user->hasVerifiedEmail()) {
+        if ($user->typeUser !== 2) {
             Auth::logout();
             return back()->withErrors([
-                'email' => 'Votre compte n\'est pas vérifié.',
+                'email' => 'Compte abonné non trouvé.',
             ]);
         }
 
