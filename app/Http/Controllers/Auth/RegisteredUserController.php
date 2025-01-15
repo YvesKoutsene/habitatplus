@@ -59,7 +59,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'numero' => $request->numero,
             'pays' => $request->pays,
-            'photo_profil' => $profilePath ? Storage::url($profilePath) : '/storage/images/profils/default_profile.jpg',
+            'photo_profil' => $profilePath ? Storage::url($profilePath) : '/storage/images/profils/default_profile_ab.jpg',
             'typeUser' => '2',
             'statut' => 'actif',
         ]);

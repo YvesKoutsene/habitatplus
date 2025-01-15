@@ -2,9 +2,10 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
+
                 <ul class="nav nav-tabs justify-content-center mb-3" id="authTabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active px-4" id="register-tab" data-bs-toggle="tab" data-bs-target="#registerSection" role="tab" aria-controls="registerSection" aria-selected="true">
+                        <button class="nav-link active " id="register-tab" data-bs-toggle="tab" data-bs-target="#registerSection" role="tab" aria-controls="registerSection" aria-selected="true">
                             INSCRIPTION
                         </button>
                     </li>
@@ -21,30 +22,32 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label text-black">Nom<span class="text-danger" title="obligatoire">*</span></label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom complet" required>
+                                <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Votre nom complet" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label text-black">Email<span class="text-danger" title="obligatoire">*</span></label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Votre adresse email" required>
+                                <input type="email" class="form-control form-control-sm" id="email" name="email" placeholder="Votre adresse email" required>
                             </div>
+
                             <div class="mb-3">
                                 <label for="phone" class="form-label text-black">Téléphone<span class="text-danger" title="obligatoire">*</span></label>
                                 <div class="row">
                                     <div class="col-md-5">
-                                        <select id="inputState" class="form-control" name="pays">
+                                        <select id="inputState" class="form-select form-control form-select-sm" name="pays">
                                             <option value="">Choisir un indicatif</option>
                                         </select>
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="text" name="numero" class="form-control" id="numero" required oninput="validateInput()" placeholder="Numero de téléphone">
+                                        <input type="text" name="numero" class="form-control form-control-sm" id="numero" required oninput="validateInput()" placeholder="Numero de téléphone">
                                         <div class="invalid-feedback">Veuillez entrer votre numéro!</div>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="mb-3">
                                 <label for="register_password" class="form-label text-black">Mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                                 <div class="input-group">
-                                    <input type="password" name="password" class="form-control" placeholder="Votre mot de passe" id="register_password" required>
+                                    <input type="password" name="password" class="form-control form-control-sm" placeholder="Votre mot de passe" id="register_password" required>
                                     <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword('register_password', 'eye-icon-password')">
                                         <i class="bi bi-eye" id="eye-icon-password"></i>
                                     </button>
@@ -53,7 +56,7 @@
                             <div class="mb-3">
                                 <label for="password_confirmation" class="form-label text-black">Confirmer mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                                 <div class="input-group">
-                                    <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" placeholder="Confirmez votre mot de passe" required>
+                                    <input type="password" name="password_confirmation" class="form-control form-control-sm" id="password_confirmation" placeholder="Confirmez votre mot de passe" required>
                                     <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword('password_confirmation', 'eye-icon-confirmation')">
                                         <i class="bi bi-eye" id="eye-icon-confirmation"></i>
                                     </button>
@@ -65,7 +68,14 @@
                                     J'accepte les <a href="#" class="text-primary">termes et conditions</a>.
                                 </label>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100 rounded-pill">S'inscrire</button>
+
+                            <li class="mb-3">
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <div class="d-flex justify-content-center gap-3 me-2 mb-3">
+                                <button type="submit" class="btn btn-primary w-50 rounded-pill px-2 py-1">S'inscrire</button>
+                            </div>
                         </form>
                     </div>
 
@@ -74,18 +84,18 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="login_email" class="form-label text-black">Email<span class="text-danger" title="obligatoire">*</span></label>
-                                <input type="email" class="form-control" id="login_email" name="email" placeholder="Votre adresse email" required>
+                                <input type="email" class="form-control form-control-sm" id="login_email" name="email" placeholder="Votre adresse email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="login_password" class="form-label text-black">Mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                                 <div class="input-group">
-                                    <input type="password" name="password" class="form-control" placeholder="Votre mot de passe" id="login_password" required>
+                                    <input type="password" name="password" class="form-control form-control-sm" placeholder="Votre mot de passe" id="login_password" required>
                                     <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword('login_password', 'eye-icon-login')">
                                         <i class="bi bi-eye" id="eye-icon-login"></i>
                                     </button>
                                 </div>
                             </div>
-                            <div class="mb-3">
+                            <div class=""> <!-- mb-3 -->
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember" id="rememberMe" value="true">
                                     <label class="form-check-label text-black" for="rememberMe">Se rappeler de moi</label>
@@ -94,7 +104,12 @@
                             <div class="mb-3 d-flex justify-content-end">
                                 <a href="#" class="text-primary">Mot de passe oublié ?</a>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100 rounded-pill">Se connecter</button>
+                            <li class="mb-3">
+                                <hr class="dropdown-divider">
+                            </li>
+                            <div class="d-flex justify-content-center gap-3 me-2 mb-3">
+                                <button type="submit" class="btn btn-primary w-50 rounded-pill px-2 py-1">Se connecter</button>
+                            </div>
                         </form>
                     </div>
                 </div>

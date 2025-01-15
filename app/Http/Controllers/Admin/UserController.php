@@ -104,6 +104,8 @@ class UserController extends Controller
             'typeUser' => '1',
             'photo_profil' => $profilePath ? Storage::url($profilePath) : '/storage/images/profils/default_profile.jpg',
             'statut' => 'actif',
+
+            'email_verified_at' => now(),
         ]);
 
         $role = Role::find($request->role);

@@ -99,9 +99,10 @@
         <nav>
 
             <ul class="nav">
-                <li class="nav-item dropdown">
+
+                <li class="nav-item dropdown me-2">
                     @auth
-                    <a class="nav-link dropdown-toggle text-black-50 px-3 d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle text-black-50 px-2 py-1 d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person-circle me-2 text-black-50"></i>{{ auth()->user()->name }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown">
@@ -128,17 +129,18 @@
                         </li>
                     </ul>
                     @else
-                    <a class="nav-link text-black-50  px-3 d-flex align-items-center" href="#" data-bs-toggle="modal" data-bs-target="#authModal">
+                    <a class="nav-link text-black-50 d-flex align-items-center px-2 py-1" href="#" data-bs-toggle="modal" data-bs-target="#authModal">
                         <i class="bi bi-person-circle me-2 text-black-50"></i>S'inscrire
                     </a>
                     @endauth
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-white px-3 d-flex align-items-center bg-danger btn-publish me-2" href="">
-                        <i class="bi bi-megaphone me-2"></i>Publier annonce
+                <li class="nav-item ">
+                    <a class="nav-link text-white d-flex align-items-center bg-danger btn-publish px-2 py-1" href="">
+                        <i class="bi bi-megaphone me-2"></i> Publier annonce
                     </a>
                 </li>
+
             </ul>
 
         </nav>

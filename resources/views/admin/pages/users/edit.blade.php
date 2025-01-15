@@ -78,8 +78,7 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Ancien mot de passe -->
+                        <!--
                         <div class="mb-3">
                             <label for="current_password" class="form-label">Mot de passe actuel<span class="text-info" title="Obligatoire pour changer le mot de passe">*</span></label>
                             <div class="input-group">
@@ -92,8 +91,6 @@
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-
-                        <!-- Mot de passe -->
                         <div class="mb-3">
                             <label for="password" class="form-label">Nouveau mot de passe<span class="text-info" title="Laisser vide si pas de changement">*</span></label>
                             <div class="input-group">
@@ -106,8 +103,6 @@
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-
-                        <!-- Confirmation du mot de passe -->
                         <div class="mb-3">
                             <label for="password_confirmation" class="form-label">Confirmer le nouveau mot de passe<span class="text-info" title="Laisser vide si pas de changement">*</span></label>
                             <div class="input-group">
@@ -117,6 +112,8 @@
                                 </button>
                             </div>
                         </div>
+                        -->
+
                     </div>
                 </div>
 

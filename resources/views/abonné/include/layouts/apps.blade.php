@@ -24,6 +24,9 @@
 
 <div class="container my-4 flex-grow-1">
     <div class="row">
+        <aside class="col-md-3">
+            @include('abonné.include.partials.sidebars')
+        </aside>
         <main class="col-md-9">
             <div class="content">
                 @include('admin.include.partials.message')
@@ -37,5 +40,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

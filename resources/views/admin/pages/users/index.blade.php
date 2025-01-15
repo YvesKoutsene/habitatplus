@@ -63,6 +63,7 @@ use Carbon\Carbon;
                                 <th scope="col">Téléphone</th>
                                 <th scope="col">Rôle</th>
                                 <th scope="col">Crée le</th>
+                                <th scope="col">Vérifié le</th>
                                 <th scope="col">Statut</th>
                                 <th scope="col">Actions</th>
                             </tr>
@@ -77,9 +78,15 @@ use Carbon\Carbon;
                             <td>{{ $user->email }}</td>
                             <td>({{ $user->pays }}) {{ $user->numero }}</td>
                             <td>
-                                <span class="badge bg-primary">{{ ucfirst($user->roles->first()->name) }}</span>
+                                <span class="badge bg-primary">
+                                    {{ ucfirst($user->roles->first()) ? ucfirst($user->roles->first()->name) : 'Abonné' }}
+                                </span>
                             </td>
                             <td>{{ \Carbon\Carbon::parse($user->created_at)->format('d M Y') }}</td>
+                            <td>
+                                {!! $user->email_verified_at ? \Carbon\Carbon::parse($user->email_verified_at)->format('d M Y') : '<span class="badge bg-info">Non vérifié</span>' !!}
+                            </td>
+
                             <td>
                                 <span class="badge {{ $user->statut == 'actif' ? 'bg-success' : 'bg-danger' }}">
                                     {{ ucfirst($user->statut) }}
@@ -88,15 +95,13 @@ use Carbon\Carbon;
 
                             <td>
                                 <div class="d-flex">
-
                                     @if(Auth::user()->typeUser === 0 || Auth::user()->can('editer utilisateurs'))
-                                        @if(!$user->roles->pluck('name')->contains('Abonné'))
-                                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
+                                        @if($user->typeUser !== 2)
+                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
                                         @endif
                                     @endif
-
                                     @if(Auth::user()->typeUser === 0 || Auth::user()->can('suspendre/réactiver utilisateurs'))
                                         @if(auth()->id() !== $user->id)
                                             @if($user->statut == 'actif')
@@ -164,6 +169,7 @@ use Carbon\Carbon;
                                 <th scope="col">Téléphone</th>
                                 <th scope="col">Rôle</th>
                                 <th scope="col">Crée le</th>
+                                <th scope="col">Vérifié le</th>
                                 <th scope="col">Statut</th>
                                 <th scope="col">Actions</th>
                             </tr>

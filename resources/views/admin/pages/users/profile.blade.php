@@ -26,7 +26,7 @@
                         {{ Auth::user()->roles->first() ? ucfirst(Auth::user()->roles->first()->name) : 'Aucun rôle' }}
                     @endif
                 </h3>
-              <span>Actif depuis le {{ \Carbon\Carbon::parse(Auth::user()->created_at)->format('d M Y') }}</span>
+              <span>Actif depuis {{ \Carbon\Carbon::parse(Auth::user()->created_at)->format('d M Y') }}</span>
             </div>
           </div>
         </div>

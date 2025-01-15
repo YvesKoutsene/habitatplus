@@ -50,7 +50,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    /*public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
 
@@ -61,5 +61,28 @@ class AuthenticatedSessionController extends Controller
         session()->flash('success', 'Vous êtes deconnecté!');
 
         return redirect('/');
+    }*/
+
+    //New by Jean-Yves
+    public function destroy(Request $request): RedirectResponse
+    {
+        $user = Auth::user();
+
+        if ($user && ($user->typeUser === 0 || $user->typeUser === 1)) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            session()->flash('success', 'Vous êtes déconnecté!');
+
+            return redirect()->route('log-admin');
+        }
+
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        session()->flash('success', 'Vous êtes déconnecté!');
+
+        return redirect('/');
     }
+
 }

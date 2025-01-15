@@ -21,7 +21,7 @@ class HomeController extends Controller
             }
         }
 
-        return redirect('/login');
+        return redirect('acceuil');
     }
 
 }
