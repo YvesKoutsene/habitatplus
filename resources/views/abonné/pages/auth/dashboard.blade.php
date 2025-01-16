@@ -1,5 +1,4 @@
 @extends('abonné.include.layouts.apps')
-
 @section('content')
 
 <div class="tab-content" id="myTabContent">

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ParameterModelController;
 use App\Http\Controllers\Admin\ModelSubscriptionController;
 use App\Http\Controllers\Admin\CategoryTicketController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Abonné\AnnouncementController;
 
 
 Route::get('/', function () {
@@ -21,6 +22,7 @@ Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+#Pour super admin et admin
 Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -56,7 +58,17 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
 
 });
 
-Route::middleware(['auth','check.email.verified'])->group(function () {
+#Pour super admin et abonné
+Route::middleware(['auth', 'checkUserType:0,2','check.email.verified'])->group(function () {
+
+    //Pour les annonces
+    Route::resource('announcement', AnnouncementController::class);
+
+
+});
+
+#Pour super admin, admin et adonné
+Route::middleware(['auth','checkUserType:0,1,2','check.email.verified'])->group(function () {
     //Pour profil utilisateur
     Route::put('/profile/profile/update/{id}', [ProfileController::class, 'update'])->name('update.profile');
     Route::put('/profile/password/update/{id}', [ProfileController::class, 'updatePassword'])->name('update.password');

@@ -19,22 +19,17 @@
 
 </head>
 <body class="d-flex flex-column min-vh-100">
+
 @include('abonné.include.partials.header')
 @include('abonné.pages.auth.auth')
 
 <div class="container my-4 flex-grow-1">
-    <div class="row">
-        <aside class="col-md-3">
-            @include('abonné.include.partials.sidebars')
-        </aside>
-        <main class="col-md-9">
-            <div class="content">
-                @include('admin.include.partials.message')
-                @yield('content')
-                @include('abonné.pages.auth.edit')
-            </div>
-        </main>
-    </div>
+    <main class="col-md-8 mx-auto">
+        <div class="content">
+            @include('admin.include.partials.message')
+            @yield('content')
+        </div>
+    </main>
 </div>
 
 @include('abonné.include.partials.footer')
@@ -44,15 +39,10 @@
 
 <style>
 
-    .content{
-        margin-top: 70px;
-    }
-
-    aside{
+    .content {
         margin-top: 70px;
     }
 
 </style>
-
 </body>
 </html>

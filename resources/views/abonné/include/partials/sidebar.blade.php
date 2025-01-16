@@ -1,4 +1,4 @@
-<aside class="bg-light p-3" style="width: 250px;">
+<aside class="bg-light p-3 sidebar" style="width: 250px;" id="sidebar">
     <h3 class="text-black-50 text-center">Filtrer</h3>
     <form action="" method="GET">
         <div class="mb-3">

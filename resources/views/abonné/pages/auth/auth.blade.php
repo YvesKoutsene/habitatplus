@@ -3,20 +3,21 @@
         <div class="modal-content">
             <div class="modal-body">
                 <ul class="nav nav-tabs justify-content-center mb-3" id="authTabs" role="tablist">
+
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active " id="register-tab" data-bs-toggle="tab" data-bs-target="#registerSection" role="tab" aria-controls="registerSection" aria-selected="true">
-                            INSCRIPTION
+                        <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#loginSection" role="tab" aria-controls="loginSection" aria-selected="false">
+                            CONNEXION
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link px-4" id="login-tab" data-bs-toggle="tab" data-bs-target="#loginSection" role="tab" aria-controls="loginSection" aria-selected="false">
-                            CONNEXION
+                        <button class="nav-link px-4" id="register-tab" data-bs-toggle="tab" data-bs-target="#registerSection" role="tab" aria-controls="registerSection" aria-selected="true">
+                            INSCRIPTION
                         </button> <br>
                     </li>
                 </ul>
 
                 <div class="tab-content" id="authTabContent">
-                    <div class="tab-pane fade show active" id="registerSection" role="tabpanel" aria-labelledby="register-tab">
+                    <div class="tab-pane fade" id="registerSection" role="tabpanel" aria-labelledby="register-tab">
                         <form action="{{ route('register') }}" method="POST" onsubmit="return validatePasswords()">
                             @csrf
                             <div class="mb-3">
@@ -79,7 +80,7 @@
                         </form>
                     </div>
 
-                    <div class="tab-pane fade" id="loginSection" role="tabpanel" aria-labelledby="login-tab">
+                    <div class="tab-pane fade show active" id="loginSection" role="tabpanel" aria-labelledby="login-tab">
                         <form action="{{ route('login') }}" method="POST">
                             @csrf
                             <div class="mb-3">

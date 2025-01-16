@@ -1,81 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Habitat+ Footer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <style>
-        body {
-            color: #fff;
-            margin: 0;
-            padding: 0;
-        }
-
-        .footer {
-            /*background: linear-gradient(135deg, #198754, #145b37);*/
-            background: linear-gradient(135deg, #2b2d30, #145b37);
-            padding: 40px 0;
-            font-size: 14px;
-        }
-
-        .footer h2,
-        .footer h5 {
-            color: #fff;
-            margin-bottom: 20px;
-        }
-
-        .footer p,
-        .footer a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer a:hover {
-            color: #ffdd57;
-        }
-
-        .footer-links a {
-            margin-right: 15px;
-            font-size: 20px;
-            display: inline-block;
-            transition: transform 0.3s ease, color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            transform: scale(1.2);
-            color: #ffdd57;
-        }
-
-        .footer hr {
-            border: none;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.2);
-            margin: 30px 0;
-        }
-
-        .footer .list-inline-item {
-            margin-right: 10px;
-        }
-
-        .footer .text-end {
-            text-align: end;
-        }
-
-        @media (max-width: 768px) {
-            .footer .text-end {
-                text-align: start;
-                margin-top: 20px;
-            }
-        }
-    </style>
-</head>
-
-<body>
-<footer class="footer">
+<footer class="footer" id="footer">
     <div class="container">
         <div class="row">
             <div class="col-md-3">
@@ -136,6 +59,69 @@
         </div>
     </div>
 </footer>
-</body>
 
-</html>
+<style>
+    body {
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+
+    .footer {
+        /*background: linear-gradient(135deg, #198754, #145b37);*/
+        background: linear-gradient(135deg, #2b2d30, #145b37);
+        padding: 40px 0;
+        font-size: 14px;
+    }
+
+    .footer h2,
+    .footer h5 {
+        color: #fff;
+        margin-bottom: 20px;
+    }
+
+    .footer p,
+    .footer a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .footer a:hover {
+        color: #ffdd57;
+    }
+
+    .footer-links a {
+        margin-right: 15px;
+        font-size: 20px;
+        display: inline-block;
+        transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+        transform: scale(1.2);
+        color: #ffdd57;
+    }
+
+    .footer hr {
+        border: none;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 30px 0;
+    }
+
+    .footer .list-inline-item {
+        margin-right: 10px;
+    }
+
+    .footer .text-end {
+        text-align: end;
+    }
+
+    @media (max-width: 768px) {
+        .footer .text-end {
+            text-align: start;
+            margin-top: 20px;
+        }
+    }
+</style>
