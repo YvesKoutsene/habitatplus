@@ -4,14 +4,15 @@
             <img src="{{ asset(Auth::user()->photo_profil) }}"
                  alt="Photo de profil"
                  class="img-thumbnail rounded-circle shadow-sm"
-                 style="width: 120px; height: 120px; border: 5px solid white;">
+                 style="width: 120px; height: 120px; border: 1px solid white;">
         </div>
         <h4 class="mb-1">{{ auth()->user()->name }}</h4>
         <p class="mb-1">{{ auth()->user()->email }}</p>
-        <p class="mb-1">
-            ({{ auth()->user()->pays }}) {{ auth()->user()->numero }}
-        </p>
-
+        <!--
+            <p class="mb-1">
+                ({{ auth()->user()->pays }}) {{ auth()->user()->numero }}
+            </p>
+        -->
         @php
         $createdAt = \Carbon\Carbon::parse(Auth::user()->created_at);
         $now = \Carbon\Carbon::now();
@@ -39,14 +40,14 @@
     <div class="card-body text-center">
         <div class="row justify-content-center">
             <div class="col-md-5 mb-3">
-                <a href="#" class="btn btn-primary btn-block shadow-sm">
-                    <i class="bi bi-pencil-square me-2"></i> Modifier mes informations
-                </a>
+                <button class="btn btn-primary btn-block shadow-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                    <i class="bi bi-pencil-square me-2"></i> Modifier informations
+                </button>
             </div>
             <div class="col-md-5 mb-3">
-                <a href="#" class="btn btn-warning btn-block shadow-sm">
-                    <i class="bi bi-lock me-2"></i> Changer mon mot de passe
-                </a>
+                <button class="btn btn-warning btn-block shadow-sm" data-bs-toggle="modal" data-bs-target="#editPasswordModal">
+                    <i class="bi bi-lock me-2"></i> Changer mot de passe
+                </button>
             </div>
         </div>
     </div>
@@ -71,7 +72,7 @@
     }
 
     .profile-picture img:hover {
-        transform: scale(1.1);
+        transform: scale(1.3);
     }
 
     .btn {

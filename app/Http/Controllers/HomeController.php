@@ -13,7 +13,8 @@ class HomeController extends Controller
             $typeUser = Auth::user()->typeUser;
 
             if ($typeUser == 0 || $typeUser == 1) {
-                return view('dashboard');
+                //return view('dashboard');
+                return redirect()->route('profile.edit');
             } elseif ($typeUser == 2) {
                 return view('abonné.pages.auth.dashboard');
             } else {

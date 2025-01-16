@@ -97,14 +97,14 @@
         </div>
 
         <nav>
-
             <ul class="nav">
-
                 <li class="nav-item dropdown me-2">
                     @auth
-                    <a class="nav-link dropdown-toggle text-black-50 px-2 py-1 d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle me-2 text-black-50"></i>{{ auth()->user()->name }}
+                    <a class="nav-link dropdown-toggle text-black-50 px-2 py-1 d-flex align-items-center me-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{ asset(Auth::user()->photo_profil) }}" alt="Profil" class="rounded-circle me-1" style="width: 25px; height: 25px; object-fit: cover; border: 2px solid #f8f9fa;">
+                        {{ auth()->user()->name }}
                     </a>
+
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown">
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="{{ route('dashboard') }}">
@@ -134,15 +134,20 @@
                     </a>
                     @endauth
                 </li>
-
+                @auth
                 <li class="nav-item ">
                     <a class="nav-link text-white d-flex align-items-center bg-danger btn-publish px-2 py-1" href="">
                         <i class="bi bi-megaphone me-2"></i> Publier annonce
                     </a>
                 </li>
-
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link text-white d-flex align-items-center bg-danger btn-publish px-2 py-1" href="javascript:void(0);" onclick="showAuthModal()">
+                            <i class="bi bi-megaphone me-2"></i> Publier annonce
+                        </a>
+                    </li>
+                @endauth
             </ul>
-
         </nav>
     </div>
 </header>
@@ -184,4 +189,15 @@
         margin-left: 0.5rem;
     }
 </style>
+
+<script>
+    function showAuthModal() {
+        const authModal = new bootstrap.Modal(document.getElementById('authModal'));
+        authModal.show();
+
+        const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
+        loginTab.show();
+    }
+</script>
+
 </html>

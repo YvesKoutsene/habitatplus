@@ -2,7 +2,6 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
-
                 <ul class="nav nav-tabs justify-content-center mb-3" id="authTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active " id="register-tab" data-bs-toggle="tab" data-bs-target="#registerSection" role="tab" aria-controls="registerSection" aria-selected="true">
@@ -18,7 +17,7 @@
 
                 <div class="tab-content" id="authTabContent">
                     <div class="tab-pane fade show active" id="registerSection" role="tabpanel" aria-labelledby="register-tab">
-                        <form action="{{ route('register') }}" method="POST">
+                        <form action="{{ route('register') }}" method="POST" onsubmit="return validatePasswords()">
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label text-black">Nom<span class="text-danger" title="obligatoire">*</span></label>
@@ -61,6 +60,7 @@
                                         <i class="bi bi-eye" id="eye-icon-confirmation"></i>
                                     </button>
                                 </div>
+                                <div id="passwordMessage" class="text-danger mt-2" style="display: none;">Les mots de passe ne correspondent pas.</div>
                             </div>
                             <div class="form-check mb-3">
                                 <input type="checkbox" class="form-check-input" id="terms" required>
@@ -220,4 +220,19 @@
         const input = document.getElementById('numero');
         input.value = input.value.replace(/[^0-9]/g, '');
     }
+
+    function validatePasswords() {
+        const register_password = document.getElementById('register_password').value;
+        const password_confirmation = document.getElementById('password_confirmation').value;
+        const message = document.getElementById('passwordMessage');
+
+        if (register_password !== password_confirmation) {
+            message.style.display = 'block';
+            return false;
+        } else {
+            message.style.display = 'none';
+            return true;
+        }
+    }
+
 </script>

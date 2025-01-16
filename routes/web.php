@@ -17,10 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 })->name('acceuil')->middleware(['check.email.verified']);
 
-/*Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');*/
-
 Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -41,10 +37,6 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
     Route::patch('users/{user}/reactivate', [UserController::class, 'reactivate'])->name('users.reactivate');
     Route::resource('users', UserController::class);
 
-    //Pour profil d'admin
-    Route::put('/profile/password/update/{id}', [ProfileController::class, 'updatePassword'])->name('update.password');
-    Route::put('/profile/profile/update/{id}', [ProfileController::class, 'update'])->name('update.profile');
-
     //Pour les paramètres categories de bien
     Route::resource('parameter_category', ParameterCategoryController::class);
 
@@ -61,6 +53,13 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
 
     //Pour les categories de ticket
     Route::resource('category_ticket', CategoryTicketController::class);
+
+});
+
+Route::middleware(['auth','check.email.verified'])->group(function () {
+    //Pour profil utilisateur
+    Route::put('/profile/profile/update/{id}', [ProfileController::class, 'update'])->name('update.profile');
+    Route::put('/profile/password/update/{id}', [ProfileController::class, 'updatePassword'])->name('update.password');
 
 });
 

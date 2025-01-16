@@ -38,7 +38,6 @@ class ProfileController extends Controller
 
     public function updatePassword(Request $request, $id)
     {
-        // Validation des champs
         $validated = $request->validate([
             'current_password' => ['required'],
             'password' => ['required', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()],
@@ -48,17 +47,14 @@ class ProfileController extends Controller
         ]
         );
 
-        // Récupération de l'utilisateur
         $user = User::findOrFail($id);
 
-        // Vérification de l'ancien mot de passe
         if (!Hash::check($validated['current_password'], $user->password)) {
             throw ValidationException::withMessages([
                 'current_password' => 'Le mot de passe actuel est incorrect.',
             ]);
         }
 
-        // Mise à jour du mot de passe
         $user->password = Hash::make($validated['password']);
         $user->save();
 
@@ -84,7 +80,7 @@ class ProfileController extends Controller
 
     public function update(Request $request, $id)
     {
-       
+
         $validateUser = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
@@ -100,35 +96,29 @@ class ProfileController extends Controller
                 ->withInput();
         }
 
-        // Récupérer l'utilisateur
         $user = User::findOrFail($id);
-        
-        // Conserver l'ancienne photo de profil par défaut
+
         $profilePath = $user->photo_profil;
 
-        // Gestion de l'upload de l'image
         if ($request->hasFile('photo_profil')) {
             $profile = $request->file('photo_profil');
             $profileName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $profile->getClientOriginalName());
             $profilePath = $profile->storeAs('images/profils', $profileName, 'public');
-            // Mettre à jour le chemin de la photo de profil
             $profilePath = Storage::url($profilePath);
         }
 
-        // Mise à jour des informations de l'utilisateur
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password ? Hash::make($request->password) : $user->password,
             'pays' => $request->pays,
             'numero' => $request->numero,
-            'photo_profil' => $profilePath, // Utiliser le chemin mis à jour ou l'ancien
-            'statut' => 'actif', // ou laissez tel quel si ce n'est pas modifiable
+            'photo_profil' => $profilePath,
+            'statut' => 'actif',
         ]);
 
 
-        return redirect()->route('profile.edit')
-            ->with('success', "Profil mis à jour avec succès.");
+        return back()->with('success', "Profil mis à jour avec succès.");
     }
 
     /**

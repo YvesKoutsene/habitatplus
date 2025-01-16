@@ -30,7 +30,7 @@
     <style>
         .alert-container {
             position: fixed;
-            top: 20px; /* Ajustez la distance du haut */
+            top: 20px;
             right: 20px; /* Ajustez la distance de la droite */
             z-index: 1050; /* Assurez-vous que l'alerte est au-dessus des autres éléments */
             width: auto; /* Largeur automatique pour éviter de prendre tout l'espace */

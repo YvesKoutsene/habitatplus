@@ -89,7 +89,7 @@
 
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit"
                   <!-- Profile Edit Form -->
-                  <form method="POST" action="{{ route('update.profile', $user->id) }}" class="needs-validation" enctype="multipart/form-data" novalidate>
+                  <form method="POST" action="{{ route('update.profile', auth()->user()->id) }}" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
                     <div class="row mb-3">
@@ -108,7 +108,7 @@
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="name" type="text" class="form-control" id="fullName" value="{{ old('name', $user->name) }}">
+                        <input name="name" type="text" class="form-control" id="fullName" value="{{ old('name', auth()->user()->name) }}" required>
                       </div>
                     </div>
 
@@ -124,11 +124,11 @@
                         <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Telephone<span class="text-danger" title="obligatoire">*</span></label>
                             <div class="col-md-4">
                                 <select id="countryCode" name="pays" class="form-select" required>
-                                    <option value="{{ old('pays', $user->pays) }}">{{ old('pays', $user->pays) }}</option>
+                                    <option value="{{ old('pays', auth()->user()->pays) }}">{{ old('pays', auth()->user()->pays) }}</option>
                                 </select>
                             </div>
                             <div class="col-md-5">
-                                <input type="text" name="numero" class="form-control" id="numero" required oninput="validateInput()" value="{{ old('numero', $user->numero) }}">
+                                <input type="text" name="numero" class="form-control" id="numero" required oninput="validateInput()" value="{{ old('numero', auth()->user()->numero) }}">
                                 <div class="invalid-feedback">Veuillez entrer le numéro!</div>
                             </div>
                     </div>
@@ -136,7 +136,7 @@
                     <div class="row mb-3">
                       <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email<span class="text-danger" title="obligatoire">*</span></label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="email" type="email" class="form-control" id="Email" value="{{ old('name', $user->email) }}">
+                        <input name="email" type="email" class="form-control" id="Email" value="{{ old('name', auth()->user()->email) }}" required>
                       </div>
                     </div>
 
@@ -148,9 +148,10 @@
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
-                  <form method="POST" action="{{ route('update.password', $user->id) }}" class="needs-validation" novalidate>
+                  <form method="POST" action="{{ route('update.password', auth()->user()->id) }}" onsubmit="return validatePasswords()">
                       @method('PUT')
                       @csrf
+
                       <div class="row mb-3">
                           <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Mot de passe actuel<span class="text-info" title="Obligatoire pour changer le mot de passe">*</span></label>
                           <div class="col-md-8 col-lg-9">
@@ -185,6 +186,7 @@
                                   </button>
                               </div>
                           </div>
+                          <div id="passwordMessage" class="text-danger mt-2" style="display: none;">Les mots de passe ne correspondent pas.</div>
                       </div>
                       <div class="text-center">
                           <button type="submit" class="btn btn-primary">Changer</button>
@@ -249,10 +251,24 @@
                         selectElement.appendChild(option);
                     }
                 });
-                selectElement.value = "{{ old('pays', $user->pays) }}"; // Pré-sélectionner le pays
+                selectElement.value = "{{ old('pays', auth()->user()->pays) }}";
             })
             .catch(console.error);
     });
+
+    function validatePasswords() {
+        const newPassword = document.getElementById('newPassword').value;
+        const renewPassword = document.getElementById('renewPassword').value;
+        const message = document.getElementById('passwordMessage');
+
+        if (newPassword !== renewPassword) {
+            message.style.display = 'block';
+            return false;
+        } else {
+            message.style.display = 'none';
+            return true;
+        }
+    }
 
 </script>
 @endsection

@@ -31,6 +31,7 @@
             <div class="content">
                 @include('admin.include.partials.message')
                 @yield('content')
+                @include('abonné.pages.auth.edit')
             </div>
         </main>
     </div>
