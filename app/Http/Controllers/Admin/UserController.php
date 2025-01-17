@@ -68,55 +68,60 @@ class UserController extends Controller
     // Fonction d'enregistrement d'utilisateur
     public function store(Request $request)
     {
-        $validateUser = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:8',
-            'pays' => 'required|string',
-            'numero' => 'required|string|max:15',
-            'photo_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
-            'role' => 'required|exists:roles,id',
-        ],
-        [
-            'password.confirmed' => 'Les mots de passe ne correspondent pas.',
+        $validated = $request->validate([
+            'category' => 'required|exists:categorie_biens,id',
+            'titre' => 'required|string|max:255',
+            'prix' => 'required|numeric|min:1',
+            'location' => 'required|string|max:255',
+            'lieu' => 'required|string|max:200',
+            'type_offre' => 'required|string',
+            'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'parameters' => 'array',
         ]);
 
-        if ($validateUser->fails()) {
-            return redirect()->back()
-                ->withErrors($validateUser)
-                ->withInput();
-        }
-
-        $profilePath = null;
-
-        if ($request->hasFile('photo_profil')) {
-            $profile = $request->file('photo_profil');
-            $profileName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $profile->getClientOriginalName());
-            $profilePath = $profile->storeAs('images/profils', $profileName, 'public');
-        }
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'pays' => $request->pays,
-            'numero' => $request->numero,
-            'typeUser' => '1',
-            'photo_profil' => $profilePath ? Storage::url($profilePath) : '/storage/images/profils/default_profile.jpg',
-            'statut' => 'actif',
-
-            'email_verified_at' => now(),
+        $annonce = Bien::create([
+            'titre' => $validated['titre'],
+            'description' => $request->input('description', ''),
+            'prix' => $validated['prix'],
+            'lieu' => $validated['lieu'],
+            'statut' => 'brouillon',
+            'type_offre' => $validated['type_offre'],
+            'id_user' => auth()->id(),
+            'id_categorie_bien' => $validated['category'],
         ]);
 
-        $role = Role::find($request->role);
-        if ($role) {
-            $user->assignRole($role);
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                $photoName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $photo->getClientOriginalName());
+
+                $photoPath = $photo->storeAs('images/annonces', $photoName, 'public');
+
+                PhotoBien::create([
+                    'url_photo' => Storage::url($photoPath),
+                    'id_bien' => $annonce->id,
+                ]);
+            }
+        } else {
+            $defaultPhotoPath = '/storage/images/annonces/default_image_an.jpg';
+            PhotoBien::create([
+                'url_photo' => $defaultPhotoPath,
+                'id_bien' => $annonce->id,
+            ]);
         }
 
-        return redirect()->route('users.index')
-            ->with('success', "Utilisateur {$user->name} ajouté avec succès.");
+        if (!empty($validated['parameters'])) {
+            foreach ($validated['parameters'] as $paramId => $value) {
+                ValeurBien::create([
+                    'valeur' => $value,
+                    'id_bien' => $annonce->id,
+                    'id_association_categorie' => $paramId,
+                ]);
+            }
+        }
+
+        // Redirection avec message de succès
+        return redirect()->route('acceuil')->with('success', 'Annonce créée avec succès!');
     }
-
 
     /**
      * Display the specified resource.

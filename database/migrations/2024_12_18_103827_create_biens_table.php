@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('titre');
             $table->text('description');
-            $table->decimal('prix', 10, 2);
+            $table->decimal('prix', 10, 2); //12
             $table->string('lieu');
             $table->string('statut');
             $table->string('type_offre');

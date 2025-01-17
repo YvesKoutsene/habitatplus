@@ -21,4 +21,5 @@ class AssociationCategorieParametre extends Model
     {
         return $this->belongsTo(ParametreCategorie::class, 'id_parametre');
     }
+
 }

@@ -11,13 +11,13 @@
                              alt="Photo de profil"
                              class="img-thumbnail rounded-circle shadow-sm"
                              id="profilePreview"
-                             style="width: 120px; height: 120px; border: 1px solid white;">
+                             style="width: 100px; height: 100px; border: 1px solid white;">
 
                         <input type="file" name="photo_profil" class="form-control mt-2" id="photoInput" accept="image/*" onchange="previewImage(event)" style="display: none;">
                         <label for="photoInput" class="position-absolute" style="bottom: 5px; right: 5px; cursor: pointer;">
                             <i class="bi bi-pencil-fill" style="background-color: rgba(0, 0, 0, 0.6); border-radius: 50%; padding: 5px;" title="Modifier profil"></i>
                         </label>
-                        <p class="mt-2 text-black">Photo profil</p>
+                        <p class="mt-2 text-black">Photo de profil</p>
                     </div>
 
                     <div class="mb-3">

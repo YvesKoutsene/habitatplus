@@ -71,7 +71,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-8">
-                                    <input type="text" name="numero" class="form-control" id="numero" required oninput="validateInput()" value="{{ old('numero') }}" required placeholder="Numero de téléphone de l'utilisateur">
+                                    <input type="text" name="numero" class="form-control" id="numero" oninput="validateInput()" value="{{ old('numero') }}" required placeholder="Numero de téléphone de l'utilisateur">
                                     <div class="invalid-feedback">Veuillez entrer le numéro!</div>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                                 </button>
                             </div>
                         </div>
-                    
+
 
                 </div>
             </div>
@@ -127,7 +127,7 @@
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Ajouter</button>
                         <!--
-                        <button type="reset" class="btn btn-secondary">Réinitialiser</button> 
+                        <button type="reset" class="btn btn-secondary">Réinitialiser</button>
                         -->
                     </div>
                 </div>
