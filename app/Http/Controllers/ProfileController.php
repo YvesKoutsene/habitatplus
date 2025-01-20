@@ -83,7 +83,7 @@ class ProfileController extends Controller
 
         $validateUser = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            //'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'password' => 'nullable|string|confirmed|min:8',
             'pays' => 'required|string',
             'numero' => 'required|string|max:15',
@@ -109,7 +109,7 @@ class ProfileController extends Controller
 
         $user->update([
             'name' => $request->name,
-            'email' => $request->email,
+            //'email' => $request->email,
             'password' => $request->password ? Hash::make($request->password) : $user->password,
             'pays' => $request->pays,
             'numero' => $request->numero,

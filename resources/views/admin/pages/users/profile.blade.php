@@ -143,7 +143,7 @@
                     <div class="text-center">
                       <button type="submit" class="btn btn-primary">Modifier</button>
                     </div>
-                  </form><!-- End Profile Edit Form -->
+                  </form>
                 </div>
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">

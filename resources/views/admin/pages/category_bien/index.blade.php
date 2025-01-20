@@ -192,6 +192,7 @@
                                                     </div>
                                                 </div>
                                                 <!-- Fin de la modal -->
+
                                             </div>
                                         </td>
                                     </tr>

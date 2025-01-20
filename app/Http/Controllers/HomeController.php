@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\models\User;
+use App\Models\CategorieBien;
+use App\Models\Bien;
+use App\Models\PhotoBien;
+use App\Models\ValeurBien;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -16,7 +20,17 @@ class HomeController extends Controller
                 //return view('dashboard');
                 return redirect()->route('profile.edit');
             } elseif ($typeUser == 2) {
-                return view('abonné.pages.auth.dashboard');
+
+                $user = Auth::user();
+                $biens = $user->biens()->where('statut', 'brouillon')
+                    ->orWhere('statut', 'publié')
+                    ->orWhere('statut', 'republié')
+                    ->orWhere('statut', 'terminé')
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+
+                return view('abonné.pages.auth.dashboard',compact('biens'));
+
             } else {
                 return redirect()->back();
             }

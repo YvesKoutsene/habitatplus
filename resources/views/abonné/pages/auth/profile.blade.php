@@ -1,3 +1,4 @@
+<h2 class="mb-4 text-black-50">Mon Profil</h2>
 <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
     <div class="bg-primary text-white text-center py-5">
         <div class="profile-picture mb-4">

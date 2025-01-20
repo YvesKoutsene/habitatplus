@@ -26,7 +26,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label text-black">Email<span class="text-danger" title="obligatoire">*</span></label>
-                        <input type="email" class="form-control form-control-sm" id="email" name="email" value="{{ auth()->user()->email }}" required placeholder="Votre email">
+                        <input type="email" class="form-control form-control-sm" id="email" name="email" value="{{ auth()->user()->email }}" placeholder="Votre email" disabled>
                     </div>
 
                     <div class="mb-3">
@@ -93,7 +93,7 @@
                                 <i class="bi bi-eye" id="eye-icon-renew"></i>
                             </button>
                         </div>
-                        <div id="passwordMessage" class="text-danger mt-2" style="display: none;">Les mots de passe ne correspondent pas.</div>
+                        <div id="passwordMessage01" class="text-danger mt-2" style="display: none;">Les mots de passe ne correspondent pas.</div>
                     </div>
 
                     <li class="mb-3">
@@ -176,11 +176,11 @@
     }
 
     function validatePasswords() {
-        const newPassword = document.getElementById('newPassword').value;
-        const renewPassword = document.getElementById('renewPassword').value;
-        const message = document.getElementById('passwordMessage');
+        const register_password = document.getElementById('newPassword').value;
+        const password_confirmation = document.getElementById('renewPassword').value;
+        const message = document.getElementById('passwordMessage01');
 
-        if (newPassword !== renewPassword) {
+        if (register_password !== password_confirmation) {
             message.style.display = 'block';
             return false;
         } else {

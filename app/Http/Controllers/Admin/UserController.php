@@ -285,7 +285,7 @@ class UserController extends Controller
         $request->session()->regenerate();
         session()->flash('success', 'Connexion réussie!');
 
-        return redirect('/');
+        return redirect()->route('profile.edit');
     }
 
 }

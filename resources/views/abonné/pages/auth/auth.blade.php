@@ -142,8 +142,8 @@
 
     .nav-tabs .nav-link.active {
         /*background-color: #007bff;*/
-        background-color: #c8ff00;
-        //color: white;
+        background-color: #d0ff00;
+        /*color: white;*/
         color: black;
         font-weight: bold;
         box-shadow: 0 3px 6px rgba(0, 123, 255, 0.3);

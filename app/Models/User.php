@@ -29,7 +29,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'pays',
         'photo_profil',
         'statut',
-
         'email_verified_at'
     ];
 
@@ -70,4 +69,5 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Ticket::class, 'id_user');
     }
+
 }

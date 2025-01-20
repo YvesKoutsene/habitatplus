@@ -6,6 +6,7 @@
         @include('abonné.pages.auth.profile')
     </div>
     <div class="tab-pane fade" id="annonces" role="tabpanel" aria-labelledby="annonces-tab">
+        @include('abonné.pages.announcement.index')
     </div>
     <div class="tab-pane fade" id="favoris" role="tabpanel" aria-labelledby="favoris-tab">
     </div>

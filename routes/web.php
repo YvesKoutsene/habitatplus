@@ -63,6 +63,8 @@ Route::middleware(['auth', 'checkUserType:0,2','check.email.verified'])->group(f
 
     //Pour les annonces
     Route::resource('announcement', AnnouncementController::class);
+    Route::put('announcement/{bien}/terminate', [AnnouncementController::class, 'terminate'])->name('announcement.terminate');
+    Route::put('announcement/{bien}/relaunch', [AnnouncementController::class, 'relaunch'])->name('announcement.relaunch');
 
 
 });

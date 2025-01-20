@@ -21,6 +21,7 @@
             <div id="preview" class="d-flex gap-"></div>
         </div>
     </div>
+
     <div class="card shadow-lg border-0 rounded-lg mb-4">
         <div class="card-header text-black">
             <h5>Catégorie de bien</h5>
@@ -35,9 +36,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3" id="parametersContainer">
-
-            </div>
+            <div class="mb-3" id="parametersContainer"></div>
         </div>
     </div>
     <!-- Carte pour les détails de l'annonce -->
@@ -47,8 +46,8 @@
         </div>
         <div class="card-body">
             <div class="mb-3">
-                <label for="ad_type" class="form-label text-black">Type d'annonce<span class="text-danger" title="obligatoire">*</span></label>
-                <select class="form-select form-control form-select-sm" id="ad_type" name="type_offre" required>
+                <label for="ad_type" class="form-label text-black">Type d'annonce<span class="text-danger" title="obligatoire pour publier votre annonce">*</span></label>
+                <select class="form-select form-control form-select-sm" id="type_annonce" name="type_offre">
                     <option value="" disabled selected>Sélectionnez un type</option>
                     <option value="Location">Location</option>
                     <option value="Vente">Vente</option>
@@ -56,12 +55,12 @@
             </div>
 
             <div class="mb-3">
-                <label for="title" class="form-label text-black">Titre<span class="text-danger" title="obligatoire">*</span></label>
+                <label for="title" class="form-label text-black">Titre<span class="text-danger" title="obligatoire pour publier votre annonce">*</span></label>
                 <input type="text" class="form-control form-control-sm" id="title" name="titre" required placeholder="Titre de votre annonce">
             </div>
 
             <div class="mb-3">
-                <label for="prix" class="form-label text-black">Prix<span class="text-danger" title="obligatoire">*</span></label>
+                <label for="prix" class="form-label text-black">Prix<span class="text-danger" title="obligatoire pour publier votre annonce">*</span></label>
                 <div class="input-group mb-3">
                     <input
                         type="text"
@@ -69,17 +68,17 @@
                         id="prix_annonce"
                         class="form-control form-control-sm"
                         placeholder="Prix de votre annonce"
-                        required min="1" oninput="validateInput()">
+                        min="1" oninput="validateInput01()">
                     <span class="input-group-text">CFA</span>
                 </div>
             </div>
             <div class="mb-3">
-                <label for="location" class="form-label text-black">Lieu<span class="text-danger" title="obligatoire">*</span></label>
-                <input type="text" class="form-control form-control-sm" id="location" name="lieu" required placeholder="Lieu où se trouve votre bien">
+                <label for="location" class="form-label text-black">Lieu<span class="text-danger" title="obligatoire pour publier votre annonce">*</span></label>
+                <input type="text" class="form-control form-control-sm" id="location" name="lieu" placeholder="Lieu où se trouve votre bien">
             </div>
             <div class="mb-3">
-                <label for="description" class="form-label text-black">Description<span class="text-danger" title="obligatoire">*</span></label>
-                <textarea class="form-control form-control-sm" id="description" name="description" rows="4" required placeholder="Une petite description de votre annonce"></textarea>
+                <label for="description" class="form-label text-black">Description<span class="text-danger" title="obligatoire pour publier votre annonce">*</span></label>
+                <textarea class="form-control form-control-sm" id="description" name="description" rows="4" placeholder="Une petite description de votre annonce"></textarea>
                 <small class="text-muted">Ne pas dépasser 200 caractères maximum.</small>
             </div>
             <div class="d-flex justify-content-center gap-3">
@@ -95,6 +94,7 @@
 </form>
 
 <script>
+
     const photosInput = document.getElementById('photos');
     const previewContainer = document.getElementById('preview');
 
@@ -145,19 +145,45 @@
         }
     });
 
-    function validateInput() {
-        const input = document.getElementById('prix_annonce');
-        input.value = input.value.replace(/[^0-9]/g, '');
-    }
-
-    function validateInput() {
+    function validateInput01() {
         const input = document.getElementById('prix_annonce');
         input.value = input.value.replace(/[^0-9]/g, '');
 
         if (input.value.length > 8) {
-            input.value = input.value.substring(0, 10);
+            input.value = input.value.substring(0, 8);
         }
     }
+
+    document.getElementById('createAdForm').addEventListener('submit', function(event) {
+        const action = event.submitter.value;
+        const requiredFields = ['categorySelect', 'title'];
+
+        if (action === 'publish') {
+            requiredFields.push('prix_annonce', 'location', 'description', 'type_annonce');
+
+            const parameterFields = document.querySelectorAll('#parametersContainer input');
+            parameterFields.forEach(field => {
+                requiredFields.push(field.id);
+            });
+        }
+
+        let isValid = true;
+
+        requiredFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field && !field.value.trim()) {
+                isValid = false;
+                field.classList.add('is-invalid');
+            } else if (field) {
+                field.classList.remove('is-invalid');
+            }
+        });
+
+        if (!isValid) {
+            event.preventDefault();
+            alert('Veuillez remplir tous les champs obligatoires pour publier.');
+        }
+    });
 
 </script>
 
@@ -170,6 +196,10 @@
 
         function validateInput(input) {
             input.value = input.value.replace(/[^0-9]/g, '');
+
+            if (input.value.length > 8) {
+                input.value = input.value.substring(0, 8);
+            }
         }
 
         function updateParameters(categoryId) {
@@ -184,7 +214,7 @@
                 return;
             }
 
-$            selectedCategory.associations.forEach(function (assoc) {
+            selectedCategory.associations.forEach(function (assoc) {
                 var parameterId = assoc.id_parametre;
 
                 var inputGroup = document.createElement('div');
@@ -200,7 +230,7 @@ $            selectedCategory.associations.forEach(function (assoc) {
                 var requiredIndicator = document.createElement('span');
                 requiredIndicator.textContent = '*';
                 requiredIndicator.classList.add('text-danger');
-                requiredIndicator.title = "obligatoire";
+                requiredIndicator.title = "obligatoire pour publier votre annonce";
 
                 labelCol.appendChild(label);
                 labelCol.appendChild(requiredIndicator);
@@ -213,8 +243,9 @@ $            selectedCategory.associations.forEach(function (assoc) {
                 input.name = 'parameters[' + parameterId + ']';
                 input.id = 'param_' + parameterId;
                 input.classList.add('form-control');
-                input.placeholder = "Entrez la valeur";
-                input.required = true;
+                input.placeholder = "Entrez une valeur";
+                /*input.required = true;*/
+                input.required = false;
 
                 input.addEventListener('input', function () {
                     validateInput(input);
@@ -234,7 +265,6 @@ $            selectedCategory.associations.forEach(function (assoc) {
         });
     });
 </script>
-
 
 <style>
     .photo-wrapper {
@@ -273,6 +303,12 @@ $            selectedCategory.associations.forEach(function (assoc) {
     .upload-icon:hover {
         background-color: #f8f9fa;
     }
+
+    .is-invalid {
+        border-color: red;
+        background-color: #f8d7da;
+    }
+
 </style>
 
 @endsection
