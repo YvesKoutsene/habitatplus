@@ -9,6 +9,7 @@ use App\Models\CategorieBien;
 use App\Models\Bien;
 use App\Models\PhotoBien;
 use App\Models\ValeurBien;
+use App\Models\AssociationCategorieParametre;
 use Illuminate\Support\Facades\Storage; // Ajoutez cette ligne
 
 class AnnouncementController extends Controller
@@ -103,6 +104,7 @@ class AnnouncementController extends Controller
         return redirect()->route('acceuil')->with('success', 'Annonce enregistrée comme brouillon!');
     }
 
+
     /**
      * Display the specified resource.
      */
@@ -114,10 +116,25 @@ class AnnouncementController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        // Récupérer le bien par son ID avec ses relations
+        $bien = Bien::with(['photos', 'categorieBien', 'valeurs'])->findOrFail($id);
+
+        // Récupérer toutes les catégories disponibles
+        $categories = CategorieBien::with('associations')->get();
+
+        // Récupérer les associations catégorie/paramètres pour pré-remplir les champs
+        $parametresCategories = AssociationCategorieParametre::with('parametre')->get();
+
+        // Renvoyer la vue avec les données nécessaires
+        return view('abonné.pages.announcement.edit', [
+            'bien' => $bien,
+            'categories' => $categories,
+            'parametresCategories' => $parametresCategories,
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -139,7 +156,7 @@ class AnnouncementController extends Controller
         }
 
         foreach ($annonce->photos as $photo) {
-            $defaultPhotoPath = '/storage/images/annonces/default_image_an.jpg';
+            $defaultPhotoPath = '/storage/images/annonces/default_main_image.jpg';
             if ($photo->url_photo !== $defaultPhotoPath) {
                 $relativePath = str_replace('/storage/', '', $photo->url_photo); // Convertir en chemin relatif
                 Storage::disk('public')->delete($relativePath); // Supprimer du stockage

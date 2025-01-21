@@ -23,7 +23,7 @@
             <div class="row">
                 @foreach($biens as $bien)
                 @if($bien->statut == 'brouillon')
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
                         @if($bien->photos && count($bien->photos) > 0)
                         <img src="{{ asset($bien->photos[0]->url_photo) }}"
@@ -45,18 +45,20 @@
                         </div>
 
                         <div class="card-footer text-center">
+
                             <div class="row justify-content-center">
                                 <div class="col-4 mb-2">
-                                    <button class="btn btn-primary btn-block shadow-sm" title="Modifier">
+                                    <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
                                         <i class="bi bi-pencil-square me-2"></i>
-                                    </button>
+                                    </a>
                                 </div>
                                 <div class="col-4 mb-2">
-                                    <button type="button" class="btn btn-warning btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer">
+                                    <button type="button" class="btn btn-danger btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer">
                                         <i class="bi bi-trash me-2"></i>
                                     </button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -90,7 +92,7 @@
             <div class="row">
                 @foreach($biens as $bien)
                 @if($bien->statut == 'publié' || $bien->statut == 'republié')
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
                         @if($bien->photos && count($bien->photos) > 0)
                         <img src="{{ asset($bien->photos[0]->url_photo) }}"
@@ -155,7 +157,7 @@
             <div class="row">
                 @foreach($biens as $bien)
                 @if($bien->statut == 'terminé')
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
                         @if($bien->photos && count($bien->photos) > 0)
                         <img src="{{ asset($bien->photos[0]->url_photo) }}"
@@ -177,12 +179,12 @@
                         <div class="card-footer text-center">
                             <div class="row justify-content-center">
                                 <div class="col-4 mb-2">
-                                        <button type="button" class="btn btn-primary btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#relaunchConfirmation{{ $bien->id }}" title="Republier">
+                                        <button type="button" class="btn btn-secondary btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#relaunchConfirmation{{ $bien->id }}" title="Republier">
                                         <i class="bi bi-check me-2"></i>
                                     </button>
                                 </div>
                                 <div class="col-4 mb-2">
-                                    <button type="button" class="btn btn-warning btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer">
+                                    <button type="button" class="btn btn-danger btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer">
                                         <i class="bi bi-trash me-2"></i>
                                     </button>
                                 </div>
@@ -224,11 +226,11 @@
                                 Êtes-vous sûr de vouloir republier cette annonce" ?.
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
                                 <form action="{{ route('announcement.relaunch', $bien->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="btn btn-primary"><i class="bi bi-check"></i> Republié</button>
+                                    <button type="submit" class="btn btn-secondary"><i class="bi bi-check"></i> Republié</button>
                                 </form>
                             </div>
                         </div>
@@ -259,19 +261,4 @@
         object-fit: cover;
     }
 
-    .btn {
-        border-radius: 25px;
-        font-weight: 600;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-    }
-
-    .btn-primary:hover {
-        background-color: #0056b3;
-        transform: translateY(-3px);
-    }
 </style>

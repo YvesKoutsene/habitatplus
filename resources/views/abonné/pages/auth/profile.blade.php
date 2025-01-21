@@ -94,6 +94,11 @@
         transform: translateY(-3px);
     }
 
+    .btn-danger:hover {
+        background-color: rgba(179, 0, 0, 0.96);
+        transform: translateY(-3px);
+    }
+
     .btn-warning {
         background-color: #ffc107;
         border-color: #ffc107;
@@ -101,6 +106,11 @@
 
     .btn-warning:hover {
         background-color: #e0a800;
+        transform: translateY(-3px);
+    }
+
+    .btn-secondary:hover {
+        background-color: rgba(76, 91, 20, 0.66);
         transform: translateY(-3px);
     }
 

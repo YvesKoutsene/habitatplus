@@ -3,48 +3,101 @@
 
 <form id="createAdForm" action="{{ route('announcement.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
-    <h2 class="text-black-50 mb-4">Créer une annonce</h2>
-
+    <h2 class="text-black-50 mb-4">Créer votre annonce</h2>
     <div class="card shadow-lg border-0 rounded-lg mb-4">
         <div class="card-header text-black">
             <h5>Photos de l'annonce</h5>
-            <small class="text-muted">Vous pouvez ajouter jusqu'à 6 photos au maximum pour cette annonce.</small>
+            <small class="text-muted">Vous pouvez ajouter jusqu'à 7 photos au maximum pour cette annonce, une principale et six annexes.</small>
         </div>
-        <div class="card-body d-flex align-items-center">
-            <div class="d-flex flex-column align-items-center me-3">
-                <label for="photos" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm" style="width: 100px; height: 100px; cursor: pointer;">
-                    <i class="bi bi-image text-muted" style="font-size: 30px;"></i>
+        <div class="card-body d-flex flex-wrap gap-3">
+            <div class="d-flex flex-column align-items-center">
+                <label for="photo_principale" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
+                    <img id="preview_photo_principale" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
+                    <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
+                    <button type="button" id="remove_photo_principale" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
                 </label>
-                <span class="text-muted mt-2" style="font-size: 14px;">Ajouter une photo<span class="text-danger" title="minimun une photo">*</span></span>
+                <input type="file" class="d-none" id="photo_principale" name="photos[]" accept="image/*">
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo principale<span class="text-info" title="Sera mise en avant pour cette annonce">*</span></span>
             </div>
-            <input type="file" class="d-none" id="photos" name="photos[]" multiple accept="image/*">
-            <div id="preview" class="d-flex gap-"></div>
+            <div class="d-flex flex-column align-items-center">
+                <label for="photo_annexe_1" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
+                    <img id="preview_photo_annexe_1" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
+                    <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
+                    <button type="button" id="remove_photo_annexe_1" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </label>
+                <input type="file" class="d-none" id="photo_annexe_1" name="photos[]" accept="image/*">
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe</span>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+                <label for="photo_annexe_2" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
+                    <img id="preview_photo_annexe_2" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
+                    <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
+                    <button type="button" id="remove_photo_annexe_2" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </label>
+                <input type="file" class="d-none" id="photo_annexe_2" name="photos[]" accept="image/*">
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe</span>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+                <label for="photo_annexe_3" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
+                    <img id="preview_photo_annexe_3" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
+                    <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
+                    <button type="button" id="remove_photo_annexe_3" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </label>
+                <input type="file" class="d-none" id="photo_annexe_3" name="photos[]" accept="image/*">
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe</span>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+                <label for="photo_annexe_4" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
+                    <img id="preview_photo_annexe_4" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
+                    <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
+                    <button type="button" id="remove_photo_annexe_4" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </label>
+                <input type="file" class="d-none" id="photo_annexe_4" name="photos[]" accept="image/*">
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe</span>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+                <label for="photo_annexe_5" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
+                    <img id="preview_photo_annexe_5" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
+                    <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
+                    <button type="button" id="remove_photo_annexe_5" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </label>
+                <input type="file" class="d-none" id="photo_annexe_5" name="photos[]" accept="image/*">
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe</span>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+                <label for="photo_annexe_6" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
+                    <img id="preview_photo_annexe_6" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
+                    <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
+                    <button type="button" id="remove_photo_annexe_6" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </label>
+                <input type="file" class="d-none" id="photo_annexe_6" name="photos[]" accept="image/*">
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe</span>
+            </div>
         </div>
     </div>
-
-    <div class="card shadow-lg border-0 rounded-lg mb-4">
-        <div class="card-header text-black">
-            <h5>Catégorie de bien</h5>
-        </div>
-        <div class="card-body">
-            <div class="mb-3">
-                <label for="categorySelect" class="form-label text-black">Catégorie<span class="text-danger" title="obligatoire">*</span></label>
-                <select class="form-select form-control form-select-sm" id="categorySelect" name="category" required>
-                    <option value="" disabled selected>Sélectionnez une catégorie</option>
-                    @foreach($categories as $categorie)
-                    <option value="{{ $categorie->id }}">{{ $categorie->titre }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="mb-3" id="parametersContainer"></div>
-        </div>
-    </div>
-    <!-- Carte pour les détails de l'annonce -->
     <div class="card shadow-lg border-0 rounded-lg mb-4">
         <div class="card-header text-black">
             <h5>Détails de l'annonce</h5>
         </div>
         <div class="card-body">
+            <div class="mb-3">
+                <label for="title" class="form-label text-black">Titre<span class="text-danger" title="obligatoire pour publier votre annonce">*</span></label>
+                <input type="text" class="form-control form-control-sm" id="title" name="titre" required placeholder="Titre de votre annonce">
+            </div>
             <div class="mb-3">
                 <label for="ad_type" class="form-label text-black">Type d'annonce<span class="text-danger" title="obligatoire pour publier votre annonce">*</span></label>
                 <select class="form-select form-control form-select-sm" id="type_annonce" name="type_offre">
@@ -53,12 +106,6 @@
                     <option value="Vente">Vente</option>
                 </select>
             </div>
-
-            <div class="mb-3">
-                <label for="title" class="form-label text-black">Titre<span class="text-danger" title="obligatoire pour publier votre annonce">*</span></label>
-                <input type="text" class="form-control form-control-sm" id="title" name="titre" required placeholder="Titre de votre annonce">
-            </div>
-
             <div class="mb-3">
                 <label for="prix" class="form-label text-black">Prix<span class="text-danger" title="obligatoire pour publier votre annonce">*</span></label>
                 <div class="input-group mb-3">
@@ -81,6 +128,23 @@
                 <textarea class="form-control form-control-sm" id="description" name="description" rows="4" placeholder="Une petite description de votre annonce"></textarea>
                 <small class="text-muted">Ne pas dépasser 200 caractères maximum.</small>
             </div>
+        </div>
+    </div>
+    <div class="card shadow-lg border-0 rounded-lg mb-4">
+        <div class="card-header text-black">
+            <h5>Catégorie de bien</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="categorySelect" class="form-label text-black">Catégorie<span class="text-danger" title="obligatoire">*</span></label>
+                <select class="form-select form-control form-select-sm" id="categorySelect" name="category" required>
+                    <option value="" disabled selected>Sélectionnez une catégorie</option>
+                    @foreach($categories as $categorie)
+                    <option value="{{ $categorie->id }}">{{ $categorie->titre }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-3" id="parametersContainer"></div>
             <div class="d-flex justify-content-center gap-3">
                 <button type="submit" name="action" value="save" class="btn btn-primary px-3 py-2">
                     <i class="bi bi-save me-2"></i> Enregistrer
@@ -91,60 +155,63 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="validationModal" tabindex="-1" aria-labelledby="validationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="validationModalLabel">Erreur de Validation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-black" id="validationMessage">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
 
 <script>
+    function setupPhotoPreview(inputId, previewId, removeButtonId) {
+        const inputElement = document.getElementById(inputId);
+        const previewElement = document.getElementById(previewId);
+        const previewIcon = previewElement.nextElementSibling;
+        const removeButton = document.getElementById(removeButtonId);
+        inputElement.addEventListener('change', function (event) {
+            const file = event.target.files[0];
 
-    const photosInput = document.getElementById('photos');
-    const previewContainer = document.getElementById('preview');
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewElement.src = e.target.result;
+                    previewElement.classList.remove('d-none');
+                    previewIcon.classList.add('d-none');
+                    removeButton.classList.remove('d-none');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
-    const MAX_PHOTOS = 6;
+        removeButton.addEventListener('click', function () {
+            inputElement.value = '';
+            previewElement.src = '';
+            previewElement.classList.add('d-none');
+            previewIcon.classList.remove('d-none');
+            removeButton.classList.add('d-none');
+        });
+    }
+    setupPhotoPreview('photo_principale', 'preview_photo_principale', 'remove_photo_principale');
+    setupPhotoPreview('photo_annexe_1', 'preview_photo_annexe_1', 'remove_photo_annexe_1');
+    setupPhotoPreview('photo_annexe_2', 'preview_photo_annexe_2', 'remove_photo_annexe_2');
+    setupPhotoPreview('photo_annexe_3', 'preview_photo_annexe_3', 'remove_photo_annexe_3');
+    setupPhotoPreview('photo_annexe_4', 'preview_photo_annexe_4', 'remove_photo_annexe_4');
+    setupPhotoPreview('photo_annexe_5', 'preview_photo_annexe_5', 'remove_photo_annexe_5');
+    setupPhotoPreview('photo_annexe_6', 'preview_photo_annexe_6', 'remove_photo_annexe_6');
 
-    photosInput.addEventListener('change', function(event) {
-        const files = event.target.files;
+</script>
 
-        if (files.length + previewContainer.childElementCount > MAX_PHOTOS) {
-            alert('Vous pouvez téléverser jusqu’à 6 photos au maximum.');
-            return;
-        }
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            if (previewContainer.childElementCount >= MAX_PHOTOS) break;
-
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                const photoWrapper = document.createElement('div');
-                photoWrapper.className = 'photo-wrapper position-relative';
-                photoWrapper.style.width = '100px';
-                photoWrapper.style.height = '100px';
-
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.className = 'img-thumbnail';
-                img.style.width = '100%';
-                img.style.height = '100%';
-                img.style.objectFit = 'cover';
-
-                const removeBtn = document.createElement('button');
-                removeBtn.className = 'btn btn-danger btn-sm position-absolute top-0 end-0';
-                removeBtn.innerHTML = '<i class="bi bi-x-circle"></i>';
-                removeBtn.style.padding = '4px';
-
-                removeBtn.addEventListener('click', function() {
-                    photoWrapper.remove();
-                });
-
-                photoWrapper.appendChild(img);
-                photoWrapper.appendChild(removeBtn);
-                previewContainer.appendChild(photoWrapper);
-            };
-
-            reader.readAsDataURL(file);
-        }
-    });
-
+<script>
     function validateInput01() {
         const input = document.getElementById('prix_annonce');
         input.value = input.value.replace(/[^0-9]/g, '');
@@ -157,6 +224,7 @@
     document.getElementById('createAdForm').addEventListener('submit', function(event) {
         const action = event.submitter.value;
         const requiredFields = ['categorySelect', 'title'];
+        let isValid = true;
 
         if (action === 'publish') {
             requiredFields.push('prix_annonce', 'location', 'description', 'type_annonce');
@@ -166,9 +234,6 @@
                 requiredFields.push(field.id);
             });
         }
-
-        let isValid = true;
-
         requiredFields.forEach(fieldId => {
             const field = document.getElementById(fieldId);
             if (field && !field.value.trim()) {
@@ -178,10 +243,12 @@
                 field.classList.remove('is-invalid');
             }
         });
-
         if (!isValid) {
             event.preventDefault();
-            alert('Veuillez remplir tous les champs obligatoires pour publier.');
+            const message = 'Veuillez remplir tous les champs obligatoires pour publier.';
+            document.getElementById('validationMessage').textContent = message;
+            const validationModal = new bootstrap.Modal(document.getElementById('validationModal'));
+            validationModal.show();
         }
     });
 

@@ -22,10 +22,13 @@ class HomeController extends Controller
             } elseif ($typeUser == 2) {
 
                 $user = Auth::user();
-                $biens = $user->biens()->where('statut', 'brouillon')
-                    ->orWhere('statut', 'publié')
-                    ->orWhere('statut', 'republié')
-                    ->orWhere('statut', 'terminé')
+                $biens = $user->biens()
+                    ->where(function($query) {
+                        $query->where('statut', 'brouillon')
+                            ->orWhere('statut', 'publié')
+                            ->orWhere('statut', 'republié')
+                            ->orWhere('statut', 'terminé');
+                    })
                     ->orderBy('updated_at', 'desc')
                     ->get();
 
