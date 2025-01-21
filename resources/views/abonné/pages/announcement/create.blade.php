@@ -19,7 +19,7 @@
                     </button>
                 </label>
                 <input type="file" class="d-none" id="photo_principale" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo principale<span class="text-info" title="Sera mise en avant pour cette annonce">*</span></span>
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo principale</span>
             </div>
             <div class="d-flex flex-column align-items-center">
                 <label for="photo_annexe_1" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
@@ -30,7 +30,7 @@
                     </button>
                 </label>
                 <input type="file" class="d-none" id="photo_annexe_1" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe</span>
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe 1</span>
             </div>
             <div class="d-flex flex-column align-items-center">
                 <label for="photo_annexe_2" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
@@ -41,7 +41,7 @@
                     </button>
                 </label>
                 <input type="file" class="d-none" id="photo_annexe_2" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe</span>
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe 2</span>
             </div>
             <div class="d-flex flex-column align-items-center">
                 <label for="photo_annexe_3" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
@@ -52,7 +52,7 @@
                     </button>
                 </label>
                 <input type="file" class="d-none" id="photo_annexe_3" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe</span>
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe 3</span>
             </div>
             <div class="d-flex flex-column align-items-center">
                 <label for="photo_annexe_4" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
@@ -63,7 +63,7 @@
                     </button>
                 </label>
                 <input type="file" class="d-none" id="photo_annexe_4" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe</span>
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe 4</span>
             </div>
             <div class="d-flex flex-column align-items-center">
                 <label for="photo_annexe_5" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
@@ -74,7 +74,7 @@
                     </button>
                 </label>
                 <input type="file" class="d-none" id="photo_annexe_5" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe</span>
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe 5</span>
             </div>
             <div class="d-flex flex-column align-items-center">
                 <label for="photo_annexe_6" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
@@ -85,9 +85,10 @@
                     </button>
                 </label>
                 <input type="file" class="d-none" id="photo_annexe_6" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe</span>
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe 6</span>
             </div>
         </div>
+
     </div>
     <div class="card shadow-lg border-0 rounded-lg mb-4">
         <div class="card-header text-black">

@@ -118,16 +118,10 @@ class AnnouncementController extends Controller
      */
     public function edit($id)
     {
-        // Récupérer le bien par son ID avec ses relations
         $bien = Bien::with(['photos', 'categorieBien', 'valeurs'])->findOrFail($id);
-
-        // Récupérer toutes les catégories disponibles
-        $categories = CategorieBien::with('associations')->get();
-
-        // Récupérer les associations catégorie/paramètres pour pré-remplir les champs
+        $categories = CategorieBien::with('associations.parametre')->get();
         $parametresCategories = AssociationCategorieParametre::with('parametre')->get();
 
-        // Renvoyer la vue avec les données nécessaires
         return view('abonné.pages.announcement.edit', [
             'bien' => $bien,
             'categories' => $categories,

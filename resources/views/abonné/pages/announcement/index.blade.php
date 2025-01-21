@@ -45,7 +45,6 @@
                         </div>
 
                         <div class="card-footer text-center">
-
                             <div class="row justify-content-center">
                                 <div class="col-4 mb-2">
                                     <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
@@ -114,9 +113,9 @@
                         <div class="card-footer text-center">
                             <div class="row justify-content-center">
                                 <div class="col-4 mb-2">
-                                    <button class="btn btn-primary btn-block shadow-sm" title="Modifier">
+                                    <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
                                         <i class="bi bi-pencil-square me-2"></i>
-                                    </button>
+                                    </a>
                                 </div>
                                 <div class="col-4 mb-2">
                                     <button type="button" class="btn btn-warning btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#terminateConfirmation{{ $bien->id }}" title="Arrêté">
