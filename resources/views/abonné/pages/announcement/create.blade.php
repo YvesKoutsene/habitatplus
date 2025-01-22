@@ -10,85 +10,23 @@
             <small class="text-muted">Vous pouvez ajouter jusqu'à 7 photos au maximum pour cette annonce, une principale et six annexes.</small>
         </div>
         <div class="card-body d-flex flex-wrap gap-3">
+            @php
+            $maxPhotos = 7;
+            @endphp
+            @for ($i = 0; $i < $maxPhotos; $i++)
             <div class="d-flex flex-column align-items-center">
-                <label for="photo_principale" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
-                    <img id="preview_photo_principale" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
+                <label for="photo_{{ $i }}" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
+                    <img id="preview_photo_{{ $i }}" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
                     <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
-                    <button type="button" id="remove_photo_principale" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
+                    <button type="button" id="remove_photo_{{ $i }}" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
                         <i class="bi bi-x-circle"></i>
                     </button>
                 </label>
-                <input type="file" class="d-none" id="photo_principale" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo principale</span>
+                <input type="file" class="d-none" id="photo_{{ $i }}" name="photos[]" accept="image/*">
+                <span class="text-muted mt-2" style="font-size: 14px;">Photo {{ $i === 0 ? 'principale' : 'annexe ' . $i }}</span>
             </div>
-            <div class="d-flex flex-column align-items-center">
-                <label for="photo_annexe_1" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
-                    <img id="preview_photo_annexe_1" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
-                    <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
-                    <button type="button" id="remove_photo_annexe_1" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </label>
-                <input type="file" class="d-none" id="photo_annexe_1" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe 1</span>
-            </div>
-            <div class="d-flex flex-column align-items-center">
-                <label for="photo_annexe_2" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
-                    <img id="preview_photo_annexe_2" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
-                    <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
-                    <button type="button" id="remove_photo_annexe_2" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </label>
-                <input type="file" class="d-none" id="photo_annexe_2" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe 2</span>
-            </div>
-            <div class="d-flex flex-column align-items-center">
-                <label for="photo_annexe_3" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
-                    <img id="preview_photo_annexe_3" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
-                    <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
-                    <button type="button" id="remove_photo_annexe_3" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </label>
-                <input type="file" class="d-none" id="photo_annexe_3" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe 3</span>
-            </div>
-            <div class="d-flex flex-column align-items-center">
-                <label for="photo_annexe_4" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
-                    <img id="preview_photo_annexe_4" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
-                    <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
-                    <button type="button" id="remove_photo_annexe_4" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </label>
-                <input type="file" class="d-none" id="photo_annexe_4" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe 4</span>
-            </div>
-            <div class="d-flex flex-column align-items-center">
-                <label for="photo_annexe_5" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
-                    <img id="preview_photo_annexe_5" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
-                    <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
-                    <button type="button" id="remove_photo_annexe_5" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </label>
-                <input type="file" class="d-none" id="photo_annexe_5" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe 5</span>
-            </div>
-            <div class="d-flex flex-column align-items-center">
-                <label for="photo_annexe_6" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
-                    <img id="preview_photo_annexe_6" src="" alt="" class="img-thumbnail d-none" style="width: 100%; height: 100%; object-fit: cover;">
-                    <i class="bi bi-image text-muted preview-icon" style="font-size: 30px;"></i>
-                    <button type="button" id="remove_photo_annexe_6" class="btn btn-danger btn-sm position-absolute top-0 end-0 d-none" style="padding: 4px;">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </label>
-                <input type="file" class="d-none" id="photo_annexe_6" name="photos[]" accept="image/*">
-                <span class="text-muted mt-2" style="font-size: 14px;">Photo annexe 6</span>
-            </div>
+            @endfor
         </div>
-
     </div>
     <div class="card shadow-lg border-0 rounded-lg mb-4">
         <div class="card-header text-black">
@@ -174,13 +112,26 @@
 </form>
 
 <script>
-    function setupPhotoPreview(inputId, previewId, removeButtonId) {
+    function showModal(message) {
+        document.getElementById('validationMessage').innerText = message;
+        const modal = new bootstrap.Modal(document.getElementById('validationModal'));
+        modal.show();
+    }
+
+    function setupPhotoPreview(inputId, previewId, removeButtonId, index) {
         const inputElement = document.getElementById(inputId);
         const previewElement = document.getElementById(previewId);
         const previewIcon = previewElement.nextElementSibling;
         const removeButton = document.getElementById(removeButtonId);
+
         inputElement.addEventListener('change', function (event) {
             const file = event.target.files[0];
+
+            if (index > 0 && !document.getElementById(`photo_${index - 1}`).value) {
+                showModal('Veuillez d\'abord ajouter la photo principale ou la photo annexe précédente.');
+                inputElement.value = '';
+                return;
+            }
 
             if (file) {
                 const reader = new FileReader();
@@ -195,6 +146,14 @@
         });
 
         removeButton.addEventListener('click', function () {
+            // Vérification de la condition de suppression
+            for (let i = index + 1; i < {{ $maxPhotos }}; i++) {
+                if (document.getElementById(`photo_${i}`).value) {
+                    showModal('Veuillez d\'abord supprimer toutes les photos annexes suivantes.');
+                    return;
+                }
+            }
+
             inputElement.value = '';
             previewElement.src = '';
             previewElement.classList.add('d-none');
@@ -202,14 +161,11 @@
             removeButton.classList.add('d-none');
         });
     }
-    setupPhotoPreview('photo_principale', 'preview_photo_principale', 'remove_photo_principale');
-    setupPhotoPreview('photo_annexe_1', 'preview_photo_annexe_1', 'remove_photo_annexe_1');
-    setupPhotoPreview('photo_annexe_2', 'preview_photo_annexe_2', 'remove_photo_annexe_2');
-    setupPhotoPreview('photo_annexe_3', 'preview_photo_annexe_3', 'remove_photo_annexe_3');
-    setupPhotoPreview('photo_annexe_4', 'preview_photo_annexe_4', 'remove_photo_annexe_4');
-    setupPhotoPreview('photo_annexe_5', 'preview_photo_annexe_5', 'remove_photo_annexe_5');
-    setupPhotoPreview('photo_annexe_6', 'preview_photo_annexe_6', 'remove_photo_annexe_6');
 
+    const maxPhotos = {{ $maxPhotos }};
+    for (let i = 0; i < maxPhotos; i++) {
+        setupPhotoPreview(`photo_${i}`, `preview_photo_${i}`, `remove_photo_${i}`, i);
+    }
 </script>
 
 <script>

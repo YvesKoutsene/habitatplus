@@ -21,8 +21,8 @@
             @for ($i = 0; $i < $maxPhotos; $i++)
             <div class="d-flex flex-column align-items-center">
                 @php
-                $photo = $photos[$i] ?? null; // Vérifie si une photo existe à cet index
-                $photoSrc = $photo ? asset($photo->url_photo) : ''; // URL de la photo
+                $photo = $photos[$i] ?? null;
+                $photoSrc = $photo ? asset($photo->url_photo) : '';
                 @endphp
                 <label for="photo_{{ $i }}" class="upload-icon bg-light d-flex align-items-center justify-content-center border rounded shadow-sm position-relative" style="width: 100px; height: 100px; cursor: pointer;">
                     <img id="preview_photo_{{ $i }}"
@@ -36,10 +36,15 @@
                     </button>
                 </label>
                 <input type="file" class="d-none" id="photo_{{ $i }}" name="photos[]" accept="image/*">
+                <!-- Champ caché pour les photos existantes -->
+                @if ($photo)
+                <input type="hidden" name="existing_photos[]" value="{{ $photo->id }}">
+                @endif
                 <span class="text-muted mt-2" style="font-size: 14px;">Photo {{ $i === 0 ? 'principale' : 'annexe ' . $i }}</span>
             </div>
             @endfor
         </div>
+
     </div>
     <div class="card shadow-lg border-0 rounded-lg mb-4">
         <div class="card-header text-black">
@@ -91,6 +96,7 @@
         </div>
 
         <div class="card-body">
+
             <div class="mb-3">
                 <label for="categorySelect" class="form-label text-black">
                     Catégorie<span class="text-danger" title="obligatoire">*</span>
@@ -104,7 +110,9 @@
                     @endforeach
                 </select>
             </div>
+
             <div class="mb-3" id="parametersContainer"></div>
+
             @if($bien->statut == 'brouillon')
             <div class="d-flex justify-content-center gap-3">
                 <button type="submit" name="action" value="save" class="btn btn-primary px-3 py-2">
@@ -142,11 +150,12 @@
 </form>
 
 <script>
-    function setupPhotoPreview(inputId, previewId, removeButtonId) {
+    function setupPhotoPreview(inputId, previewId, removeButtonId, index) {
         const inputElement = document.getElementById(inputId);
         const previewElement = document.getElementById(previewId);
         const previewIcon = previewElement.nextElementSibling;
         const removeButton = document.getElementById(removeButtonId);
+        const existingPhotoInput = document.querySelector(`input[name="existing_photos[]"][value="${index}"]`);
 
         inputElement.addEventListener('change', function (event) {
             const file = event.target.files[0];
@@ -164,6 +173,11 @@
         });
 
         removeButton.addEventListener('click', function () {
+            // Suppression de l'ID de la photo existante
+            if (existingPhotoInput) {
+                existingPhotoInput.remove();
+            }
+
             inputElement.value = '';
             previewElement.src = '';
             previewElement.classList.add('d-none');
@@ -174,7 +188,7 @@
 
     const maxPhotos = {{ $maxPhotos }};
     for (let i = 0; i < maxPhotos; i++) {
-        setupPhotoPreview(`photo_${i}`, `preview_photo_${i}`, `remove_photo_${i}`);
+        setupPhotoPreview(`photo_${i}`, `preview_photo_${i}`, `remove_photo_${i}`, i);
     }
 </script>
 
@@ -236,6 +250,7 @@
                 input.value = input.value.substring(0, 8);
             }
         }
+
         function updateParameters(categoryId) {
             parametersContainer.innerHTML = '';
             var selectedCategory = categories.find(function (cat) {
@@ -251,6 +266,7 @@
                 var parameterId = assoc.parametre.id;
                 var parameterName = assoc.parametre.nom_parametre;
 
+                // Pré-remplir la valeur si elle existe
                 var parameterValue = bien.valeurs.find(function (val) {
                     return val.id_association_categorie === assoc.id;
                 })?.valeur || '';
@@ -295,11 +311,13 @@
                 parametersContainer.appendChild(inputGroup);
             });
         }
+
         // Charger les paramètres initiaux
         var initialCategoryId = categorySelect.value;
         if (initialCategoryId) {
             updateParameters(initialCategoryId);
         }
+
         // Mettre à jour les paramètres lors du changement de catégorie
         categorySelect.addEventListener('change', function () {
             var selectedCategoryId = this.value;
@@ -307,8 +325,6 @@
         });
     });
 </script>
-
-
 
 <style>
     .photo-wrapper {

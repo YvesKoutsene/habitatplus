@@ -25,12 +25,13 @@
                 @if($bien->statut == 'brouillon')
                 <div class="col-md-3 mb-3">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
+
                         @if($bien->photos && count($bien->photos) > 0)
                         <img src="{{ asset($bien->photos[0]->url_photo) }}"
                              class="card-img-top"
                              alt="Image de l'annonce">
                         @else
-                        <img src="{{ asset('images/default-image-annonce.png') }}"
+                        <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}"
                              class="card-img-top"
                              alt="Image par défaut">
                         @endif
@@ -98,7 +99,7 @@
                              class="card-img-top"
                              alt="Image de l'annonce">
                         @else
-                        <img src="{{ asset('images/default-image-annonce.png') }}"
+                        <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}"
                              class="card-img-top"
                              alt="Image par défaut">
                         @endif
@@ -163,7 +164,7 @@
                              class="card-img-top"
                              alt="Image de l'annonce">
                         @else
-                        <img src="{{ asset('images/default-image-annonce.png') }}"
+                        <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}"
                              class="card-img-top"
                              alt="Image par défaut">
                         @endif
@@ -216,6 +217,11 @@
                 <div class="modal fade" id="relaunchConfirmation{{ $bien->id }}" tabindex="-1" aria-labelledby="relaunchConfirmationLabel{{ $bien->id }}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
+                            <div class="col-4 mb-2">
+                                <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
+                                    <i class="bi bi-pencil-square me-2"></i>
+                                </a>
+                            </div>
                             <div class="modal-header">
                                 <i class="bi bi-exclamation-triangle me-1"></i>
                                 <h5 class="modal-title" id="relaunchConfirmationLabel{{ $bien->id }}">Confirmation de Rupublication</h5>
@@ -244,20 +250,16 @@
 </div>
 
 <style>
-
     .card {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         max-height: 400px;
     }
-
     .card:hover {
         transform: scale(1.02);
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
     }
-
     .card-img-top {
         height: 150px;
         object-fit: cover;
     }
-
 </style>

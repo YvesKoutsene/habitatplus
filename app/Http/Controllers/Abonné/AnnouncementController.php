@@ -79,12 +79,6 @@ class AnnouncementController extends Controller
                     'id_bien' => $annonce->id,
                 ]);
             }
-        } else {
-            $defaultPhotoPath = '/storage/images/annonces/default_image_an.jpg';
-            PhotoBien::create([
-                'url_photo' => $defaultPhotoPath,
-                'id_bien' => $annonce->id,
-            ]);
         }
 
         if (!empty($validated['parameters'])) {
@@ -98,10 +92,10 @@ class AnnouncementController extends Controller
         }
 
         if ($action === 'publish') {
-            return redirect()->route('acceuil')->with('success', 'Annonce publiée avec succès!');
+            return redirect()->route('dashboard')->with('success', 'Annonce publiée avec succès!');
         }
 
-        return redirect()->route('acceuil')->with('success', 'Annonce enregistrée comme brouillon!');
+        return redirect()->route('dashboard')->with('success', 'Annonce enregistrée comme brouillon!');
     }
 
 
@@ -133,9 +127,128 @@ class AnnouncementController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $action = $request->input('action', 'save');
+
+        $bien = Bien::with(['photos', 'categorieBien', 'valeurs'])->findOrFail($id);
+
+        //dd($request->all());
+
+        // Définir les règles de validation
+        $validationRules = [
+            'category' => 'required|exists:categorie_biens,id',
+            'titre' => 'required|string|max:255',
+            'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ];
+
+        if ($action === 'publish' && in_array($bien->statut, ['brouillon', 'terminé'])) {
+            $validationRules = array_merge($validationRules, [
+                'prix' => 'required|numeric|min:1',
+                'lieu' => 'required|string|max:200',
+                'type_offre' => 'required|string',
+                'description' => 'required|string|max:200',
+                'parameters' => 'array',
+            ]);
+        }
+
+        // Validation des données
+        $validated = $request->validate($validationRules);
+
+        // Vérifier si la catégorie a changé
+        $isCategoryChanged = $bien->id_categorie_bien != $validated['category'];
+
+        // Mise à jour des informations principales du bien
+        $bien->update([
+            'titre' => $validated['titre'],
+            'description' => $request->input('description', $bien->description),
+            'prix' => $request->input('prix', $bien->prix),
+            'lieu' => $request->input('lieu', $bien->lieu),
+            'statut' => ($action === 'publish' && in_array($bien->statut, ['brouillon', 'terminé'])) ? 'publié' : $bien->statut,
+            'type_offre' => $request->input('type_offre', $bien->type_offre),
+            'id_categorie_bien' => $validated['category'],
+        ]);
+
+        // Gestion des photos
+        $this->updatePhotos($bien, $request);
+
+        // Gestion des paramètres
+        $this->updateParameters($bien, $validated, $isCategoryChanged);
+
+        return redirect()->route('dashboard')->with('success', 'Annonce mise à jour avec succès!');
+    }
+
+    /**
+     * Gère la mise à jour des photos du bien.
+     */
+    protected function updatePhotos($bien, $request)
+    {
+        // Gestion des photos supprimées
+        $existingPhotoIds = $request->input('existing_photos', []);
+        $photosToDelete = $bien->photos->whereNotIn('id', $existingPhotoIds);
+
+        foreach ($photosToDelete as $photo) {
+            // Supprimer le fichier du stockage
+            $photoPath = str_replace('/storage', 'public', $photo->url_photo);
+            Storage::delete($photoPath);
+
+            // Supprimer l'entrée de la base de données
+            $photo->delete();
+        }
+
+        // Ajout des nouvelles photos
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                $photoName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $photo->getClientOriginalName());
+                $photoPath = $photo->storeAs('images/annonces', $photoName, 'public');
+
+                PhotoBien::create([
+                    'url_photo' => Storage::url($photoPath),
+                    'id_bien' => $bien->id,
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Gère la mise à jour des valeurs des paramètres.
+     */
+    protected function updateParameters($bien, $validated, $isCategoryChanged)
+    {
+        if ($isCategoryChanged) {
+            // Si la catégorie a changé, supprimer les anciennes valeurs
+            $bien->valeurs()->delete();
+
+            // Ajouter les nouvelles valeurs pour la nouvelle catégorie
+            if (!empty($validated['parameters'])) {
+                foreach ($validated['parameters'] as $paramId => $value) {
+                    ValeurBien::create([
+                        'valeur' => $value,
+                        'id_bien' => $bien->id,
+                        'id_association_categorie' => $paramId,
+                    ]);
+                }
+            }
+        } else {
+            // Si la catégorie n'a pas changé, mettre à jour les valeurs existantes
+            if (!empty($validated['parameters'])) {
+                foreach ($validated['parameters'] as $paramId => $value) {
+                    $valeur = $bien->valeurs()->where('id_association_categorie', $paramId)->first();
+
+                    if ($valeur) {
+                        // Mettre à jour la valeur existante
+                        $valeur->update(['valeur' => $value]);
+                    } else {
+                        // Ajouter une nouvelle valeur si elle n'existe pas
+                        ValeurBien::create([
+                            'valeur' => $value,
+                            'id_bien' => $bien->id,
+                            'id_association_categorie' => $paramId,
+                        ]);
+                    }
+                }
+            }
+        }
     }
 
     /**
