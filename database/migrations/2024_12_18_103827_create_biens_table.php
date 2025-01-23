@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('biens', function (Blueprint $table) {
             $table->id();
-            $table->string('titre');
-            $table->text('description');
-            $table->decimal('prix', 10, 2); //12
-            $table->string('lieu');
+            $table->string('titre')->nullable(); // Titre obligatoire
+            $table->text('description')->nullable(); // Peut être nul
+            $table->decimal('prix', 12, 2)->nullable(); // Peut être nul
+            $table->string('lieu')->nullable(); // Peut être nul
             $table->string('statut');
-            $table->string('type_offre');
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
-            $table->foreignId('id_categorie_bien')->constrained('categorie_biens')->onDelete('cascade');
+            $table->string('type_offre')->nullable(); // Peut être nul
+            $table->foreignId('id_user')->constrained('users')->onDelete('cascade'); // Obligatoire
+            $table->foreignId('id_categorie_bien')->constrained('categorie_biens')->onDelete('cascade'); // Obligatoire
             $table->timestamps();
         });
     }

@@ -172,8 +172,8 @@
         const input = document.getElementById('prix_annonce');
         input.value = input.value.replace(/[^0-9]/g, '');
 
-        if (input.value.length > 8) {
-            input.value = input.value.substring(0, 8);
+        if (input.value.length > 10) {
+            input.value = input.value.substring(0, 10);
         }
     }
 
@@ -220,8 +220,8 @@
         function validateInput(input) {
             input.value = input.value.replace(/[^0-9]/g, '');
 
-            if (input.value.length > 8) {
-                input.value = input.value.substring(0, 8);
+            if (input.value.length > 10) {
+                input.value = input.value.substring(0, 10);
             }
         }
 
@@ -263,7 +263,9 @@
 
                 var input = document.createElement('input');
                 input.type = 'text';
-                input.name = 'parameters[' + parameterId + ']';
+
+                input.name = 'parameters[' + assoc.id + ']';
+
                 input.id = 'param_' + parameterId;
                 input.classList.add('form-control');
                 input.placeholder = "Entrez une valeur";

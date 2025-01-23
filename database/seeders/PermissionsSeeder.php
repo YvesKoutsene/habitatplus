@@ -85,9 +85,5 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'editer catégories ticket', 'parent_id' => $manageCategoriesTicket->id]);
         Permission::create(['name' => 'supprimer catégories ticket', 'parent_id' => $manageCategoriesTicket->id]);
 
-        // Permission générale pour l'admin
-        $manageAnnexes = Permission::create(['name' => 'annexes']);
-        Permission::create(['name' => 'accéder à admin panel', 'parent_id' => $manageAnnexes->id]);
-
     }
 }

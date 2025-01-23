@@ -40,9 +40,12 @@ class AnnouncementController extends Controller
     {
         $action = $request->input('action', 'save');
 
+        //dd($request->all());
+
         $validationRules = [
             'category' => 'required|exists:categorie_biens,id',
             'titre' => 'required|string|max:255',
+            'parameters' => 'array',
         ];
 
         if ($action === 'publish') {
@@ -52,12 +55,12 @@ class AnnouncementController extends Controller
                 'type_offre' => 'required|string',
                 'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'description' => 'required|string|max:200',
-                'parameters' => 'array',
             ]);
         }
 
         $validated = $request->validate($validationRules);
 
+        // Création de l'annonce
         $annonce = Bien::create([
             'titre' => $validated['titre'],
             'description' => $request->input('description', ' '),
@@ -69,6 +72,7 @@ class AnnouncementController extends Controller
             'id_categorie_bien' => $validated['category'],
         ]);
 
+        // Gestion des photos
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
                 $photoName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $photo->getClientOriginalName());
@@ -81,21 +85,22 @@ class AnnouncementController extends Controller
             }
         }
 
-        if (!empty($validated['parameters'])) {
-            foreach ($validated['parameters'] as $paramId => $value) {
+        // Gestion des paramètres
+        $validatedParameters = $request->input('parameters', []);
+        $associationIds = AssociationCategorieParametre::pluck('id')->toArray();
+
+        foreach ($validatedParameters as $assocId => $value) {
+            if (in_array($assocId, $associationIds)) {
                 ValeurBien::create([
                     'valeur' => $value,
                     'id_bien' => $annonce->id,
-                    'id_association_categorie' => $paramId,
+                    'id_association_categorie' => $assocId,
                 ]);
             }
         }
 
-        if ($action === 'publish') {
-            return redirect()->route('dashboard')->with('success', 'Annonce publiée avec succès!');
-        }
-
-        return redirect()->route('dashboard')->with('success', 'Annonce enregistrée comme brouillon!');
+        $message = $action === 'publish' ? 'Annonce publiée avec succès!' : 'Annonce enregistrée comme brouillon!';
+        return redirect()->route('dashboard')->with('success', $message);
     }
 
 
@@ -113,6 +118,10 @@ class AnnouncementController extends Controller
     public function edit($id)
     {
         $bien = Bien::with(['photos', 'categorieBien', 'valeurs'])->findOrFail($id);
+        if ($bien->id_user !== auth()->id()) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à modifier cette annonce.');
+        }
+
         $categories = CategorieBien::with('associations.parametre')->get();
         $parametresCategories = AssociationCategorieParametre::with('parametre')->get();
         $existingPhotoIds = $bien->photos->pluck('id')->toArray();
@@ -130,6 +139,9 @@ class AnnouncementController extends Controller
     {
         $action = $request->input('action', 'save');
         $bien = Bien::with(['photos', 'categorieBien', 'valeurs'])->findOrFail($id);
+        if ($bien->id_user !== auth()->id()) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à modifier cette annonce.');
+        }
 
         //dd($request->all());
 
@@ -236,20 +248,20 @@ class AnnouncementController extends Controller
 
             // Ajouter les nouvelles valeurs
             if (!empty($validated['parameters'])) {
-                foreach ($validated['parameters'] as $paramId => $value) {
+                foreach ($validated['parameters'] as $assocId => $value) {
                     ValeurBien::create([
                         'valeur' => $value,
                         'id_bien' => $bien->id,
-                        'id_association_categorie' => $paramId,
+                        'id_association_categorie' => $assocId,
                     ]);
                 }
             }
         } else {
             // Si la catégorie n'a pas changé, mettre à jour les valeurs existantes ou en ajouter de nouvelles
             if (!empty($validated['parameters'])) {
-                foreach ($validated['parameters'] as $paramId => $value) {
-                    // Rechercher une valeur existante
-                    $existingValue = $currentValues->where('id_association_categorie', $paramId)->first();
+                foreach ($validated['parameters'] as $assocId => $value) {
+                    // Rechercher une valeur existante pour l'association donnée
+                    $existingValue = $currentValues->where('id_association_categorie', $assocId)->first();
 
                     if ($existingValue) {
                         // Mettre à jour la valeur si elle a changé
@@ -261,11 +273,18 @@ class AnnouncementController extends Controller
                         ValeurBien::create([
                             'valeur' => $value,
                             'id_bien' => $bien->id,
-                            'id_association_categorie' => $paramId,
+                            'id_association_categorie' => $assocId,
                         ]);
                     }
                 }
             }
+
+            $validatedIds = array_keys($validated['parameters']);
+            $currentValues
+                ->whereNotIn('id_association_categorie', $validatedIds)
+                ->each(function ($value) {
+                    $value->delete();
+                });
         }
     }
 
@@ -286,7 +305,7 @@ class AnnouncementController extends Controller
             return redirect()->back()->with('error', 'Annonce introuvable.');
         }
         if ($annonce->id_user !== auth()->id()) {
-            return redirect()->route('acceuil')->with('error', 'Vous n\'êtes pas autorisé à mettre fin cette annonce.');
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à mettre fin cette annonce.');
         }
         if ($annonce->statut !== 'publié' && $annonce->statut !== 'republié') {
             return redirect()->back()->with('error', 'Seules les annonces publiées peuvent être arrêtées.');
@@ -306,8 +325,9 @@ class AnnouncementController extends Controller
             return redirect()->back()->with('error', 'Annonce introuvable.');
         }
         if ($annonce->id_user !== auth()->id()) {
-            return redirect()->route('acceuil')->with('error', 'Vous n\'êtes pas autorisé à mettre fin cette annonce.');
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à mettre fin cette annonce.');
         }
+
         if ($annonce->statut !== 'terminé') {
             return redirect()->back()->with('error', 'Seules les annonces arrêtées peuvent être republées.');
         }
@@ -322,7 +342,7 @@ class AnnouncementController extends Controller
     {
         $annonce = Bien::with('photos')->findOrFail($id);
         if ($annonce->id_user !== auth()->id()) {
-            return redirect()->route('acceuil')->with('error', 'Vous n\'êtes pas autorisé à supprimer cette annonce.');
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à supprimer cette annonce.');
         }
         foreach ($annonce->photos as $photo) {
             $defaultPhotoPath = '/storage/images/annonces/default_main_image.jpg';
