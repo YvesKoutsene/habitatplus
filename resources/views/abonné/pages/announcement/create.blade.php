@@ -128,7 +128,7 @@
             const file = event.target.files[0];
 
             if (index > 0 && !document.getElementById(`photo_${index - 1}`).value) {
-                showModal('Veuillez d\'abord ajouter la photo principale ou la photo annexe précédente.');
+                showModal("Vous devez d'abord ajouter la photo précédente avant de pouvoir ajouter celle-ci.");
                 inputElement.value = '';
                 return;
             }
@@ -146,10 +146,9 @@
         });
 
         removeButton.addEventListener('click', function () {
-            // Vérification de la condition de suppression
             for (let i = index + 1; i < {{ $maxPhotos }}; i++) {
                 if (document.getElementById(`photo_${i}`).value) {
-                    showModal('Veuillez d\'abord supprimer toutes les photos annexes suivantes.');
+                    showModal("Vous devez d'abord supprimer les photos suivantes avant de pouvoir retirer celle-ci.");
                     return;
                 }
             }

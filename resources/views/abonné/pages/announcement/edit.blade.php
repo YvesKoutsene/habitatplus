@@ -11,7 +11,6 @@
             <h5>Photos de l'annonce</h5>
             <small class="text-muted">Vous pouvez ajouter jusqu'à 7 photos au maximum pour cette annonce, une principale et six annexes.</small>
         </div>
-
         <div class="card-body d-flex flex-wrap gap-3">
             @php
             $photos = $bien->photos;
@@ -31,20 +30,21 @@
                          class="img-thumbnail {{ $photo ? '' : 'd-none' }}"
                          style="width: 100%; height: 100%; object-fit: cover;">
                     <i class="bi bi-image text-muted preview-icon {{ $photo ? 'd-none' : '' }}" style="font-size: 30px;"></i>
-                    <button type="button" id="remove_photo_{{ $i }}" class="btn btn-danger btn-sm position-absolute top-0 end-0 {{ $photo ? '' : 'd-none' }}" style="padding: 4px;">
+                    <button type="button" id="remove_photo_{{ $i }}" class="btn btn-danger btn-sm position-absolute top-0 end-0 {{ $photo ? '' : 'd-none' }}" style="padding: 4px;" data-photo-id="{{ $photo->id ?? '' }}">
                         <i class="bi bi-x-circle"></i>
                     </button>
                 </label>
-                <input type="file" class="d-none" id="photo_{{ $i }}" name="photos[]" accept="image/*">
+                <input type="file" class="d-none" id="photo_{{ $i }}" name="photos[{{ $i }}]" accept="image/*">
                 <!-- Champ caché pour les photos existantes -->
                 @if ($photo)
                 <input type="hidden" name="existing_photos[]" value="{{ $photo->id }}">
                 @endif
+                <!-- Champ caché pour suivre les suppressions -->
+                <input type="hidden" name="deleted_photos[]" value="" id="deleted_photo_{{ $i }}">
                 <span class="text-muted mt-2" style="font-size: 14px;">Photo {{ $i === 0 ? 'principale' : 'annexe ' . $i }}</span>
             </div>
             @endfor
         </div>
-
     </div>
     <div class="card shadow-lg border-0 rounded-lg mb-4">
         <div class="card-header text-black">
@@ -94,9 +94,7 @@
         <div class="card-header text-black">
             <h5>Catégorie de bien</h5>
         </div>
-
         <div class="card-body">
-
             <div class="mb-3">
                 <label for="categorySelect" class="form-label text-black">
                     Catégorie<span class="text-danger" title="obligatoire">*</span>
@@ -110,8 +108,8 @@
                     @endforeach
                 </select>
             </div>
-
             <div class="mb-3" id="parametersContainer"></div>
+            <input type="hidden" name="current_category" value="{{ $bien->id_categorie_bien }}">
 
             @if($bien->statut == 'brouillon')
             <div class="d-flex justify-content-center gap-3">
@@ -126,6 +124,15 @@
             <div class="d-flex justify-content-center gap-3">
                 <button type="submit" name="action" value="save" class="btn btn-primary px-3 py-2">
                     <i class="bi bi-check-all me-2"></i> Enregistrer modification
+                </button>
+            </div>
+            @elseif ($bien->statut == 'terminé')
+            <div class="d-flex justify-content-center gap-3">
+                <button type="submit" name="action" value="save" class="btn btn-primary px-3 py-2">
+                    <i class="bi bi-check-all me-2"></i> Enregistrer modification
+                </button>
+                <button type="submit" name="action" value="publish" class="btn btn-primary btn btn-warning text-white px-3 py-2">
+                    <i class="bi bi-megaphone me-2"></i> Republier
                 </button>
             </div>
             @endif
@@ -150,15 +157,38 @@
 </form>
 
 <script>
+    let existingPhotos = @json($existingPhotoIds);
+    let deletedPhotos = [];
+    let photoStatus = Array({{ $maxPhotos }}).fill(false);
+
+    existingPhotos.forEach((photoId, index) => {
+        if (photoId) {
+            photoStatus[index] = true;
+        }
+    });
+
+    function showModalMessage(message) {
+        const modal = new bootstrap.Modal(document.getElementById('validationModal'));
+        const messageContainer = document.getElementById('validationMessage');
+        messageContainer.textContent = message;
+        modal.show();
+    }
+
     function setupPhotoPreview(inputId, previewId, removeButtonId, index) {
         const inputElement = document.getElementById(inputId);
         const previewElement = document.getElementById(previewId);
         const previewIcon = previewElement.nextElementSibling;
         const removeButton = document.getElementById(removeButtonId);
-        const existingPhotoInput = document.querySelector(`input[name="existing_photos[]"][value="${index}"]`);
+        const deletedPhotoInput = document.getElementById(`deleted_photo_${index}`);
 
         inputElement.addEventListener('change', function (event) {
             const file = event.target.files[0];
+
+            if (index > 0 && !photoStatus[index - 1]) {
+                showModalMessage("Vous devez d'abord ajouter la photo précédente avant de pouvoir ajouter celle-ci.");
+                inputElement.value = '';
+                return;
+            }
 
             if (file) {
                 const reader = new FileReader();
@@ -167,15 +197,31 @@
                     previewElement.classList.remove('d-none');
                     previewIcon.classList.add('d-none');
                     removeButton.classList.remove('d-none');
+
+                    photoStatus[index] = true;
+
+                    const photoId = parseInt(removeButton.dataset.photoId);
+                    if (photoId && deletedPhotos.includes(photoId)) {
+                        deletedPhotos = deletedPhotos.filter(id => id !== photoId);
+                        deletedPhotoInput.value = '';
+                    }
                 };
                 reader.readAsDataURL(file);
             }
         });
 
         removeButton.addEventListener('click', function () {
-            // Suppression de l'ID de la photo existante
-            if (existingPhotoInput) {
-                existingPhotoInput.remove();
+            for (let i = index + 1; i < photoStatus.length; i++) {
+                if (photoStatus[i]) {
+                    showModalMessage("Vous devez d'abord supprimer les photos suivantes avant de pouvoir retirer celle-ci.");
+                    return;
+                }
+            }
+
+            const photoId = parseInt(removeButton.dataset.photoId);
+            if (photoId) {
+                deletedPhotos.push(photoId);
+                deletedPhotoInput.value = photoId;
             }
 
             inputElement.value = '';
@@ -183,6 +229,8 @@
             previewElement.classList.add('d-none');
             previewIcon.classList.remove('d-none');
             removeButton.classList.add('d-none');
+
+            photoStatus[index] = false;
         });
     }
 
@@ -253,6 +301,7 @@
 
         function updateParameters(categoryId) {
             parametersContainer.innerHTML = '';
+
             var selectedCategory = categories.find(function (cat) {
                 return cat.id === parseInt(categoryId);
             });
@@ -266,7 +315,7 @@
                 var parameterId = assoc.parametre.id;
                 var parameterName = assoc.parametre.nom_parametre;
 
-                // Pré-remplir la valeur si elle existe
+                // Récupérer la valeur associée au paramètre pour le bien
                 var parameterValue = bien.valeurs.find(function (val) {
                     return val.id_association_categorie === assoc.id;
                 })?.valeur || '';
@@ -304,6 +353,7 @@
                 input.addEventListener('input', function () {
                     validateInput(input);
                 });
+
                 inputCol.appendChild(input);
                 inputGroup.appendChild(labelCol);
                 inputGroup.appendChild(inputCol);
@@ -324,6 +374,8 @@
             updateParameters(selectedCategoryId);
         });
     });
+
+
 </script>
 
 <style>

@@ -115,27 +115,24 @@ class AnnouncementController extends Controller
         $bien = Bien::with(['photos', 'categorieBien', 'valeurs'])->findOrFail($id);
         $categories = CategorieBien::with('associations.parametre')->get();
         $parametresCategories = AssociationCategorieParametre::with('parametre')->get();
+        $existingPhotoIds = $bien->photos->pluck('id')->toArray();
 
+        //dd($bien);
         return view('abonné.pages.announcement.edit', [
             'bien' => $bien,
             'categories' => $categories,
             'parametresCategories' => $parametresCategories,
+            'existingPhotoIds' => $existingPhotoIds,
         ]);
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $action = $request->input('action', 'save');
-
         $bien = Bien::with(['photos', 'categorieBien', 'valeurs'])->findOrFail($id);
 
         //dd($request->all());
 
-        // Définir les règles de validation
         $validationRules = [
             'category' => 'required|exists:categorie_biens,id',
             'titre' => 'required|string|max:255',
@@ -150,15 +147,12 @@ class AnnouncementController extends Controller
                 'description' => 'required|string|max:200',
                 'parameters' => 'array',
             ]);
+        } else {
+            $validationRules['parameters'] = 'array';
         }
-
-        // Validation des données
         $validated = $request->validate($validationRules);
+        $isCategoryChanged = $request->input('current_category') != $validated['category'];
 
-        // Vérifier si la catégorie a changé
-        $isCategoryChanged = $bien->id_categorie_bien != $validated['category'];
-
-        // Mise à jour des informations principales du bien
         $bien->update([
             'titre' => $validated['titre'],
             'description' => $request->input('description', $bien->description),
@@ -169,43 +163,60 @@ class AnnouncementController extends Controller
             'id_categorie_bien' => $validated['category'],
         ]);
 
-        // Gestion des photos
         $this->updatePhotos($bien, $request);
-
-        // Gestion des paramètres
         $this->updateParameters($bien, $validated, $isCategoryChanged);
-
         return redirect()->route('dashboard')->with('success', 'Annonce mise à jour avec succès!');
     }
 
     /**
      * Gère la mise à jour des photos du bien.
      */
+
     protected function updatePhotos($bien, $request)
     {
-        // Gestion des photos supprimées
         $existingPhotoIds = $request->input('existing_photos', []);
-        $photosToDelete = $bien->photos->whereNotIn('id', $existingPhotoIds);
 
-        foreach ($photosToDelete as $photo) {
-            // Supprimer le fichier du stockage
-            $photoPath = str_replace('/storage', 'public', $photo->url_photo);
-            Storage::delete($photoPath);
+        $deletedPhotoIds = $request->input('deleted_photos', []);
+        foreach ($deletedPhotoIds as $photoId) {
+            if ($photoId) {
+                $photo = $bien->photos()->find($photoId);
+                if ($photo) {
+                    $photoPath = str_replace('/storage', 'public', $photo->url_photo);
+                    Storage::delete($photoPath);
+                    $photo->delete();
+                }
+            }
+        }
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $index => $newPhotoFile) {
+                if (isset($existingPhotoIds[$index])) {
+                    $photoId = $existingPhotoIds[$index];
+                    $photo = $bien->photos()->find($photoId);
 
-            // Supprimer l'entrée de la base de données
-            $photo->delete();
+                    if ($photo) {
+                        $oldPhotoPath = str_replace('/storage', 'public', $photo->url_photo);
+                        Storage::delete($oldPhotoPath);
+
+                        $photoName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $newPhotoFile->getClientOriginalName());
+                        $newPhotoPath = $newPhotoFile->storeAs('images/annonces', $photoName, 'public');
+
+                        $photo->update(['url_photo' => Storage::url($newPhotoPath)]);
+                    }
+                }
+            }
         }
 
-        // Ajout des nouvelles photos
         if ($request->hasFile('photos')) {
-            foreach ($request->file('photos') as $photo) {
-                $photoName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $photo->getClientOriginalName());
-                $photoPath = $photo->storeAs('images/annonces', $photoName, 'public');
+            foreach ($request->file('photos') as $index => $photo) {
+                if (!isset($existingPhotoIds[$index])) {
+                    $photoName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $photo->getClientOriginalName());
+                    $photoPath = $photo->storeAs('images/annonces', $photoName, 'public');
 
-                PhotoBien::create([
-                    'url_photo' => Storage::url($photoPath),
-                    'id_bien' => $bien->id,
-                ]);
+                    PhotoBien::create([
+                        'url_photo' => Storage::url($photoPath),
+                        'id_bien' => $bien->id,
+                    ]);
+                }
             }
         }
     }
@@ -213,13 +224,17 @@ class AnnouncementController extends Controller
     /**
      * Gère la mise à jour des valeurs des paramètres.
      */
+
     protected function updateParameters($bien, $validated, $isCategoryChanged)
     {
+        // Charger les valeurs actuelles pour le bien
+        $currentValues = $bien->valeurs()->get();
+
         if ($isCategoryChanged) {
-            // Si la catégorie a changé, supprimer les anciennes valeurs
+            // Si la catégorie a changé, supprimer toutes les valeurs associées
             $bien->valeurs()->delete();
 
-            // Ajouter les nouvelles valeurs pour la nouvelle catégorie
+            // Ajouter les nouvelles valeurs
             if (!empty($validated['parameters'])) {
                 foreach ($validated['parameters'] as $paramId => $value) {
                     ValeurBien::create([
@@ -230,16 +245,19 @@ class AnnouncementController extends Controller
                 }
             }
         } else {
-            // Si la catégorie n'a pas changé, mettre à jour les valeurs existantes
+            // Si la catégorie n'a pas changé, mettre à jour les valeurs existantes ou en ajouter de nouvelles
             if (!empty($validated['parameters'])) {
                 foreach ($validated['parameters'] as $paramId => $value) {
-                    $valeur = $bien->valeurs()->where('id_association_categorie', $paramId)->first();
+                    // Rechercher une valeur existante
+                    $existingValue = $currentValues->where('id_association_categorie', $paramId)->first();
 
-                    if ($valeur) {
-                        // Mettre à jour la valeur existante
-                        $valeur->update(['valeur' => $value]);
+                    if ($existingValue) {
+                        // Mettre à jour la valeur si elle a changé
+                        if ($existingValue->valeur != $value) {
+                            $existingValue->update(['valeur' => $value]);
+                        }
                     } else {
-                        // Ajouter une nouvelle valeur si elle n'existe pas
+                        // Créer une nouvelle valeur si elle n'existe pas
                         ValeurBien::create([
                             'valeur' => $value,
                             'id_bien' => $bien->id,
@@ -252,32 +270,13 @@ class AnnouncementController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     */
+
+
+    /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
-    {
-        $annonce = Bien::with('photos')->findOrFail($id);
-
-        if ($annonce->id_user !== auth()->id()) {
-            return redirect()->route('acceuil')->with('error', 'Vous n\'êtes pas autorisé à supprimer cette annonce.');
-        }
-
-        foreach ($annonce->photos as $photo) {
-            $defaultPhotoPath = '/storage/images/annonces/default_main_image.jpg';
-            if ($photo->url_photo !== $defaultPhotoPath) {
-                $relativePath = str_replace('/storage/', '', $photo->url_photo); // Convertir en chemin relatif
-                Storage::disk('public')->delete($relativePath); // Supprimer du stockage
-            }
-
-            $photo->delete();
-        }
-
-        $annonce->valeurs()->delete();
-
-        $annonce->delete();
-
-        return redirect()->route('dashboard')->with('success', 'Annonce supprimée avec succès!');
-    }
 
     //Fonction de mise fin d'une annonce
     public function terminate($id)
@@ -317,5 +316,26 @@ class AnnouncementController extends Controller
         $annonce->save();
 
         return redirect()->route('dashboard')->with('success', 'Annonce republiée avec succès.');
+    }
+
+    public function destroy($id)
+    {
+        $annonce = Bien::with('photos')->findOrFail($id);
+        if ($annonce->id_user !== auth()->id()) {
+            return redirect()->route('acceuil')->with('error', 'Vous n\'êtes pas autorisé à supprimer cette annonce.');
+        }
+        foreach ($annonce->photos as $photo) {
+            $defaultPhotoPath = '/storage/images/annonces/default_main_image.jpg';
+            if ($photo->url_photo !== $defaultPhotoPath) {
+                $relativePath = str_replace('/storage/', '', $photo->url_photo); // Convertir en chemin relatif
+                Storage::disk('public')->delete($relativePath); // Supprimer du stockage
+            }
+
+            $photo->delete();
+        }
+        $annonce->valeurs()->delete();
+        $annonce->delete();
+
+        return redirect()->route('dashboard')->with('success', 'Annonce supprimée avec succès!');
     }
 }

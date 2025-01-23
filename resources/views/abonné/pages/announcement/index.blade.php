@@ -44,7 +44,6 @@
                                 <i class="bi bi-geo-alt-fill"></i> <strong>Lieu :</strong> {{ Str::limit($bien->lieu, 10, '...') }}
                             </p>
                         </div>
-
                         <div class="card-footer text-center">
                             <div class="row justify-content-center">
                                 <div class="col-4 mb-2">
@@ -58,7 +57,6 @@
                                     </button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -179,6 +177,11 @@
                         <div class="card-footer text-center">
                             <div class="row justify-content-center">
                                 <div class="col-4 mb-2">
+                                    <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
+                                        <i class="bi bi-pencil-square me-2"></i>
+                                    </a>
+                                </div>
+                                <div class="col-4 mb-2">
                                         <button type="button" class="btn btn-secondary btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#relaunchConfirmation{{ $bien->id }}" title="Republier">
                                         <i class="bi bi-check me-2"></i>
                                     </button>
@@ -217,14 +220,9 @@
                 <div class="modal fade" id="relaunchConfirmation{{ $bien->id }}" tabindex="-1" aria-labelledby="relaunchConfirmationLabel{{ $bien->id }}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
-                            <div class="col-4 mb-2">
-                                <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
-                                    <i class="bi bi-pencil-square me-2"></i>
-                                </a>
-                            </div>
                             <div class="modal-header">
                                 <i class="bi bi-exclamation-triangle me-1"></i>
-                                <h5 class="modal-title" id="relaunchConfirmationLabel{{ $bien->id }}">Confirmation de Rupublication</h5>
+                                <h5 class="modal-title" id="relaunchConfirmationLabel{{ $bien->id }}">Confirmation de Républication</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-black">
