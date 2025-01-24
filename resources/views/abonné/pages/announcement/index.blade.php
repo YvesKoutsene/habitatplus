@@ -22,41 +22,40 @@
         <div class="tab-pane fade show active" id="brouillon" role="tabpanel" aria-labelledby="brouillon-tab">
             <div class="row">
                 @foreach($biens as $bien)
-                @if($bien->statut !== 'brouillon')
-                <div class="alert alert-info text-center text-black">
-                    Vous n'avez pas encore créé d'annonces.
-                </div>
-                @elseif($bien->statut == 'brouillon')
-                <div class="col-auto mb-3">
+                @if($bien->statut == 'brouillon')
+                <div class="col-6 col-md-6 col-lg-4 mb-4">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
-                        @if($bien->photos && count($bien->photos) > 0)
-                        <img src="{{ asset($bien->photos[0]->url_photo) }}"
-                             class="card-img-top"
-                             alt="Image de l'annonce">
-                        @else
-                        <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}"
-                             class="card-img-top"
-                             alt="Image par défaut">
-                        @endif
-
-                        <div class="card-body text-center">
-                            <h5 class="card-title mb-2">{{ Str::limit($bien->titre, 10, '...') }}</h5>
-                            <p class="card-text mb-3">
-                                <i class="bi bi-cash-stack"></i> <strong>Prix :</strong>
-                                {{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '--', 10, '...') }} FCFA <br>
-                                <i class="bi bi-geo-alt-fill"></i> <strong>Lieu :</strong> {{ Str::limit($bien->lieu !== null ? $bien->lieu : '--', 10, '...') }}
+                        <div class="position-relative">
+                            @if($bien->photos && count($bien->photos) > 0)
+                            <img src="{{ asset($bien->photos[0]->url_photo) }}"
+                                 class="card-img-top"
+                                 alt="Image de l'annonce">
+                            @else
+                            <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}"
+                                 class="card-img-top"
+                                 alt="Image par défaut">
+                            @endif
+                            <span class="badge bg-primary position-absolute top-0 start-0 m-2 p-2">
+                                {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
+                            </span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
+                            <p class="card-text text-muted mb-3">
+                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : '--', 10, '...') }}<br>
+                                <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '--', 10, '...') }} FCFA </strong>
                             </p>
                         </div>
-                        <div class="card-footer text-center">
+                        <div class="card-footer d-flex flex-column">
                             <div class="row justify-content-center">
                                 <div class="col-auto mb-3">
                                     <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
-                                        <i class="bi bi-pencil-square me-2"></i>
+                                        <i class="bi bi-pencil-square"></i>
                                     </a>
                                 </div>
                                 <div class="col-auto mb-3">
                                     <button type="button" class="btn btn-danger btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer">
-                                        <i class="bi bi-trash me-2"></i>
+                                        <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
                             </div>
@@ -89,40 +88,43 @@
                 @endforeach
             </div>
         </div>
-
         <div class="tab-pane fade" id="publie" role="tabpanel" aria-labelledby="publie-tab">
             <div class="row">
                 @foreach($biens as $bien)
                 @if($bien->statut == 'publié' || $bien->statut == 'republié')
-                <div class="col-auto mb-3">
+                <div class="col-6 col-md-6 col-lg-4 mb-4">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
-                        @if($bien->photos && count($bien->photos) > 0)
-                        <img src="{{ asset($bien->photos[0]->url_photo) }}"
-                             class="card-img-top"
-                             alt="Image de l'annonce">
-                        @else
-                        <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}"
-                             class="card-img-top"
-                             alt="Image par défaut">
-                        @endif
-                        <div class="card-body text-center">
-                            <h5 class="card-title mb-2">{{ Str::limit($bien->titre, 10, '...') }}</h5>
-                            <p class="card-text mb-3">
-                                <i class="bi bi-cash-stack"></i> <strong>Prix :</strong>
-                                {{ Str::limit(number_format($bien->prix, 0, ',', ' '), 10, '...') }} FCFA<br>
-                                <i class="bi bi-geo-alt-fill"></i> <strong>Lieu :</strong> {{ Str::limit($bien->lieu, 10, '...') }}
+                        <div class="position-relative">
+                            @if($bien->photos && count($bien->photos) > 0)
+                            <img src="{{ asset($bien->photos[0]->url_photo) }}"
+                                 class="card-img-top"
+                                 alt="Image de l'annonce">
+                            @else
+                            <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}"
+                                 class="card-img-top"
+                                 alt="Image par défaut">
+                            @endif
+                            <span class="badge bg-primary position-absolute top-0 start-0 m-2 p-2">
+                                {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
+                            </span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
+                            <p class="card-text text-muted mb-3">
+                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : '--', 10, '...') }}<br>
+                                <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '--', 10, '...') }} FCFA </strong>
                             </p>
                         </div>
-                        <div class="card-footer text-center">
+                        <div class="card-footer d-flex flex-column">
                             <div class="row justify-content-center">
                                 <div class="col-auto mb-3">
                                     <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
-                                        <i class="bi bi-pencil-square me-2"></i>
+                                        <i class="bi bi-pencil-square"></i>
                                     </a>
                                 </div>
                                 <div class="col-auto mb-3">
                                     <button type="button" class="btn btn-warning btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#terminateConfirmation{{ $bien->id }}" title="Arrêté">
-                                        <i class="bi bi-x-circle me-2"></i>
+                                        <i class="bi bi-x-circle"></i>
                                     </button>
                                 </div>
                             </div>
@@ -159,40 +161,44 @@
             <div class="row">
                 @foreach($biens as $bien)
                 @if($bien->statut == 'terminé')
-                <div class="col-auto mb-3">
+                <div class="col-6 col-md-6 col-lg-4 mb-4">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
-                        @if($bien->photos && count($bien->photos) > 0)
-                        <img src="{{ asset($bien->photos[0]->url_photo) }}"
-                             class="card-img-top"
-                             alt="Image de l'annonce">
-                        @else
-                        <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}"
-                             class="card-img-top"
-                             alt="Image par défaut">
-                        @endif
-                        <div class="card-body text-center">
-                            <h5 class="card-title mb-2">{{ Str::limit($bien->titre, 10, '...') }}</h5>
-                            <p class="card-text mb-3">
-                                <i class="bi bi-cash-stack"></i> <strong>Prix :</strong>
-                                {{ Str::limit(number_format($bien->prix, 0, ',', ' '), 10, '...') }} FCFA<br>
-                                <i class="bi bi-geo-alt-fill"></i> <strong>Lieu :</strong> {{ Str::limit($bien->lieu, 10, '...') }}
+                        <div class="position-relative">
+                            @if($bien->photos && count($bien->photos) > 0)
+                            <img src="{{ asset($bien->photos[0]->url_photo) }}"
+                                 class="card-img-top"
+                                 alt="Image de l'annonce">
+                            @else
+                            <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}"
+                                 class="card-img-top"
+                                 alt="Image par défaut">
+                            @endif
+                            <span class="badge bg-primary position-absolute top-0 start-0 m-2 p-2">
+                                {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
+                            </span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
+                            <p class="card-text text-muted mb-3">
+                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : '--', 10, '...') }}<br>
+                                <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '--', 10, '...') }} FCFA </strong>
                             </p>
                         </div>
-                        <div class="card-footer text-center">
+                        <div class="card-footer d-flex flex-column">
                             <div class="row justify-content-center">
                                 <div class="col-auto mb-3">
                                     <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
-                                        <i class="bi bi-pencil-square me-2"></i>
+                                        <i class="bi bi-pencil-square"></i>
                                     </a>
                                 </div>
                                 <div class="col-auto mb-3">
                                         <button type="button" class="btn btn-secondary btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#relaunchConfirmation{{ $bien->id }}" title="Republier">
-                                        <i class="bi bi-check me-2"></i>
+                                        <i class="bi bi-check"></i>
                                     </button>
                                 </div>
                                 <div class="col-auto mb-3">
                                     <button type="button" class="btn btn-danger btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer">
-                                        <i class="bi bi-trash me-2"></i>
+                                        <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
                             </div>
@@ -252,16 +258,53 @@
 </div>
 
 <style>
-    .card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .card:hover {
-        transform: scale(1.02);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-    }
-    .card-img-top {
-        height: 150px;
-        object-fit: cover;
+    .pagetitle h1 {
+        font-size: 2.5rem;
+        color: #333;
     }
 
+    .pagetitle p {
+        font-size: 1rem;
+        color: #777;
+    }
+
+    .card {
+        border: 1px solid #f0f0f0;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: linear-gradient(to bottom, #ffffff, #f9f9f9);
+        border-radius: 12px;
+    }
+
+    .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-img-top {
+        height: 220px;
+        object-fit: cover;
+        border-bottom: 3px solid #007bff;
+    }
+
+    .badge {
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
+
+    .like-icon:hover {
+        transform: scale(1.2);
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        line-height: 1.5;
+    }
+
+    .card-text {
+        font-size: 0.95rem;
+    }
+
+    .row.g-4 > [class*='col-'] {
+        margin-bottom: 30px;
+    }
 </style>

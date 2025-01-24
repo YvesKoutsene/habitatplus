@@ -14,6 +14,9 @@
 
 <div class="container my-4 flex-grow-1">
     <div class="row habitat">
+        <div class="pagetitle text-center mb-4">
+            <h3 class="fw-bold text-black">Découvrez Nos Annonces</h3>
+        </div>
         <aside class="col-12 col-md-3 mb-3 d-none d-md-block">
             @include('abonné.include.partials.sidebar')
         </aside>

@@ -13,10 +13,13 @@ use App\Http\Controllers\Admin\CategoryTicketController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Abonné\AnnouncementController;
 
-
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-})->name('acceuil')->middleware(['check.email.verified']);
+})->name('acceuil')->middleware(['check.email.verified']);*/
+
+Route::get('/', [HomeController::class, 'indexHome'])
+    ->name('acceuil')
+    ->middleware(['check.email.verified']);
 
 Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified'])

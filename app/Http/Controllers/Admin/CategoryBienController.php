@@ -53,7 +53,7 @@ class CategoryBienController extends Controller
      * Store a newly created resource in storage.
      */
 
-    /*public function store(Request $request)
+    public function store(Request $request)
      {
 
          dd($request->all());
@@ -83,9 +83,9 @@ class CategoryBienController extends Controller
 
          return redirect()->route('category_bien.index')
              ->with('success', "Catégorie de bien {$categorie->titre} créée avec succès.");
-    }*/
+    }
 
-    public function store(Request $request)
+    /*public function store(Request $request)
     {
         dd($request->all());
         $validated = $request->validate([
@@ -130,7 +130,7 @@ class CategoryBienController extends Controller
 
         return redirect()->route('category_bien.index')
             ->with('success', "Catégorie de bien {$categorie->titre} créée avec succès.");
-    }
+    }*/
 
 
     /**

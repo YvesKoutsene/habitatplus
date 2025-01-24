@@ -42,4 +42,16 @@ class HomeController extends Controller
         return redirect('acceuil');
     }
 
+    //Fonction pour taper sur la route "/"
+    public function indexHome(){
+        $biens = Bien::with(['categorieBien'])->where(function($query) {
+                $query->where('statut', 'publié')
+                    ->orWhere('statut', 'republié');
+            })
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        return view('welcome', compact('biens'));
+    }
+
 }
