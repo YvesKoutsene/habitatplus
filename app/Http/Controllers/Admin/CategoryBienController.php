@@ -53,8 +53,10 @@ class CategoryBienController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function store(Request $request)
+    /*public function store(Request $request)
      {
+
+         dd($request->all());
          $validated = $request->validate([
              'titre' => 'required|string|max:255|unique:categorie_biens,titre',
              'description' => 'required|string|max:255|:categorie_biens,description',
@@ -81,6 +83,53 @@ class CategoryBienController extends Controller
 
          return redirect()->route('category_bien.index')
              ->with('success', "Catégorie de bien {$categorie->titre} créée avec succès.");
+    }*/
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+        $validated = $request->validate([
+            'titre' => 'required|string|max:255|unique:categorie_biens,titre',
+            'description' => 'required|string|max:255',
+            'parametres' => 'required|array|min:1', // Au moins un paramètre requis
+            'parametres.*' => 'exists:parametre_categories,id',
+            'autre_parametre' => 'nullable|string|max:255', // Nouveau champ
+        ],
+            [
+                'titre.unique' => 'Cette catégorie de bien existe déjà',
+                'parametres.required' => 'Veuillez paramétrer la catégorie de bien',
+                'parametres.min' => 'Vous devez sélectionner au moins un paramètre.'
+            ]);
+
+        // Créer la catégorie
+        $categorie = CategorieBien::create([
+            'titre' => $validated['titre'],
+            'statut' => 'actif',
+            'description' => $validated['description']
+        ]);
+
+        // Ajouter les paramètres existants
+        foreach ($validated['parametres'] as $parametreId) {
+            AssociationCategorieParametre::create([
+                'id_categorie' => $categorie->id,
+                'id_parametre' => $parametreId,
+            ]);
+        }
+
+        // Ajouter le paramètre "Autre" si spécifié
+        if (!empty($validated['autre_parametre'])) {
+            $nouveauParametre = ParametreCategorie::create([
+                'nom_parametre' => $validated['autre_parametre']
+            ]);
+
+            AssociationCategorieParametre::create([
+                'id_categorie' => $categorie->id,
+                'id_parametre' => $nouveauParametre->id,
+            ]);
+        }
+
+        return redirect()->route('category_bien.index')
+            ->with('success', "Catégorie de bien {$categorie->titre} créée avec succès.");
     }
 
 

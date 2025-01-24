@@ -139,8 +139,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Fin du modal -->
                                 @endforeach
                             </tbody>
                             <tfoot>
@@ -153,7 +151,6 @@
                             </tfoot>
                         </table>
 
-                        <!-- Pagination personnalisée -->
                         <nav aria-label="...">
                             <ul class="pagination justify-content-end">
                                 <li class="page-item {{ $parametres->onFirstPage() ? 'disabled' : '' }}">
@@ -179,7 +176,6 @@
     </div>
 </section>
 
-<!-- Script pour activer la modale -->
 @if(request()->get('showModal') === 'create')
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -191,7 +187,6 @@
     </script>
 @endif
 
-<!-- Modal pour ajouter un paramètre -->
 <div class="modal fade" id="createParameterModal" tabindex="-1" aria-labelledby="createParameterModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">

@@ -18,19 +18,18 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Informations sur la catégorie</h5>
-                    
+
                     <form action="{{ route('category_bien.store') }}" method="POST" class="needs-validation" novalidate>
                         @csrf
-
                         <!-- Nom de la Catégorie -->
                         <div class="mb-4">
                             <label for="nom_categorie" class="form-label">Nom<span class="text-danger">*</span></label>
-                            <input 
-                                type="text" 
-                                name="titre" 
-                                id="nom_categorie" 
-                                class="form-control" 
-                                placeholder="Nom de la catégorie de bien" 
+                            <input
+                                type="text"
+                                name="titre"
+                                id="nom_categorie"
+                                class="form-control"
+                                placeholder="Nom de la catégorie de bien"
                                 required>
                             <div class="invalid-feedback">
                                 Veuillez fournir un nom pour la catégorie.
@@ -40,13 +39,13 @@
                         <!-- Description -->
                         <div class="mb-4">
                             <label for="description" class="form-label">Description<span class="text-danger">*</span></label>
-                            <textarea 
-                                name="description" 
-                                id="description" 
-                                class="form-control" 
-                                rows="4" 
-                                maxlength="200" 
-                                placeholder="Ajoutez une description" 
+                            <textarea
+                                name="description"
+                                id="description"
+                                class="form-control"
+                                rows="4"
+                                maxlength="200"
+                                placeholder="Ajoutez une description"
                                 required></textarea>
                             <div class="invalid-feedback">
                                 Veuillez fournir une description valide.
@@ -59,36 +58,19 @@
                             <label class="form-label">Paramètres catégories<span class="text-danger">*</span></label>
                             <div class="row">
                                 @foreach($parametres as $parametre)
-                                <!--
-                                    <div class="col-md-6 col-sm-12 mb-2">
-                                        <div class="form-check">
-                                            <input 
-                                                class="form-check-input" 
-                                                type="checkbox" 
-                                                name="parametres[]" 
-                                                id="parametre{{ $parametre->id }}" 
-                                                value="{{ $parametre->id }}">
-                                            <label class="form-check-label" for="parametre{{ $parametre->id }}">
-                                                {{ $parametre->nom_parametre }}
-                                            </label>
-                                        </div>
+                                <div class="col-md-6 col-sm-10 mb-2">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            name="parametres[]"
+                                            id="parametre{{ $parametre->id }}"
+                                            value="{{ $parametre->id }}">
+                                        <label class="form-check-label" for="parametre{{ $parametre->id }}">
+                                            {{ $parametre->nom_parametre }}
+                                        </label>
                                     </div>
-                                -->
-
-                                    <div class="col-md-6 col-sm-10 mb-2">
-                                        <div class="form-check form-switch">
-                                            <input 
-                                                class="form-check-input" 
-                                                type="checkbox"
-                                                name="parametres[]" 
-                                                id="parametre{{ $parametre->id }}" 
-                                                value="{{ $parametre->id }}">
-                                            <label class="form-check-label" for="parametre{{ $parametre->id }}">
-                                                {{ $parametre->nom_parametre }}
-                                            </label>
-                                        </div>
-                                    </div>
-
+                                </div>
                                 @endforeach
                             </div>
                             <div class="invalid-feedback">
