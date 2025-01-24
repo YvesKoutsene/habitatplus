@@ -75,7 +75,7 @@
                         id="prix_annonce"
                         class="form-control form-control-sm"
                         placeholder="Prix de votre annonce"
-                        min="1" oninput="validateInput01()" value="{{ old('prix', number_format($bien->prix, 0, ',', '')) }}">
+                        min="1" oninput="validateInput01()" value="{{ old('prix', $bien->prix !== null ? number_format($bien->prix, 0, ',', '') : '') }}">
                     <span class="input-group-text">CFA</span>
                 </div>
             </div>
@@ -349,8 +349,8 @@
                 input.id = 'param_' + parameterId;
                 input.classList.add('form-control');
                 input.placeholder = "Entrez une valeur";
-                input.value = parameterValue; // Pré-remplir la valeur
-                input.required = false;
+                input.value = parameterValue;
+                input.required = true;
 
                 input.addEventListener('input', function () {
                     validateInput(input);

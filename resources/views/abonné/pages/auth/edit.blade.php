@@ -1,11 +1,11 @@
+@if(auth()->check())
 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
-                <form method="POST" action="{{ route('update.profile', auth()->user()->id) }}" enctype="multipart/form-data" >
+                <form method="POST" action="{{ route('update.profile', auth()->user()->id) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-
                     <div class="text-center mb-4 position-relative">
                         <img src="{{ asset(Auth::user()->photo_profil) }}"
                              alt="Photo de profil"
@@ -32,12 +32,12 @@
                     <div class="mb-3">
                         <label for="phone" class="form-label text-black">Téléphone<span class="text-danger" title="obligatoire">*</span></label>
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-5 col-md-5 mb-2 mb-md-0">
                                 <select id="countryCode" name="pays" class="form-select form-control form-select-sm" required>
                                     <option value="{{ old('pays', auth()->user()->pays) }}">{{ old('pays', auth()->user()->pays) }}</option>
                                 </select>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-7 col-md-7">
                                 <input type="text" name="numero" class="form-control" id="number" required oninput="validateInput()" value="{{ old('numero', auth()->user()->numero) }}" placeholder="Numero de téléphone">
                             </div>
                         </div>
@@ -64,7 +64,6 @@
                 <form method="POST" action="{{ route('update.password', auth()->user()->id) }}" onsubmit="return validatePasswords()">
                     @csrf
                     @method('PUT')
-
                     <div class="mb-3">
                         <label for="currentPassword" class="form-label text-black">Mot de passe actuel<span class="text-info" title="Obligatoire pour changer le mot de passe">*</span></label>
                         <div class="input-group">
@@ -109,6 +108,7 @@
         </div>
     </div>
 </div>
+@endif
 
 <style>
     .modal-content {
@@ -150,7 +150,7 @@
                     option.textContent = `${indicatif} - ${country.name.common}`;
                     selectElement.appendChild(option);
                 });
-                selectElement.value = "{{ old('pays', auth()->user()->pays) }}";
+                selectElement.value = "{{ old('pays', Auth::check() ? Auth::user()->pays : '') }}";
             })
             .catch(console.error);
     });

@@ -1,31 +1,34 @@
 <div class="container mt-4">
-    <h2 class="mb-4 text-black-50">Mes Annonces</h2>
+    <h2 class="mb-2 text-black-50">Mes Annonces</h2>
     @if($biens->isEmpty())
     <div class="alert alert-info text-center text-black">
         Vous n'avez pas encore créé ou publié d'annonces.
     </div>
     @else
-    <!-- Onglets -->
+
     <ul class="nav nav-tabs" id="annonceTabs" role="tablist">
-        <li class="nav-item flex-fill" role="presentation">
-            <a class="nav-link active" id="brouillon-tab" data-bs-toggle="tab" href="#brouillon" role="tab" aria-controls="brouillon" aria-selected="true">Brouillon</a>
+        <li class="nav-item flex-fill py-2" role="presentation">
+            <a class="nav-link active" id="brouillon-tab" data-bs-toggle="tab" href="#brouillon" role="tab" aria-controls="brouillon" aria-selected="true">Créées</a>
         </li>
-        <li class="nav-item flex-fill" role="presentation">
-            <a class="nav-link" id="publie-tab" data-bs-toggle="tab" href="#publie" role="tab" aria-controls="publie" aria-selected="false">Publié</a>
+        <li class="nav-item flex-fill py-2" role="presentation">
+            <a class="nav-link" id="publie-tab" data-bs-toggle="tab" href="#publie" role="tab" aria-controls="publie" aria-selected="false">Publiées</a>
         </li>
-        <li class="nav-item flex-fill" role="presentation">
-            <a class="nav-link" id="annule-tab" data-bs-toggle="tab" href="#annule" role="tab" aria-controls="annule" aria-selected="false">Terminé</a>
+        <li class="nav-item flex-fill py-2" role="presentation">
+            <a class="nav-link" id="annule-tab" data-bs-toggle="tab" href="#annule" role="tab" aria-controls="annule" aria-selected="false">Annulées</a>
         </li>
     </ul>
-    <!-- Contenu des Onglets -->
+
     <div class="tab-content">
         <div class="tab-pane fade show active" id="brouillon" role="tabpanel" aria-labelledby="brouillon-tab">
             <div class="row">
                 @foreach($biens as $bien)
-                @if($bien->statut == 'brouillon')
-                <div class="col-md-3 mb-3">
+                @if($bien->statut !== 'brouillon')
+                <div class="alert alert-info text-center text-black">
+                    Vous n'avez pas encore créé d'annonces.
+                </div>
+                @elseif($bien->statut == 'brouillon')
+                <div class="col-auto mb-3">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
-
                         @if($bien->photos && count($bien->photos) > 0)
                         <img src="{{ asset($bien->photos[0]->url_photo) }}"
                              class="card-img-top"
@@ -40,18 +43,18 @@
                             <h5 class="card-title mb-2">{{ Str::limit($bien->titre, 10, '...') }}</h5>
                             <p class="card-text mb-3">
                                 <i class="bi bi-cash-stack"></i> <strong>Prix :</strong>
-                                {{ Str::limit(number_format($bien->prix, 0, ',', ' '), 10, '...') }} FCFA<br>
-                                <i class="bi bi-geo-alt-fill"></i> <strong>Lieu :</strong> {{ Str::limit($bien->lieu, 10, '...') }}
+                                {{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '--', 10, '...') }} FCFA <br>
+                                <i class="bi bi-geo-alt-fill"></i> <strong>Lieu :</strong> {{ Str::limit($bien->lieu !== null ? $bien->lieu : '--', 10, '...') }}
                             </p>
                         </div>
                         <div class="card-footer text-center">
                             <div class="row justify-content-center">
-                                <div class="col-4 mb-2">
+                                <div class="col-auto mb-3">
                                     <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
                                         <i class="bi bi-pencil-square me-2"></i>
                                     </a>
                                 </div>
-                                <div class="col-4 mb-2">
+                                <div class="col-auto mb-3">
                                     <button type="button" class="btn btn-danger btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer">
                                         <i class="bi bi-trash me-2"></i>
                                     </button>
@@ -86,11 +89,12 @@
                 @endforeach
             </div>
         </div>
+
         <div class="tab-pane fade" id="publie" role="tabpanel" aria-labelledby="publie-tab">
             <div class="row">
                 @foreach($biens as $bien)
                 @if($bien->statut == 'publié' || $bien->statut == 'republié')
-                <div class="col-md-3 mb-3">
+                <div class="col-auto mb-3">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
                         @if($bien->photos && count($bien->photos) > 0)
                         <img src="{{ asset($bien->photos[0]->url_photo) }}"
@@ -111,12 +115,12 @@
                         </div>
                         <div class="card-footer text-center">
                             <div class="row justify-content-center">
-                                <div class="col-4 mb-2">
+                                <div class="col-auto mb-3">
                                     <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
                                         <i class="bi bi-pencil-square me-2"></i>
                                     </a>
                                 </div>
-                                <div class="col-4 mb-2">
+                                <div class="col-auto mb-3">
                                     <button type="button" class="btn btn-warning btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#terminateConfirmation{{ $bien->id }}" title="Arrêté">
                                         <i class="bi bi-x-circle me-2"></i>
                                     </button>
@@ -155,7 +159,7 @@
             <div class="row">
                 @foreach($biens as $bien)
                 @if($bien->statut == 'terminé')
-                <div class="col-md-3 mb-3">
+                <div class="col-auto mb-3">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
                         @if($bien->photos && count($bien->photos) > 0)
                         <img src="{{ asset($bien->photos[0]->url_photo) }}"
@@ -176,17 +180,17 @@
                         </div>
                         <div class="card-footer text-center">
                             <div class="row justify-content-center">
-                                <div class="col-4 mb-2">
+                                <div class="col-auto mb-3">
                                     <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
                                         <i class="bi bi-pencil-square me-2"></i>
                                     </a>
                                 </div>
-                                <div class="col-4 mb-2">
+                                <div class="col-auto mb-3">
                                         <button type="button" class="btn btn-secondary btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#relaunchConfirmation{{ $bien->id }}" title="Republier">
                                         <i class="bi bi-check me-2"></i>
                                     </button>
                                 </div>
-                                <div class="col-4 mb-2">
+                                <div class="col-auto mb-3">
                                     <button type="button" class="btn btn-danger btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer">
                                         <i class="bi bi-trash me-2"></i>
                                     </button>
@@ -250,7 +254,6 @@
 <style>
     .card {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        max-height: 400px;
     }
     .card:hover {
         transform: scale(1.02);
@@ -260,4 +263,5 @@
         height: 150px;
         object-fit: cover;
     }
+
 </style>

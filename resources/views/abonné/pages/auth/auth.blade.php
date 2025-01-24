@@ -1,16 +1,19 @@
 <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center text-black" id=""><img src="\assets/img/logo.png" alt="Logo" class="me-2 logo-img">Habitat+</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Fermer"></button>
+            </div>
             <div class="modal-body">
                 <ul class="nav nav-tabs justify-content-center mb-3" id="authTabs" role="tablist">
-
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#loginSection" role="tab" aria-controls="loginSection" aria-selected="false">
                             CONNEXION
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link px-4" id="register-tab" data-bs-toggle="tab" data-bs-target="#registerSection" role="tab" aria-controls="registerSection" aria-selected="true">
+                        <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#registerSection" role="tab" aria-controls="registerSection" aria-selected="true">
                             INSCRIPTION
                         </button> <br>
                     </li>
@@ -32,13 +35,13 @@
                             <div class="mb-3">
                                 <label for="phone" class="form-label text-black">Téléphone<span class="text-danger" title="obligatoire">*</span></label>
                                 <div class="row">
-                                    <div class="col-md-5">
-                                        <select id="inputState" class="form-select form-control form-select-sm" name="pays">
+                                    <div class="col-5 col-md-5 mb-2 mb-md-0">
+                                        <select id="inputState" class="form-select form-control form-select-sm" name="pays" required>
                                             <option value="">Choisir un indicatif</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-7">
-                                        <input type="text" name="numero" class="form-control form-control-sm" id="numero" required oninput="validateInput()" placeholder="Numero de téléphone">
+                                    <div class="col-7 col-md-7">
+                                        <input type="text" name="numero" class="form-control form-control-sm" id="numero00" required oninput="validateInput00()" placeholder="Numéro de téléphone">
                                         <div class="invalid-feedback">Veuillez entrer votre numéro!</div>
                                     </div>
                                 </div>
@@ -126,7 +129,8 @@
     }
 
     .modal-header {
-        background-color: #007bff;
+        /*background-color: #007bff;*/
+        background-color: whitesmoke;
         border-bottom: none;
         color: white;
         text-align: center;
@@ -217,8 +221,8 @@
         }
     }
 
-    function validateInput() {
-        const input = document.getElementById('numero');
+    function validateInput00() {
+        const input = document.getElementById('numero00');
         input.value = input.value.replace(/[^0-9]/g, '');
     }
 

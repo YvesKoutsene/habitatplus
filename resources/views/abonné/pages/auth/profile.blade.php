@@ -40,12 +40,12 @@
     </div>
     <div class="card-body text-center">
         <div class="row justify-content-center">
-            <div class="col-md-5 mb-3">
+            <div class="col-auto mb-3">
                 <button class="btn btn-primary btn-block shadow-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                     <i class="bi bi-pencil-square me-2"></i> Modifier informations
                 </button>
             </div>
-            <div class="col-md-5 mb-3">
+            <div class="col-auto mb-3">
                 <button class="btn btn-warning btn-block shadow-sm" data-bs-toggle="modal" data-bs-target="#editPasswordModal">
                     <i class="bi bi-lock me-2"></i> Changer mot de passe
                 </button>

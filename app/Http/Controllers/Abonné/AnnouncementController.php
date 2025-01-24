@@ -60,19 +60,17 @@ class AnnouncementController extends Controller
 
         $validated = $request->validate($validationRules);
 
-        // Création de l'annonce
         $annonce = Bien::create([
             'titre' => $validated['titre'],
-            'description' => $request->input('description', ' '),
-            'prix' => $request->input('prix', 0),
-            'lieu' => $request->input('lieu', ' '),
+            'description' => $request->input('description', ''),
+            'prix' => $request->input('prix'),
+            'lieu' => $request->input('lieu', ''),
             'statut' => $action === 'publish' ? 'publié' : 'brouillon',
-            'type_offre' => $request->input('type_offre', ' '),
+            'type_offre' => $request->input('type_offre', ''),
             'id_user' => auth()->id(),
             'id_categorie_bien' => $validated['category'],
         ]);
 
-        // Gestion des photos
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
                 $photoName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $photo->getClientOriginalName());
@@ -85,7 +83,6 @@ class AnnouncementController extends Controller
             }
         }
 
-        // Gestion des paramètres
         $validatedParameters = $request->input('parameters', []);
         $associationIds = AssociationCategorieParametre::pluck('id')->toArray();
 
@@ -239,14 +236,11 @@ class AnnouncementController extends Controller
 
     protected function updateParameters($bien, $validated, $isCategoryChanged)
     {
-        // Charger les valeurs actuelles pour le bien
         $currentValues = $bien->valeurs()->get();
 
         if ($isCategoryChanged) {
-            // Si la catégorie a changé, supprimer toutes les valeurs associées
             $bien->valeurs()->delete();
 
-            // Ajouter les nouvelles valeurs
             if (!empty($validated['parameters'])) {
                 foreach ($validated['parameters'] as $assocId => $value) {
                     ValeurBien::create([
@@ -257,19 +251,15 @@ class AnnouncementController extends Controller
                 }
             }
         } else {
-            // Si la catégorie n'a pas changé, mettre à jour les valeurs existantes ou en ajouter de nouvelles
             if (!empty($validated['parameters'])) {
                 foreach ($validated['parameters'] as $assocId => $value) {
-                    // Rechercher une valeur existante pour l'association donnée
                     $existingValue = $currentValues->where('id_association_categorie', $assocId)->first();
 
                     if ($existingValue) {
-                        // Mettre à jour la valeur si elle a changé
                         if ($existingValue->valeur != $value) {
                             $existingValue->update(['valeur' => $value]);
                         }
                     } else {
-                        // Créer une nouvelle valeur si elle n'existe pas
                         ValeurBien::create([
                             'valeur' => $value,
                             'id_bien' => $bien->id,
@@ -287,11 +277,6 @@ class AnnouncementController extends Controller
                 });
         }
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-
 
     /**
      * Remove the specified resource from storage.
@@ -347,8 +332,8 @@ class AnnouncementController extends Controller
         foreach ($annonce->photos as $photo) {
             $defaultPhotoPath = '/storage/images/annonces/default_main_image.jpg';
             if ($photo->url_photo !== $defaultPhotoPath) {
-                $relativePath = str_replace('/storage/', '', $photo->url_photo); // Convertir en chemin relatif
-                Storage::disk('public')->delete($relativePath); // Supprimer du stockage
+                $relativePath = str_replace('/storage/', '', $photo->url_photo);
+                Storage::disk('public')->delete($relativePath);
             }
 
             $photo->delete();

@@ -269,8 +269,7 @@
                 input.id = 'param_' + parameterId;
                 input.classList.add('form-control');
                 input.placeholder = "Entrez une valeur";
-                /*input.required = true;*/
-                input.required = false;
+                input.required = true;
 
                 input.addEventListener('input', function () {
                     validateInput(input);

@@ -1,4 +1,4 @@
-<header class="bg-gradient text-white py-2 shadow-sm fixed-top header" id="header">
+<header class="bg-gradient text-white py-2 shadow-sm fixed-top header " id="header" >
     <div class="container d-flex justify-content-between align-items-center">
         <div class="logo d-flex align-items-center">
             <a href="{{ route('acceuil') }}" class="d-flex align-items-center text-white text-decoration-none h4">
@@ -57,13 +57,13 @@
                 @auth
                 <li class="nav-item ">
                     <a class="nav-link text-white d-flex align-items-center bg-danger btn-publish px-2 py-1" href="{{ route('announcement.create') }}">
-                        <i class="bi bi-megaphone me-2"></i> Publier annonce
+                        <i class="bi bi-megaphone me-2"></i> Publier
                     </a>
                 </li>
                 @else
                     <li class="nav-item">
                         <a class="nav-link text-white d-flex align-items-center bg-danger btn-publish px-2 py-1" href="javascript:void(0);" onclick="showAuthModal()">
-                            <i class="bi bi-megaphone me-2"></i> Publier annonce
+                            <i class="bi bi-megaphone me-2"></i> Publier
                         </a>
                     </li>
                 @endauth

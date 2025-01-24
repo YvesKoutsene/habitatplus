@@ -1,6 +1,7 @@
 @extends('admin.include.layouts.app')
 @section('content')
 
+@if(auth()->check())
 <div class="pagetitle">
     <h1>Profil</h1>
     <nav>
@@ -201,6 +202,7 @@
 
         </div>
 </section>
+@endif
 
 <script>
     function togglePassword(inputId) {
@@ -251,7 +253,7 @@
                         selectElement.appendChild(option);
                     }
                 });
-                selectElement.value = "{{ old('pays', auth()->user()->pays) }}";
+                selectElement.value = "{{ old('pays', Auth::check() ? Auth::user()->pays : '') }}";
             })
             .catch(console.error);
     });
