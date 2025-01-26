@@ -1,4 +1,4 @@
-<aside class="bg-white shadow p-4 rounded sidebar" style="max-width: 300px;" id="sidebar">
+<aside class="bg-white shadow p-4 rounded sidebar" style="max-width: 250px;" id="sidebar">
     <h5 class="text-primary text-center fw-bold mb-4">Affiner la Recherche</h5>
     <form action="" method="GET">
         <!-- Type de Bien -->

@@ -1,22 +1,28 @@
 <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-center text-black" id=""><img src="\assets/img/logo.png" alt="Logo" class="me-2 logo-img">Habitat+</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Fermer"></button>
-            </div>
+
             <div class="modal-body">
-                <ul class="nav nav-tabs justify-content-center mb-3" id="authTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#loginSection" role="tab" aria-controls="loginSection" aria-selected="false">
-                            CONNEXION
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#registerSection" role="tab" aria-controls="registerSection" aria-selected="true">
-                            INSCRIPTION
-                        </button> <br>
-                    </li>
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Fermer"></button>
+                </div>
+                <ul class="nav nav-tabs d-flex justify-content-center mb-3" id="authTabs" role="tablist">
+                    <div class="row">
+                        <div class="col-auto">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#loginSection" role="tab" aria-controls="loginSection" aria-selected="false">
+                                    CONNEXION
+                                </button>
+                            </li>
+                        </div>
+                        <div class="col-auto">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#registerSection" role="tab" aria-controls="registerSection" aria-selected="true">
+                                    INSCRIPTION
+                                </button> <br>
+                            </li>
+                        </div>
+                    </div>
                 </ul>
 
                 <div class="tab-content" id="authTabContent">
@@ -24,12 +30,12 @@
                         <form action="{{ route('register') }}" method="POST" onsubmit="return validatePasswords()">
                             @csrf
                             <div class="mb-3">
-                                <label for="name" class="form-label text-black">Nom<span class="text-danger" title="obligatoire">*</span></label>
-                                <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Votre nom complet" required>
+                                <label for="name" class="form-label text-black">Nom et Prénom(s)<span class="text-danger" title="obligatoire">*</span></label>
+                                <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Ex: Kevin Lupin" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label text-black">Email<span class="text-danger" title="obligatoire">*</span></label>
-                                <input type="email" class="form-control form-control-sm" id="email" name="email" placeholder="Votre adresse email" required>
+                                <input type="email" class="form-control form-control-sm" id="email" name="email" placeholder="Ex: kevinlupin25@gmail.com" required>
                             </div>
 
                             <div class="mb-3">
@@ -41,7 +47,7 @@
                                         </select>
                                     </div>
                                     <div class="col-7 col-md-7">
-                                        <input type="text" name="numero" class="form-control form-control-sm" id="numero00" required oninput="validateInput00()" placeholder="Numéro de téléphone">
+                                        <input type="text" name="numero" class="form-control form-control-sm" id="numero00" required oninput="validateInput00()" placeholder="Ex: 98560265">
                                         <div class="invalid-feedback">Veuillez entrer votre numéro!</div>
                                     </div>
                                 </div>
@@ -50,7 +56,7 @@
                             <div class="mb-3">
                                 <label for="register_password" class="form-label text-black">Mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                                 <div class="input-group">
-                                    <input type="password" name="password" class="form-control form-control-sm" placeholder="Votre mot de passe" id="register_password" required>
+                                    <input type="password" name="password" class="form-control form-control-sm" placeholder="Ex: XoxoXxx ox" id="register_password" required>
                                     <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword('register_password', 'eye-icon-password')">
                                         <i class="bi bi-eye" id="eye-icon-password"></i>
                                     </button>
@@ -59,7 +65,7 @@
                             <div class="mb-3">
                                 <label for="password_confirmation" class="form-label text-black">Confirmer mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                                 <div class="input-group">
-                                    <input type="password" name="password_confirmation" class="form-control form-control-sm" id="password_confirmation" placeholder="Confirmez votre mot de passe" required>
+                                    <input type="password" name="password_confirmation" class="form-control form-control-sm" id="password_confirmation" placeholder="Ex: XoxoXxx ox" required>
                                     <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword('password_confirmation', 'eye-icon-confirmation')">
                                         <i class="bi bi-eye" id="eye-icon-confirmation"></i>
                                     </button>
@@ -88,12 +94,12 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="login_email" class="form-label text-black">Email<span class="text-danger" title="obligatoire">*</span></label>
-                                <input type="email" class="form-control form-control-sm" id="login_email" name="email" placeholder="Votre adresse email" required>
+                                <input type="email" class="form-control form-control-sm" id="login_email" name="email" placeholder="Ex: kevinlupin25@gmail.com" required>
                             </div>
                             <div class="mb-3">
                                 <label for="login_password" class="form-label text-black">Mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                                 <div class="input-group">
-                                    <input type="password" name="password" class="form-control form-control-sm" placeholder="Votre mot de passe" id="login_password" required>
+                                    <input type="password" name="password" class="form-control form-control-sm" placeholder="Ex: XoxoXxx ox" id="login_password" required>
                                     <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword('login_password', 'eye-icon-login')">
                                         <i class="bi bi-eye" id="eye-icon-login"></i>
                                     </button>

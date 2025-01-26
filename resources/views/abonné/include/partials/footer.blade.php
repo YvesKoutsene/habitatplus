@@ -6,14 +6,13 @@
             </div>
 
             <div class="col-md-3">
-                <h5>À propos</h5>
+                <h5>À Propos</h5>
                 <p>Votre plateforme de confiance pour trouver des biens immobiliers adaptés à vos besoins.
-                    Votre plateforme de confiance pour trouver des biens immobiliers adaptés à vos besoins.
                 </p>
             </div>
 
             <div class="col-md-3">
-                <h5>Nous contacter</h5>
+                <h5>Nous Contacter</h5>
                 <ul class="list-unstyled">
                     <li>Email : <a href="mailto:info@dis.tg">info@dis.tg</a></li>
                     <li>Téléphone : <a href="tel:+22893816766">+228 93816766</a></li>
@@ -22,7 +21,7 @@
             </div>
 
             <div class="col-md-3">
-                <h5>Nous suivre</h5>
+                <h5>Nous Suivre</h5>
                 <ul class="list-inline footer-links">
                     <li class="list-inline-item">
                         <a href="#"><i class="fab fa-facebook"></i></a>
@@ -30,9 +29,11 @@
                     <li class="list-inline-item">
                         <a href="#"><i class="fab fa-twitter"></i></a>
                     </li>
+                    <!--
                     <li class="list-inline-item">
                         <a href="#"><i class="fab fa-instagram"></i></a>
                     </li>
+                    -->
                     <li class="list-inline-item">
                         <a href="#"><i class="fab fa-linkedin"></i></a>
                     </li>

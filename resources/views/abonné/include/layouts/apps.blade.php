@@ -15,6 +15,9 @@
 <div class="container my-4 flex-grow-1">
     <div class="row habitat">
         <aside class="col-12 col-md-3 mb-3 d-none d-md-block">
+            <div class="pagetitle text-center mb-2">
+                <p class="text-muted text-start">Mon Espace</p>
+            </div>
             @include('abonné.include.partials.sidebars')
         </aside>
 

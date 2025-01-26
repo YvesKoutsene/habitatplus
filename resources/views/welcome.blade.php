@@ -42,7 +42,7 @@
                         <strong>{{ number_format($bien->prix, 0, ',', ' ') }} FCFA</strong>
                     </p>
                     <a href="" class="btn btn-outline-primary mt-auto">
-                        <i class="bi bi-eye"></i> Voir les détails
+                        <i class="bi bi-eye"></i> Voir détails
                     </a>
                 </div>
             </div>
@@ -87,7 +87,6 @@
     }
 
     .like-icon {
-        /*background-color: rgba(255, 255, 255, 0.8);*/
         background-color: #ffffff;
         border-radius: 50%;
         cursor: pointer;

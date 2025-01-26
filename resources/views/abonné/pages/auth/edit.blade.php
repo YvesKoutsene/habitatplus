@@ -3,6 +3,9 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Fermer"></button>
+                </div>
                 <form method="POST" action="{{ route('update.profile', auth()->user()->id) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -21,12 +24,12 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="name" class="form-label text-black">Nom<span class="text-danger" title="obligatoire">*</span></label>
-                        <input type="text" class="form-control form-control-sm" id="name" name="name" value="{{ auth()->user()->name }}" required placeholder="Votre nom complet">
+                        <label for="name" class="form-label text-black">Nom et Prénom(s)<span class="text-danger" title="obligatoire">*</span></label>
+                        <input type="text" class="form-control form-control-sm" id="name" name="name" value="{{ auth()->user()->name }}" required placeholder="Ex: Kevin Lupin">
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label text-black">Email<span class="text-danger" title="obligatoire">*</span></label>
-                        <input type="email" class="form-control form-control-sm" id="email" name="email" value="{{ auth()->user()->email }}" placeholder="Votre email" disabled>
+                        <input type="email" class="form-control form-control-sm" id="email" name="email" value="{{ auth()->user()->email }}" placeholder="Ex: kevinlupin25@gmail.com" disabled>
                     </div>
 
                     <div class="mb-3">
@@ -38,7 +41,7 @@
                                 </select>
                             </div>
                             <div class="col-7 col-md-7">
-                                <input type="text" name="numero" class="form-control" id="number" required oninput="validateInput()" value="{{ old('numero', auth()->user()->numero) }}" placeholder="Numero de téléphone">
+                                <input type="text" name="numero" class="form-control" id="number" required oninput="validateInput()" value="{{ old('numero', auth()->user()->numero) }}" placeholder="Ex: 98560265">
                             </div>
                         </div>
                     </div>
@@ -61,13 +64,16 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Fermer"></button>
+                </div>
                 <form method="POST" action="{{ route('update.password', auth()->user()->id) }}" onsubmit="return validatePasswords()">
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
                         <label for="currentPassword" class="form-label text-black">Mot de passe actuel<span class="text-info" title="Obligatoire pour changer le mot de passe">*</span></label>
                         <div class="input-group">
-                            <input name="current_password" type="password" id="currentPassword" class="form-control form-control-sm" placeholder="XoxoXxx ox" required>
+                            <input name="current_password" type="password" id="currentPassword" class="form-control form-control-sm" placeholder="Ex: XoxoXxx ox" required>
                             <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword('currentPassword')">
                                 <i class="bi bi-eye" id="eye-icon-current"></i>
                             </button>
@@ -77,7 +83,7 @@
                     <div class="mb-3">
                         <label for="newPassword" class="form-label text-black">Nouveau mot de passe<span class="text-info" title="Laisser vide si pas de changement">*</span></label>
                         <div class="input-group">
-                            <input name="password" type="password" id="newPassword" class="form-control form-control-sm" placeholder="XxxxXxx x" required>
+                            <input name="password" type="password" id="newPassword" class="form-control form-control-sm" placeholder="Ex: XxxxXxx x" required>
                             <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword('newPassword')">
                                 <i class="bi bi-eye" id="eye-icon-new"></i>
                             </button>
@@ -87,7 +93,7 @@
                     <div class="mb-3">
                         <label for="renewPassword" class="form-label text-black">Confirmer mot de passe<span class="text-info" title="Laisser vide si pas de changement">*</span></label>
                         <div class="input-group">
-                            <input name="password_confirmation" type="password" id="renewPassword" class="form-control form-control-sm" placeholder="XxxxXxx x" required>
+                            <input name="password_confirmation" type="password" id="renewPassword" class="form-control form-control-sm" placeholder="Ex: XxxxXxx x" required>
                             <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword('renewPassword')">
                                 <i class="bi bi-eye" id="eye-icon-renew"></i>
                             </button>

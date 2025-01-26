@@ -31,11 +31,13 @@
                                 <i class="bi bi-person me-2"></i> Mon Espace
                             </a>
                         </li>
+                        <!--
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="">
                                 <i class="bi bi-gear me-2"></i> Paramètres
                             </a>
                         </li>
+                        -->
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -50,20 +52,20 @@
                     </ul>
                     @else
                     <a class="nav-link text-black-50 d-flex align-items-center px-2 py-1" href="#" data-bs-toggle="modal" data-bs-target="#authModal">
-                        <i class="bi bi-person-circle me-2 text-black-50"></i>Se connecter
+                        <i class="bi bi-person-circle me-2 text-black-50"></i>Se Connecter
                     </a>
                     @endauth
                 </li>
                 @auth
                 <li class="nav-item ">
                     <a class="nav-link text-white d-flex align-items-center bg-danger btn-publish px-2 py-1" href="{{ route('announcement.create') }}">
-                        <i class="bi bi-megaphone me-2"></i> Publier
+                        <i class="bi bi-megaphone me-2"></i> Publier Annonce
                     </a>
                 </li>
                 @else
                     <li class="nav-item">
                         <a class="nav-link text-white d-flex align-items-center bg-danger btn-publish px-2 py-1" href="javascript:void(0);" onclick="showAuthModal()">
-                            <i class="bi bi-megaphone me-2"></i> Publier
+                            <i class="bi bi-megaphone me-2"></i> Publier Annonce
                         </a>
                     </li>
                 @endauth

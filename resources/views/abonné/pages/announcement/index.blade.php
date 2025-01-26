@@ -1,21 +1,28 @@
 <div class="container mt-4">
-    <h2 class="mb-2 text-black-50">Mes Annonces</h2>
     @if($biens->isEmpty())
     <div class="alert alert-info text-center text-black">
         Vous n'avez pas encore créé ou publié d'annonces.
     </div>
     @else
 
-    <ul class="nav nav-tabs" id="annonceTabs" role="tablist">
-        <li class="nav-item flex-fill py-2" role="presentation">
-            <a class="nav-link active" id="brouillon-tab" data-bs-toggle="tab" href="#brouillon" role="tab" aria-controls="brouillon" aria-selected="true">Créées</a>
-        </li>
-        <li class="nav-item flex-fill py-2" role="presentation">
-            <a class="nav-link" id="publie-tab" data-bs-toggle="tab" href="#publie" role="tab" aria-controls="publie" aria-selected="false">Publiées</a>
-        </li>
-        <li class="nav-item flex-fill py-2" role="presentation">
-            <a class="nav-link" id="annule-tab" data-bs-toggle="tab" href="#annule" role="tab" aria-controls="annule" aria-selected="false">Annulées</a>
-        </li>
+    <ul class="nav nav-tabs d-flex justify-content-center" id="annonceTabs" role="tablist">
+        <div class="row">
+            <div class="col-auto">
+                <li class="nav-item flex-fill py-2 me-2" role="presentation">
+                    <a class="nav-link active" id="brouillon-tab" data-bs-toggle="tab" href="#brouillon" role="tab" aria-controls="brouillon" aria-selected="true">Brouillons</a>
+                </li>
+            </div>
+            <div class="col-auto">
+                <li class="nav-item flex-fill py-2 me-2" role="presentation">
+                    <a class="nav-link" id="publie-tab" data-bs-toggle="tab" href="#publie" role="tab" aria-controls="publie" aria-selected="false">Publications</a>
+                </li>
+            </div>
+            <div class="col-auto">
+                <li class="nav-item flex-fill py-2 me-2" role="presentation">
+                    <a class="nav-link" id="annule-tab" data-bs-toggle="tab" href="#annule" role="tab" aria-controls="annule" aria-selected="false">Annulations</a>
+                </li>
+            </div>
+        </div>
     </ul>
 
     <div class="tab-content">
@@ -45,15 +52,18 @@
                                 <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : '--', 10, '...') }}<br>
                                 <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '--', 10, '...') }} FCFA </strong>
                             </p>
-                        </div>
-                        <div class="card-footer d-flex flex-column">
                             <div class="row justify-content-center">
-                                <div class="col-auto mb-3">
+                                <div class="col-auto">
+                                    <a href="" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </div>
+                                <div class="col-auto">
                                     <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                 </div>
-                                <div class="col-auto mb-3">
+                                <div class="col-auto">
                                     <button type="button" class="btn btn-danger btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer">
                                         <i class="bi bi-trash"></i>
                                     </button>
@@ -65,13 +75,13 @@
                 <div class="modal fade" id="deleteConfirmation{{ $bien->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $bien->id }}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header yes">
                                 <i class="bi bi-exclamation-triangle me-1"></i>
                                 <h5 class="modal-title" id="deleteConfirmationLabel{{ $bien->id }}">Confirmation de Suppression</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-black">
-                                Êtes-vous sûr de vouloir supprimer cette annonce" ? Cette action est irréversible.
+                                Êtes-vous sûr de vouloir supprimer cette annonce ? Cette action est irréversible.
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
@@ -114,15 +124,18 @@
                                 <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : '--', 10, '...') }}<br>
                                 <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '--', 10, '...') }} FCFA </strong>
                             </p>
-                        </div>
-                        <div class="card-footer d-flex flex-column">
                             <div class="row justify-content-center">
-                                <div class="col-auto mb-3">
+                                <div class="col-auto">
+                                    <a href="" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </div>
+                                <div class="col-auto">
                                     <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                 </div>
-                                <div class="col-auto mb-3">
+                                <div class="col-auto">
                                     <button type="button" class="btn btn-warning btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#terminateConfirmation{{ $bien->id }}" title="Arrêté">
                                         <i class="bi bi-x-circle"></i>
                                     </button>
@@ -134,13 +147,13 @@
                 <div class="modal fade" id="terminateConfirmation{{ $bien->id }}" tabindex="-1" aria-labelledby="terminateConfirmationLabel{{ $bien->id }}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header yes">
                                 <i class="bi bi-exclamation-triangle me-1"></i>
                                 <h5 class="modal-title" id="terminateConfirmationLabel{{ $bien->id }}">Confirmation d'arrêt</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-black">
-                                Êtes-vous sûr de vouloir arrêter cette annonce" ?.
+                                Êtes-vous sûr de vouloir arrêter cette annonce ?
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
@@ -183,16 +196,19 @@
                                 <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : '--', 10, '...') }}<br>
                                 <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '--', 10, '...') }} FCFA </strong>
                             </p>
-                        </div>
-                        <div class="card-footer d-flex flex-column">
                             <div class="row justify-content-center">
+                                <div class="col-auto mb-3">
+                                    <a href="" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </div>
                                 <div class="col-auto mb-3">
                                     <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                 </div>
                                 <div class="col-auto mb-3">
-                                        <button type="button" class="btn btn-secondary btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#relaunchConfirmation{{ $bien->id }}" title="Republier">
+                                    <button type="button" class="btn btn-secondary btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#relaunchConfirmation{{ $bien->id }}" title="Republier">
                                         <i class="bi bi-check"></i>
                                     </button>
                                 </div>
@@ -208,13 +224,13 @@
                 <div class="modal fade" id="deleteConfirmation{{ $bien->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $bien->id }}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header yes">
                                 <i class="bi bi-exclamation-triangle me-1"></i>
                                 <h5 class="modal-title" id="deleteConfirmationLabel{{ $bien->id }}">Confirmation de Suppression</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-black">
-                                Êtes-vous sûr de vouloir supprimer cette annonce " ? Cette action est irréversible.
+                                Êtes-vous sûr de vouloir supprimer cette annonce ? Cette action est irréversible.
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
@@ -230,13 +246,13 @@
                 <div class="modal fade" id="relaunchConfirmation{{ $bien->id }}" tabindex="-1" aria-labelledby="relaunchConfirmationLabel{{ $bien->id }}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header yes">
                                 <i class="bi bi-exclamation-triangle me-1"></i>
                                 <h5 class="modal-title" id="relaunchConfirmationLabel{{ $bien->id }}">Confirmation de Républication</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-black">
-                                Êtes-vous sûr de vouloir republier cette annonce" ?.
+                                Êtes-vous sûr de vouloir republier cette annonce ?
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
@@ -306,5 +322,9 @@
 
     .row.g-4 > [class*='col-'] {
         margin-bottom: 30px;
+    }
+
+    .yes{
+        background-color: #007bff;
     }
 </style>
