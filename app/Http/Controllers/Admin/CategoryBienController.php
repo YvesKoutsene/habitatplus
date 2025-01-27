@@ -54,83 +54,68 @@ class CategoryBienController extends Controller
      */
 
     public function store(Request $request)
-     {
-
-         dd($request->all());
-         $validated = $request->validate([
-             'titre' => 'required|string|max:255|unique:categorie_biens,titre',
-             'description' => 'required|string|max:255|:categorie_biens,description',
-             'parametres' => 'required|array',
-             'parametres.*' => 'exists:parametre_categories,id',
-         ],
-         [
-            'titre.unique' => 'Cette catégorie de bien existe déjà',
-            'parametres.required' => 'Veuillez paramétrer la catégorie de bien'
-         ]);
-
-         $categorie = CategorieBien::create([
-             'titre' => $validated['titre'],
-             'statut' => 'actif',
-             'description' => $validated['description']
-         ]);
-
-         foreach ($validated['parametres'] as $parametreId) {
-             AssociationCategorieParametre::create([
-                 'id_categorie' => $categorie->id,
-                 'id_parametre' => $parametreId,
-             ]);
-         }
-
-         return redirect()->route('category_bien.index')
-             ->with('success', "Catégorie de bien {$categorie->titre} créée avec succès.");
-    }
-
-    /*public function store(Request $request)
     {
         dd($request->all());
         $validated = $request->validate([
             'titre' => 'required|string|max:255|unique:categorie_biens,titre',
             'description' => 'required|string|max:255',
-            'parametres' => 'required|array|min:1', // Au moins un paramètre requis
+            'parametres' => 'nullable|array',
             'parametres.*' => 'exists:parametre_categories,id',
-            'autre_parametre' => 'nullable|string|max:255', // Nouveau champ
+            'autres_parametres' => 'nullable|array',
+            'autres_parametres.*' => 'nullable|string|max:255',
         ],
             [
                 'titre.unique' => 'Cette catégorie de bien existe déjà',
-                'parametres.required' => 'Veuillez paramétrer la catégorie de bien',
-                'parametres.min' => 'Vous devez sélectionner au moins un paramètre.'
+                'parametres.min' => 'Vous devez paramétrer la catégorie de bien.',
+                'autres_parametres.array' => 'Les autres paramètres doivent être sous forme de liste.',
             ]);
 
-        // Créer la catégorie
+        if (empty($validated['parametres']) && empty($validated['autres_parametres'])) {
+            return redirect()->back()->withErrors(['parametres' => 'Vous devez paramétrer cette catégorie de bien.']);
+        }
+
+        $nomsExistants = ParametreCategorie::pluck('nom_parametre')->toArray();
+        if (!empty($validated['autres_parametres'])) {
+            foreach ($validated['autres_parametres'] as $nomParametre) {
+                if (!empty($nomParametre) && in_array($nomParametre, $nomsExistants)) {
+                    return redirect()->back()->withErrors(['autres_parametres' => "Le paramètre '{$nomParametre}' existe déjà. Veuillez choisir un nom différent."]);
+                }
+            }
+        }
+
         $categorie = CategorieBien::create([
             'titre' => $validated['titre'],
             'statut' => 'actif',
             'description' => $validated['description']
         ]);
 
-        // Ajouter les paramètres existants
-        foreach ($validated['parametres'] as $parametreId) {
-            AssociationCategorieParametre::create([
-                'id_categorie' => $categorie->id,
-                'id_parametre' => $parametreId,
-            ]);
+        if (!empty($validated['parametres'])) {
+            foreach ($validated['parametres'] as $parametreId) {
+                AssociationCategorieParametre::create([
+                    'id_categorie' => $categorie->id,
+                    'id_parametre' => $parametreId,
+                ]);
+            }
         }
 
-        // Ajouter le paramètre "Autre" si spécifié
-        if (!empty($validated['autre_parametre'])) {
-            $nouveauParametre = ParametreCategorie::create([
-                'nom_parametre' => $validated['autre_parametre']
-            ]);
+        if (!empty($validated['autres_parametres'])) {
+            foreach ($validated['autres_parametres'] as $nomParametre) {
+                if (!empty($nomParametre)) {
+                    $nouveauParametre = ParametreCategorie::create([
+                        'nom_parametre' => $nomParametre
+                    ]);
 
-            AssociationCategorieParametre::create([
-                'id_categorie' => $categorie->id,
-                'id_parametre' => $nouveauParametre->id,
-            ]);
+                    AssociationCategorieParametre::create([
+                        'id_categorie' => $categorie->id,
+                        'id_parametre' => $nouveauParametre->id,
+                    ]);
+                }
+            }
         }
 
         return redirect()->route('category_bien.index')
             ->with('success', "Catégorie de bien {$categorie->titre} créée avec succès.");
-    }*/
+    }
 
 
     /**
@@ -148,6 +133,11 @@ class CategoryBienController extends Controller
     {
         $categorie = CategorieBien::with('associations.parametre')->findOrFail($id);
 
+        if ($categorie->biens()->exists() || $categorie->alertes()->exists()) {
+            return redirect()->route('category_bien.index')
+                ->with('error', "Impossible d'éditer la catégorie de bien : {$categorie->titre}.");
+        }
+
         $parametres = ParametreCategorie::all();
 
         return view('admin.pages.category_bien.edit', compact('categorie', 'parametres'));
@@ -159,18 +149,40 @@ class CategoryBienController extends Controller
 
     public function update(Request $request, $id)
      {
+         dd($request->all());
          $validated = $request->validate([
              'titre' => 'required|string|max:255|unique:categorie_biens,titre,' . $id,
              'description' => 'required|string|max:255',
-             'parametres' => 'required|array',
+             'parametres' => 'nullable|array',
              'parametres.*' => 'exists:parametre_categories,id',
+             'autres_parametres' => 'nullable|array',
+             'autres_parametres.*' => 'nullable|string|max:255',
          ],
-         [
-             'titre.unique' => 'Cette catégorie de bien existe déjà.',
-             'parametres.required' => 'Veuillez paramétrer la catégorie de bien.'
-         ]);
+             [
+                 'titre.unique' => 'Cette catégorie de bien existe déjà',
+                 'parametres.min' => 'Vous devez paramétrer la catégorie de bien.',
+                 'autres_parametres.array' => 'Les autres paramètres doivent être sous forme de liste.',
+             ]);
+
+         if (empty($validated['parametres']) && empty($validated['autres_parametres'])) {
+             return redirect()->back()->withErrors(['parametres' => 'Vous devez paramétrer cette catégorie de bien.']);
+         }
 
          $categorie = CategorieBien::findOrFail($id);
+
+         if ($categorie->biens()->exists() || $categorie->alertes()->exists()) {
+             return redirect()->route('category_bien.index')
+                 ->with('error', "Impossible d'éditer la catégorie de bien : {$categorie->titre}.");
+         }
+
+         $nomsExistants = ParametreCategorie::pluck('nom_parametre')->toArray();
+         if (!empty($validated['autres_parametres'])) {
+             foreach ($validated['autres_parametres'] as $nomParametre) {
+                 if (!empty($nomParametre) && in_array($nomParametre, $nomsExistants)) {
+                     return redirect()->back()->withErrors(['autres_parametres' => "Le paramètre '{$nomParametre}' existe déjà. Veuillez choisir un nom différent."]);
+                 }
+             }
+         }
 
          $categorie->update([
              'titre' => $validated['titre'],
@@ -185,6 +197,21 @@ class CategoryBienController extends Controller
                  'id_categorie' => $categorie->id,
                  'id_parametre' => $parametreId,
              ]);
+         }
+
+         if (!empty($validated['autres_parametres'])) {
+             foreach ($validated['autres_parametres'] as $nomParametre) {
+                 if (!empty($nomParametre)) {
+                     $nouveauParametre = ParametreCategorie::create([
+                         'nom_parametre' => $nomParametre
+                     ]);
+
+                     AssociationCategorieParametre::create([
+                         'id_categorie' => $categorie->id,
+                         'id_parametre' => $nouveauParametre->id,
+                     ]);
+                 }
+             }
          }
 
          return redirect()->route('category_bien.index')
@@ -220,9 +247,9 @@ class CategoryBienController extends Controller
     {
         $category = CategorieBien::findOrFail($categorieBien);
 
-        if ($category->biens()->exists() && $category->alertes()->exists()) {
-            return redirect()->route('parameter_category.index')
-                ->with('error', "Impossible de supprimer la catégorie de bien : {$category->titre}.");
+        if ($category->biens()->exists() || $category->alertes()->exists()) {
+            return redirect()->route('category_bien.index')
+                ->with('error', "Impossible d'éditer la catégorie de bien : {$category->titre}.");
         }
 
         AssociationCategorieParametre::where('id_categorie', $category->id)->delete();

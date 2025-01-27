@@ -197,13 +197,6 @@
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="#">
-            <i class="bi bi-gear"></i>
-            <span>Paramètre</span>
-        </a>
-    </li><!-- End Paramètre Nav -->
-
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
             <i class="bi bi-patch-question"></i>
             <span>Aide?</span>
         </a>

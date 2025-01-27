@@ -137,7 +137,7 @@
                         <textarea name="motif" id="motif" rows="4" class="form-control" placeholder="Donnez le motif du signalement..."></textarea>
                     </div>
                     <div class="d-flex justify-content-end gap-3">
-                        <button type="submit" class="btn btn-danger">Envoyer</button>
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-plus-circle"></i> Envoyer</button>
                     </div>
                 </form>
             </div>
