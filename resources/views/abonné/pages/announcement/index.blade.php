@@ -54,7 +54,7 @@
                             </p>
                             <div class="row justify-content-center">
                                 <div class="col-auto">
-                                    <a href="" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
+                                    <a href="{{ route('announcement.show', $bien->id) }}" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </div>
@@ -126,7 +126,7 @@
                             </p>
                             <div class="row justify-content-center">
                                 <div class="col-auto">
-                                    <a href="" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
+                                    <a href="{{ route('announcement.show', $bien->id) }}" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </div>
@@ -198,7 +198,7 @@
                             </p>
                             <div class="row justify-content-center">
                                 <div class="col-auto mb-3">
-                                    <a href="" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
+                                    <a href="{{ route('announcement.show', $bien->id) }}" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </div>

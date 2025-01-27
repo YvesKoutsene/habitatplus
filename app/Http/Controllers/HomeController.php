@@ -54,4 +54,13 @@ class HomeController extends Controller
         return view('welcome', compact('biens'));
     }
 
+    //Fonction d'affichage de page de details d'un bien
+    public function show($id)
+    {
+        $bien = Bien::with(['user','categorieBien', 'photos', 'valeurs'])->findOrFail($id);
+        return view('abonné.pages.announcement.show', compact('bien'));
+    }
+
+
+
 }

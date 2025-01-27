@@ -41,7 +41,7 @@
                         <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu, 30, '...') }}<br>
                         <strong>{{ number_format($bien->prix, 0, ',', ' ') }} FCFA</strong>
                     </p>
-                    <a href="" class="btn btn-outline-primary mt-auto">
+                    <a href="{{ route('announcement.show', $bien->id) }}" class="btn btn-outline-primary mt-auto">
                         <i class="bi bi-eye"></i> Voir détails
                     </a>
                 </div>

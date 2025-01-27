@@ -17,10 +17,6 @@ use App\Http\Controllers\Abonné\AnnouncementController;
     return view('welcome');
 })->name('acceuil')->middleware(['check.email.verified']);*/
 
-Route::get('/', [HomeController::class, 'indexHome'])
-    ->name('acceuil')
-    ->middleware(['check.email.verified']);
-
 Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -63,12 +59,10 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
 
 #Pour super admin et abonné
 Route::middleware(['auth', 'checkUserType:0,2','check.email.verified'])->group(function () {
-
     //Pour les annonces
     Route::resource('announcement', AnnouncementController::class);
     Route::put('announcement/{bien}/terminate', [AnnouncementController::class, 'terminate'])->name('announcement.terminate');
     Route::put('announcement/{bien}/relaunch', [AnnouncementController::class, 'relaunch'])->name('announcement.relaunch');
-
 
 });
 
@@ -77,6 +71,15 @@ Route::middleware(['auth','checkUserType:0,1,2','check.email.verified'])->group(
     //Pour profil utilisateur
     Route::put('/profile/profile/update/{id}', [ProfileController::class, 'update'])->name('update.profile');
     Route::put('/profile/password/update/{id}', [ProfileController::class, 'updatePassword'])->name('update.password');
+
+});
+
+#Pour les visiteurs
+Route::middleware(['check.email.verified'])->group(function () {
+    Route::get('/', [HomeController::class, 'indexHome'])->name('acceuil');
+    Route::get('announcement/{id}/details', [HomeController::class, 'show'])->name('announcement.show');
+
+
 
 });
 
