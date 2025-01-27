@@ -47,9 +47,9 @@
                             </span>
                         </div>
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
+                            <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 15, '...') }}</h5>
                             <p class="card-text text-muted mb-3">
-                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : '--', 10, '...') }}<br>
+                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : '--', 20, '...') }}<br>
                                 <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '--', 10, '...') }} FCFA </strong>
                             </p>
                             <div class="row justify-content-center">
