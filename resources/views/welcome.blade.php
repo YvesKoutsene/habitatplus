@@ -35,9 +35,9 @@
 
                 <!-- Card Content -->
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
+                    <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 15, '...') }}</h5>
                     <p class="card-text text-muted mb-3">
-                        <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu, 30, '...') }}<br>
+                        <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu, 20, '...') }}<br>
                         <strong>{{ number_format($bien->prix, 0, ',', ' ') }} FCFA</strong>
                     </p>
                     <a href="{{ route('announcement.show.costumer', $bien->id) }}" class="btn btn-outline-primary mt-auto">
