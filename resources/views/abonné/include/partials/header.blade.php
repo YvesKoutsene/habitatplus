@@ -31,13 +31,6 @@
                                 <i class="bi bi-person me-2"></i> Mon Espace
                             </a>
                         </li>
-                        <!--
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="">
-                                <i class="bi bi-gear me-2"></i> Paramètres
-                            </a>
-                        </li>
-                        -->
                         <li>
                             <hr class="dropdown-divider">
                         </li>

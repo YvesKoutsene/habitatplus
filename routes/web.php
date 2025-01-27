@@ -77,7 +77,7 @@ Route::middleware(['auth','checkUserType:0,1,2','check.email.verified'])->group(
 #Pour les visiteurs
 Route::middleware(['check.email.verified'])->group(function () {
     Route::get('/', [HomeController::class, 'indexHome'])->name('acceuil');
-    Route::get('announcement/{id}/details', [HomeController::class, 'show'])->name('announcement.show');
+    Route::get('announcement/{id}/details', [HomeController::class, 'show'])->name('announcement.show.costumer');
 
 
 

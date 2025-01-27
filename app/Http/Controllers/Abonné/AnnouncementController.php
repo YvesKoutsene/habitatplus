@@ -104,10 +104,20 @@ class AnnouncementController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+
+    public function show($id)
     {
-        //
+        $bien = Bien::with(['user','categorieBien', 'photos', 'valeurs'])->findOrFail($id);
+
+        if (!$bien) {
+            return redirect()->back()->with('error', 'Annonce introuvable.');
+        }
+        if ($bien->id_user !== auth()->id()) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à voir cette annonce.');
+        }
+        return view('abonné.pages.announcement.show', compact('bien'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

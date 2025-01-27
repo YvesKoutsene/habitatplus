@@ -57,9 +57,19 @@ class HomeController extends Controller
     //Fonction d'affichage de page de details d'un bien
     public function show($id)
     {
-        $bien = Bien::with(['user','categorieBien', 'photos', 'valeurs'])->findOrFail($id);
+        $bien = Bien::with(['user', 'categorieBien', 'photos', 'valeurs'])->findOrFail($id);
+
+        if (!$bien) {
+            return redirect()->back()->with('error', 'Annonce introuvable.');
+        }
+
+        if (!in_array($bien->statut, ['publié', 'republié'])) {
+            return redirect()->back()->with('error', 'Cette annonce n\'est pas disponible.');
+        }
+
         return view('abonné.pages.announcement.show', compact('bien'));
     }
+
 
 
 

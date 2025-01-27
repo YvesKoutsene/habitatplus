@@ -15,7 +15,6 @@
         @foreach($biens as $bien)
         <div class="col-6 col-md-6 col-lg-4 mb-4">
             <div class="card h-100 shadow-sm border-0 rounded-lg overflow-hidden">
-                <!-- Image -->
                 <div class="position-relative">
                     @if($bien->photos && count($bien->photos) > 0)
                     <img src="{{ asset($bien->photos[0]->url_photo) }}"
@@ -41,7 +40,7 @@
                         <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu, 30, '...') }}<br>
                         <strong>{{ number_format($bien->prix, 0, ',', ' ') }} FCFA</strong>
                     </p>
-                    <a href="{{ route('announcement.show', $bien->id) }}" class="btn btn-outline-primary mt-auto">
+                    <a href="{{ route('announcement.show.costumer', $bien->id) }}" class="btn btn-outline-primary mt-auto">
                         <i class="bi bi-eye"></i> Voir détails
                     </a>
                 </div>
@@ -90,7 +89,9 @@
         background-color: #ffffff;
         border-radius: 50%;
         cursor: pointer;
-        transition: transform 0.2s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        padding: 20px;
     }
 
     .like-icon:hover {
