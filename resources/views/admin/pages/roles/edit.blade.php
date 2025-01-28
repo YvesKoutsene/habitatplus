@@ -19,7 +19,7 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Formulaire de mise à jour de rôle</h5>
-                    <form method="POST" action="{{ route('roles.update', $role->id) }}" class="needs-validation" novalidate>
+                    <form method="POST" action="{{ route('roles.update', $role->id) }}" class="needs-validation">
                         @csrf
                         @method('PUT')
                         <!-- Nom du rôle -->

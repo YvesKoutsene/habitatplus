@@ -27,7 +27,7 @@
 
                 <div class="tab-content" id="authTabContent">
                     <div class="tab-pane fade" id="registerSection" role="tabpanel" aria-labelledby="register-tab">
-                        <form action="{{ route('register') }}" method="POST" onsubmit="return validatePasswords()">
+                        <form action="{{ route('register') }}" method="POST" onsubmit="return validatePasswords00()">
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label text-black">Nom et Prénom(s)<span class="text-danger" title="obligatoire">*</span></label>
@@ -232,7 +232,7 @@
         input.value = input.value.replace(/[^0-9]/g, '');
     }
 
-    function validatePasswords() {
+    function validatePasswords00() {
         const register_password = document.getElementById('register_password').value;
         const password_confirmation = document.getElementById('password_confirmation').value;
         const message = document.getElementById('passwordMessage');

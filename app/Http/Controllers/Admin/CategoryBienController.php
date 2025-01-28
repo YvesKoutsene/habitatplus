@@ -55,7 +55,7 @@ class CategoryBienController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+        //dd($request->all());
         $validated = $request->validate([
             'titre' => 'required|string|max:255|unique:categorie_biens,titre',
             'description' => 'required|string|max:255',
@@ -149,7 +149,7 @@ class CategoryBienController extends Controller
 
     public function update(Request $request, $id)
      {
-         dd($request->all());
+         //dd($request->all());
          $validated = $request->validate([
              'titre' => 'required|string|max:255|unique:categorie_biens,titre,' . $id,
              'description' => 'required|string|max:255',

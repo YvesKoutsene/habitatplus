@@ -15,7 +15,7 @@
 <section class="section">
     <div class="row justify-content-center">
         <div class="col-lg-6">
-            <form method="POST" action="{{ route('users.update', $user->id) }}" class="needs-validation" enctype="multipart/form-data" novalidate>
+            <form method="POST" action="{{ route('users.update', $user->id) }}" class="needs-validation" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 

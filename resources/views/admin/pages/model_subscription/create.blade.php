@@ -19,10 +19,9 @@
                 <div class="card-body">
                     <h5 class="card-title">Informations sur le modèle</h5>
 
-                    <form action="{{ route('model_subscription.store') }}" method="POST" class="needs-validation" novalidate>
+                    <form action="{{ route('model_subscription.store') }}" method="POST" class="needs-validation">
                         @csrf
 
-                        <!-- Nom du modèle d'abonnement -->
                         <div class="mb-4">
                             <label for="nom_modele" class="form-label">Nom<span class="text-danger">*</span></label>
                             <input

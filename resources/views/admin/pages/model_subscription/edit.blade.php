@@ -18,20 +18,20 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Informations sur le modèle</h5>
-                    
-                    <form action="{{ route('model_subscription.update', $modele->id) }}" method="POST" class="needs-validation" novalidate>
+
+                    <form action="{{ route('model_subscription.update', $modele->id) }}" method="POST" class="needs-validation">
                         @csrf
                         @method('PUT')
 
                         <!-- Nom du modèle d'abonnement -->
                         <div class="mb-4">
                             <label for="nom_modele" class="form-label">Nom<span class="text-danger">*</span></label>
-                            <input 
-                                type="text" 
-                                name="nom" 
-                                id="nom_modele" 
-                                class="form-control" 
-                                placeholder="Nom du modèle d'abonnement" 
+                            <input
+                                type="text"
+                                name="nom"
+                                id="nom_modele"
+                                class="form-control"
+                                placeholder="Nom du modèle d'abonnement"
                                 required
                                 value="{{ old('nom', $modele->nom) }}">
                             <div class="invalid-feedback">
@@ -43,14 +43,14 @@
                             <label for="prix_modele" class="form-label">Prix<span class="text-danger">*</span></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">FCFA</span>
-                                <input 
-                                    type="number" 
-                                    name="prix" 
-                                    id="prix_modele" 
-                                    class="form-control" 
-                                    placeholder="Prix du modèle d'abonnement" 
-                                    required min="0" 
-                                    oninput="validateInput()" 
+                                <input
+                                    type="number"
+                                    name="prix"
+                                    id="prix_modele"
+                                    class="form-control"
+                                    placeholder="Prix du modèle d'abonnement"
+                                    required min="0"
+                                    oninput="validateInput()"
                                     value="{{ old('prix', number_format($modele->prix, 0, ',', '')) }}">
                                 <span class="input-group-text">.00</span>
                                 <div class="invalid-feedback">
@@ -62,12 +62,12 @@
                         <div class="mb-4">
                             <label for="duree_modele" class="form-label">Durée<span class="text-danger">*</span></label>
                             <div class="input-group mb-3">
-                                <input 
-                                    type="number" 
-                                    name="duree" 
-                                    id="valeur03" 
-                                    class="form-control" 
-                                    placeholder="Durée du modèle d'abonnement" 
+                                <input
+                                    type="number"
+                                    name="duree"
+                                    id="valeur03"
+                                    class="form-control"
+                                    placeholder="Durée du modèle d'abonnement"
                                     required
                                     value="{{ old('duree', $modele->duree) }}" oninput="validateInput04()">
                                 <span class="input-group-text">Mois</span>
@@ -80,13 +80,13 @@
                         <!-- Description -->
                         <div class="mb-4">
                             <label for="description" class="form-label">Description<span class="text-danger">*</span></label>
-                            <textarea 
-                                name="description" 
-                                id="description" 
-                                class="form-control" 
-                                rows="4" 
-                                maxlength="200" 
-                                placeholder="Ajoutez une description" 
+                            <textarea
+                                name="description"
+                                id="description"
+                                class="form-control"
+                                rows="4"
+                                maxlength="200"
+                                placeholder="Ajoutez une description"
                                 required>{{ old('description', $modele->description) }}</textarea>
                             <div class="invalid-feedback">
                                 Veuillez fournir une description valide.
@@ -122,7 +122,7 @@
                             </div>
                         </div>
 
-                        
+
                         <!-- Boutons d'Action -->
                         <div class="d-flex justify-content-center gap-3">
                             <button type="button" id="add-parametre" class="btn btn-outline-secondary">
@@ -225,10 +225,10 @@
 
             for (let i = 0; i < parametreSelects.length; i++) {
                 if (!parametreSelects[i].value || !valeurInputs[i].value) {
-                    return false; 
+                    return false;
                 }
             }
-            return true; 
+            return true;
         }
     });
 

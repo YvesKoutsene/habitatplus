@@ -65,16 +65,6 @@
                                             </button>
                                         </div>
                                     </form>
-
-                                    <!--
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit" class="btn btn-link text-sm text-gray-600 hover:text-gray-900">
-                                            {{ __('Déconnexion') }}
-                                        </button>
-                                    </form>
-                                    -->
-
                                 </div>
                             </div>
                         </div>

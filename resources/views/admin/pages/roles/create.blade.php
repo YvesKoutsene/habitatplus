@@ -23,7 +23,7 @@ use Carbon\Carbon;
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Formulaire de création de rôle</h5>
-                    <form method="POST" action="{{ route('roles.store') }}" class="needs-validation" novalidate>
+                    <form method="POST" action="{{ route('roles.store') }}" class="needs-validation">
                         @csrf
                         <!-- Nom du rôle -->
                         <div class="mb-3">
