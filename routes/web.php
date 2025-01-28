@@ -17,6 +17,10 @@ Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+Route::get('habitatplus-email/v1.0/2025/verification-success', function () {
+    return view('auth.verification-success');
+})->name('verification.success');
+
 #Pour super admin et admin
 Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

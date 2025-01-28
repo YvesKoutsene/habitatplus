@@ -30,16 +30,19 @@
             padding: 20px;
             text-align: center;
             color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
         .email-header img {
             max-width: 120px;
-            margin-bottom: 10px;
+            margin-right: 10px;
         }
         .email-header h1 {
             font-size: 24px;
             margin: 0;
         }
-
         .email-body {
             padding: 30px;
             font-size: 16px;
@@ -111,20 +114,20 @@
 <div class="email-container">
     <div class="email-header">
         <img src="{{ asset('assets/img/logo.png') }}" alt="Logo Habitat+">
-        <h1>Bienvenue chez Habitat+</h1>
+        <h1>Habitat+</h1>
     </div>
 
     <div class="email-body">
         <h2>Bonjour {{ $user->name }} !</h2>
         <p>Nous sommes ravis de vous compter parmi nos utilisateurs !</p>
         <p>Pour activer votre compte, veuillez vérifier votre adresse e-mail en cliquant sur le bouton ci-dessous :</p>
-        <a href="{{ $url }}" class="email-button">Vérifier mon adresse e-mail</a>
+        <a href="{{ $url }}" class="email-button">Vérifier mon e-mail</a>
         <p>Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :</p>
         <div class="url-container">
             <a href="{{ $url }}" target="_blank" rel="noopener noreferrer">{{ $url }}</a>
         </div>
         <p class="expiration-message">
-            Attention : Ce lien expirera dans <span id="expiration-time"></span>.
+            Attention : Ce lien expirera dans 1 heures<span id="expiration-time"></span>.
         </p>
         <p>Merci pour votre confiance,<br>L'équipe <strong>Habitat+</strong>.</p>
     </div>
@@ -136,17 +139,27 @@
 </div>
 
 <script>
-    const expires = {{ $expires }};
-    const currentTime = Math.floor(Date.now() / 1000);
-    const timeLeft = expires - currentTime;
+    const expires = parseInt({{ $expires }}, 10);
+    const expirationElement = document.getElementById('expiration-time');
 
-    if (timeLeft > 0) {
-        const minutesLeft = Math.floor(timeLeft / 60);
-        const secondsLeft = timeLeft % 60;
-        document.getElementById('expiration-time').textContent = `${minutesLeft} minutes et ${secondsLeft} secondes`;
-    } else {
-        document.getElementById('expiration-time').textContent = 'ce lien a expiré.';
+    function updateExpiration() {
+        const currentTime = Math.floor(Date.now() / 1000);
+        const timeLeft = expires - currentTime;
+
+        if (timeLeft > 0) {
+            const minutesLeft = Math.floor(timeLeft / 60);
+            const secondsLeft = timeLeft % 60;
+            expirationElement.textContent = `${minutesLeft} minute(s) et ${secondsLeft} seconde(s)`;
+        } else {
+            expirationElement.textContent = 'ce lien a expiré.';
+        }
     }
+
+    // Mettre à jour toutes les secondes
+    setInterval(updateExpiration, 1000);
+    // Appeler immédiatement pour l'affichage initial
+    updateExpiration();
 </script>
+
 </body>
 </html>

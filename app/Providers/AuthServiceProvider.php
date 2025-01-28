@@ -33,9 +33,10 @@ class AuthServiceProvider extends ServiceProvider
                 ->subject('Vérifiez votre adresse e-mail - Habitat+')
                 ->markdown('emails.verify-email', [
                     'url' => $url,
-                    'expires' => $expires, // Passer l'expiration
-                    'user' => $notifiable, // Passer l'utilisateur
+                    'expires' => $expires,
+                    'user' => $notifiable,
                 ]);
+
         });
     }
 

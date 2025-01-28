@@ -27,7 +27,7 @@
 
                 <div class="tab-content" id="authTabContent">
                     <div class="tab-pane fade" id="registerSection" role="tabpanel" aria-labelledby="register-tab">
-                        <form action="{{ route('register') }}" method="POST" onsubmit="return validatePasswords00()">
+                        <form action="{{ route('register') }}" method="POST" onsubmit="return validatePasswords02()">
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label text-black">Nom et Prénom(s)<span class="text-danger" title="obligatoire">*</span></label>
@@ -54,23 +54,23 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="register_password" class="form-label text-black">Mot de passe<span class="text-danger" title="obligatoire">*</span></label>
+                                <label for="register_password02" class="form-label text-black">Mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                                 <div class="input-group">
-                                    <input type="password" name="password" class="form-control form-control-sm" placeholder="Ex: XoxoXxx ox" id="register_password" required>
-                                    <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword('register_password', 'eye-icon-password')">
+                                    <input type="password" name="password" class="form-control form-control-sm" placeholder="Ex: XoxoXxx ox" id="register_password02" required>
+                                    <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword02('register_password02', 'eye-icon-password')">
                                         <i class="bi bi-eye" id="eye-icon-password"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="password_confirmation" class="form-label text-black">Confirmer mot de passe<span class="text-danger" title="obligatoire">*</span></label>
+                                <label for="password_confirmation02" class="form-label text-black">Confirmer mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                                 <div class="input-group">
-                                    <input type="password" name="password_confirmation" class="form-control form-control-sm" id="password_confirmation" placeholder="Ex: XoxoXxx ox" required>
-                                    <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword('password_confirmation', 'eye-icon-confirmation')">
+                                    <input type="password" name="password_confirmation" class="form-control form-control-sm" id="password_confirmation02" placeholder="Ex: XoxoXxx ox" required>
+                                    <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword02('password_confirmation02', 'eye-icon-confirmation')">
                                         <i class="bi bi-eye" id="eye-icon-confirmation"></i>
                                     </button>
                                 </div>
-                                <div id="passwordMessage" class="text-danger mt-2" style="display: none;">Les mots de passe ne correspondent pas.</div>
+                                <div id="passwordMessage02" class="text-danger mt-2" style="display: none;">Les mots de passe ne correspondent pas.</div>
                             </div>
                             <div class="form-check mb-3">
                                 <input type="checkbox" class="form-check-input" id="terms" required>
@@ -100,7 +100,7 @@
                                 <label for="login_password" class="form-label text-black">Mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                                 <div class="input-group">
                                     <input type="password" name="password" class="form-control form-control-sm" placeholder="Ex: XoxoXxx ox" id="login_password" required>
-                                    <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword('login_password', 'eye-icon-login')">
+                                    <button type="button" class="btn btn-outline-secondary rounded" onclick="togglePassword02('login_password', 'eye-icon-login')">
                                         <i class="bi bi-eye" id="eye-icon-login"></i>
                                     </button>
                                 </div>
@@ -127,6 +127,18 @@
         </div>
     </div>
 </div>
+
+<!-- Script pour activer la modale -->
+@if(request()->get('showModal') === 'create')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var myModal = new bootstrap.Modal(document.getElementById('authModal'), {
+            keyboard: false
+        });
+        myModal.show();
+    });
+</script>
+@endif
 
 <style>
     .modal-content {
@@ -212,7 +224,7 @@
             .catch(error => console.error('Erreur lors de la récupération des données:', error));
     });
 
-    function togglePassword(inputId, iconId) {
+    function togglePassword02(inputId, iconId) {
         const input = document.getElementById(inputId);
         const icon = document.getElementById(iconId);
 
@@ -232,10 +244,10 @@
         input.value = input.value.replace(/[^0-9]/g, '');
     }
 
-    function validatePasswords00() {
-        const register_password = document.getElementById('register_password').value;
-        const password_confirmation = document.getElementById('password_confirmation').value;
-        const message = document.getElementById('passwordMessage');
+    function validatePasswords02() {
+        const register_password = document.getElementById('register_password02').value;
+        const password_confirmation = document.getElementById('password_confirmation02').value;
+        const message = document.getElementById('passwordMessage02');
 
         if (register_password !== password_confirmation) {
             message.style.display = 'block';
