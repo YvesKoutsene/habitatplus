@@ -49,8 +49,8 @@
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 15, '...') }}</h5>
                             <p class="card-text text-muted mb-3">
-                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : '--', 20, '...') }}<br>
-                                <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '--', 10, '...') }} FCFA </strong>
+                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : 'N/A', 20, '...') }}<br>
+                                <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '0', 10, '...') }} FCFA </strong>
                             </p>
                             <div class="row justify-content-center">
                                 <div class="col-auto">
@@ -101,7 +101,7 @@
         <div class="tab-pane fade" id="publie" role="tabpanel" aria-labelledby="publie-tab">
             <div class="row">
                 @foreach($biens as $bien)
-                @if($bien->statut == 'publié' || $bien->statut == 'republié')
+                @if($bien->statut == 'publié' || $bien->statut == 'bloqué')
                 <div class="col-6 col-md-6 col-lg-4 mb-4">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
                         <div class="position-relative">
@@ -119,10 +119,14 @@
                             </span>
                         </div>
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
+                            @if($bien->statut == 'bloqué')
+                                <h5 class="card-title fw-bold text-danger text-truncate"><i class="bi bi-exclamation-triangle-fill text-danger"></i> Annonce bloquée</h5>
+                            @else
+                                <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
+                            @endif
                             <p class="card-text text-muted mb-3">
-                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : '--', 10, '...') }}<br>
-                                <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '--', 10, '...') }} FCFA </strong>
+                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : 'N/A', 10, '...') }}<br>
+                                <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '0', 10, '...') }} FCFA </strong>
                             </p>
                             <div class="row justify-content-center">
                                 <div class="col-auto">
@@ -130,16 +134,18 @@
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </div>
-                                <div class="col-auto">
-                                    <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                </div>
-                                <div class="col-auto">
-                                    <button type="button" class="btn btn-warning btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#terminateConfirmation{{ $bien->id }}" title="Arrêté">
-                                        <i class="bi bi-x-circle"></i>
-                                    </button>
-                                </div>
+                                @if($bien->statut != 'bloqué')
+                                    <div class="col-auto">
+                                        <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-warning btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#terminateConfirmation{{ $bien->id }}" title="Arrêté">
+                                            <i class="bi bi-x-circle"></i>
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -193,8 +199,8 @@
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
                             <p class="card-text text-muted mb-3">
-                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : '--', 10, '...') }}<br>
-                                <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '--', 10, '...') }} FCFA </strong>
+                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : 'N/A', 10, '...') }}<br>
+                                <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '0', 10, '...') }} FCFA </strong>
                             </p>
                             <div class="row justify-content-center">
                                 <div class="col-auto mb-3">

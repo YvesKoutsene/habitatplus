@@ -15,8 +15,8 @@ use App\Http\Controllers\Admin\UserController;
 Route::middleware('guest')->group(function () {
 
     //New by Jean-Yves
-    Route::get('habitat+/administrator/v2025/login', [UserController::class, 'loginpage'])->name('log-admin');
-    Route::post('habitat+/administrator/v2025/login', [UserController::class, 'authAdmin'])->name('auth-admin');
+    Route::get('habitat+/administrator/v1.0/2025/login', [UserController::class, 'loginpage'])->name('log-admin');
+    Route::post('habitat+/administrator/v1.0/2025/login', [UserController::class, 'authAdmin'])->name('auth-admin');
 
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');

@@ -25,7 +25,7 @@ class HomeController extends Controller
                     ->where(function($query) {
                         $query->where('statut', 'brouillon')
                             ->orWhere('statut', 'publié')
-                            ->orWhere('statut', 'republié')
+                            ->orWhere('statut', 'bloqué')
                             ->orWhere('statut', 'terminé');
                     })
                     ->orderBy('updated_at', 'desc')
@@ -44,8 +44,8 @@ class HomeController extends Controller
     //Fonction pour taper sur la route "/"
     public function indexHome(){
         $biens = Bien::with(['categorieBien'])->where(function($query) {
-                $query->where('statut', 'publié')
-                    ->orWhere('statut', 'republié');
+                $query->where('statut', 'publié');
+                    //->orWhere('statut', 'republié');
             })
             ->orderBy('updated_at', 'desc')
             ->get();
@@ -62,13 +62,12 @@ class HomeController extends Controller
             return redirect()->back()->with('error', 'Annonce introuvable.');
         }
 
-        if (!in_array($bien->statut, ['publié', 'republié'])) {
+        if (!in_array($bien->statut, ['publié'])) {
             return redirect()->back()->with('error', 'Cette annonce n\'est pas disponible.');
         }
 
         return view('abonné.pages.announcement.show', compact('bien'));
     }
-
 
 
 

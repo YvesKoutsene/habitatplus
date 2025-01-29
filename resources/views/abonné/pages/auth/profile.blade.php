@@ -20,6 +20,7 @@
         $diffInMonths = $createdAt->diffInMonths($now);
         $diffInYears = $createdAt->diffInYears($now);
         $diffInHours = $createdAt->diffInHours($now);
+        $diffInMins = $createdAt->diffInMinutes($now);
         @endphp
 
         <p class="small text-light mb-1">
@@ -32,8 +33,10 @@
             <strong>{{ floor($diffInDays / 7) }} semaine{{ floor($diffInDays / 7) > 1 ? 's' : '' }}</strong>
             @elseif ($diffInDays > 0)
             <strong>{{ $diffInDays }} jour{{ $diffInDays > 1 ? 's' : '' }}</strong>
-            @else
+            @elseif($diffInHours > 0)
             <strong>{{ $diffInHours }} heure{{ $diffInHours > 1 ? 's' : '' }}</strong>
+            @else
+            <strong>{{ $diffInMins }} minute{{ $diffInMins > 1 ? 's' : '' }}</strong>
             @endif
         </p>
     </div>

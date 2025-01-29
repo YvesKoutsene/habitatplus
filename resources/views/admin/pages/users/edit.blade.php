@@ -18,8 +18,6 @@
             <form method="POST" action="{{ route('users.update', $user->id) }}" class="needs-validation" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-
-                <!-- Carte Photo de Profil -->
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Photo de profil</h5>
@@ -39,8 +37,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Carte Informations sur l'Utilisateur -->
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Information sur l'utilisateur</h5>
@@ -57,7 +53,7 @@
                         <!-- Email -->
                         <div class="mb-3">
                             <label for="email" class="form-label">Email<span class="text-danger" title="obligatoire">*</span></label>
-                            <input type="email" name="email" class="form-control" id="email" value="{{ old('email', $user->email) }}" required placeholder="Email de l'utilisateur">
+                            <input type="email" name="email" class="form-control" id="email" value="{{ old('email', $user->email) }}" required placeholder="Email de l'utilisateur" disabled>
                             @error('email')
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -78,6 +74,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <!--
                         <div class="mb-3">
                             <label for="current_password" class="form-label">Mot de passe actuel<span class="text-info" title="Obligatoire pour changer le mot de passe">*</span></label>

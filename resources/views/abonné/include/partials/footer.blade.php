@@ -7,16 +7,17 @@
 
             <div class="col-md-3">
                 <h5>À Propos</h5>
-                <p>Votre plateforme de confiance pour trouver des biens immobiliers adaptés à vos besoins.
+                <p>
+                    Votre plateforme de confiance, dédiée à vous accompagner dans la recherche de biens immobiliers parfaitement adaptés à vos besoins et à vos aspirations.
                 </p>
             </div>
 
             <div class="col-md-3">
                 <h5>Nous Contacter</h5>
                 <ul class="list-unstyled">
-                    <li>Email : <a href="mailto:info@dis.tg">info@dis.tg</a></li>
-                    <li>Téléphone : <a href="tel:+22893816766">+228 93816766</a></li>
-                    <li>Adresse : 123 Rue, Sun-City, Togo</li>
+                    <li>Email : <a href="mailto:info@dis.tg">contact@dis.tg</a></li>
+                    <li>Téléphone : <a href="tel:+22891456282">+228 93816766</a></li>
+                    <li>Adresse : Nukafu, Bld Jean Paul II en face de SOMAYAF Jean Paul II Lomé, TOGO</li>
                 </ul>
             </div>
 

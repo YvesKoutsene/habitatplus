@@ -32,7 +32,6 @@ class UserController extends Controller
         $search = $request->input('search', '');
         $perPage = $request->input('perPage', 10);
 
-        //$query = User::with('roles')->orderBy('created_at', 'asc');
         $query = User::with('roles')
             ->where('typeUser', '!=', 0)
             ->orderBy('created_at', 'asc');
@@ -136,7 +135,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if ($user->roles->pluck('name')->contains('Abonné')) {
+        if ($user->typeUser == 2) {
             return redirect()->route('users.index')
                 ->with('error', 'Cet utilisateur ne peut pas être modifié.');
         }
@@ -152,7 +151,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if ($user->roles->pluck('name')->contains('Abonné')) {
+        if ($user->typeUser == 2) {
             return redirect()->route('users.index')
                 ->with('error', 'Cet utilisateur ne peut pas être modifié.');
         }
@@ -257,7 +256,7 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', "Utilisateur {$user->name} supprimé avec succès.");
     }
 
-    //Fonction pour renvoyer la vue d'auth d'admin et super admib
+    //Fonction pour renvoyer la vue d'auth d'admin et super admin
     public function loginpage(): View
     {
         return view('admin.pages.users.login');

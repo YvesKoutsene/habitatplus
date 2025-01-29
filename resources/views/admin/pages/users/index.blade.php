@@ -86,13 +86,11 @@ use Carbon\Carbon;
                             <td>
                                 {!! $user->email_verified_at ? \Carbon\Carbon::parse($user->email_verified_at)->format('d M Y') : '<span class="badge bg-info">Non vérifié</span>' !!}
                             </td>
-
                             <td>
                                 <span class="badge {{ $user->statut == 'actif' ? 'bg-success' : 'bg-danger' }}">
                                     {{ ucfirst($user->statut) }}
                                 </span>
                             </td>
-
                             <td>
                                 <div class="d-flex">
                                     @if(Auth::user()->typeUser === 0 || Auth::user()->can('editer utilisateurs'))
@@ -122,7 +120,6 @@ use Carbon\Carbon;
                                             </form>
                                         @endif
                                     @endif
-
                                     @if(Auth::user()->typeUser === 0)
                                         @if($user->typeUser === 1)
                                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-placement="top" title="Réinitialiser"> <!--data-bs-target="#deleteConfirmation{{ $user->id }}" -->
@@ -130,8 +127,6 @@ use Carbon\Carbon;
                                         </button>
                                         @endif
                                     @endif
-
-                                    <!-- Modal de confirmation de suppression -->
                                     <div class="modal fade" id="deleteConfirmation{{ $user->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $user->id }}" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
@@ -154,11 +149,9 @@ use Carbon\Carbon;
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Fin de la Modal -->
                                     @endif
                                 </div>
                             </td>
-
                         </tr>
                         @endforeach
                         </tbody>
@@ -175,7 +168,6 @@ use Carbon\Carbon;
                             </tr>
                         </tfoot>
                     </table>
-                    <!-- Pagination personnalisée -->
                     <nav aria-label="...">
                             <ul class="pagination justify-content-end">
                                 <li class="page-item {{ $users->onFirstPage() ? 'disabled' : '' }}">

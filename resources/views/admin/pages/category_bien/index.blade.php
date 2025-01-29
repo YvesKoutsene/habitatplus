@@ -73,7 +73,6 @@
                                                 <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#descriptionModal{{ $categorie->id }}"> <!--class="btn btn-link"-->
                                                     Lire suite
                                                 </button>
-                                                <!-- Modal -->
                                                 <div class="modal fade" id="descriptionModal{{ $categorie->id }}" tabindex="-1" aria-labelledby="descriptionModalLabel{{ $categorie->id }}" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -103,7 +102,6 @@
                                                     Voir plus ({{ $categorie->associations->count() -1 }})
                                                 </button>
 
-                                                <!-- Modal pour afficher tous les paramètres -->
                                                 <div class="modal fade" id="parametresModal{{ $categorie->id }}" tabindex="-1" aria-labelledby="parametresModalLabel{{ $categorie->id }}" aria-hidden="true">
                                                     <div class="modal-dialog"> <!--modal-lg-->
                                                         <div class="modal-content">
@@ -124,7 +122,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- Fin de la modal -->
                                             @endif
                                         </td>
                                         <td>{{ \Carbon\Carbon::parse($categorie->created_at)->format('d M Y') }}</td>
@@ -170,7 +167,6 @@
                                                     @endif
                                                 @endif
 
-                                                <!-- Modal de confirmation de suppression -->
                                                 <div class="modal fade" id="deleteConfirmation{{ $categorie->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $categorie->id }}" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
@@ -193,8 +189,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- Fin de la modal -->
-
                                             </div>
                                         </td>
                                     </tr>

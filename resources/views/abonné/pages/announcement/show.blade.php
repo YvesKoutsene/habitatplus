@@ -44,13 +44,20 @@
             <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}" class="img-thumbnail" style="cursor: pointer;" alt="Photo miniature">
             @endif
         </div>
+        @if($bien->statut == 'bloqué')
+            <br><p class="card-title fw-bold text-danger text-truncate">
+                <i class="bi bi-exclamation-triangle-fill text-danger"></i> Cette annonce est bloquée par la plateforme Habitat+
+            </p>
+        @endif
+
         @php
-        $createdAt = \Carbon\Carbon::parse($bien->created_at);
+        $createdAt = \Carbon\Carbon::parse($bien->updated_at);
         $now = \Carbon\Carbon::now();
         $diffInDays = $createdAt->diffInDays($now);
         $diffInMonths = $createdAt->diffInMonths($now);
         $diffInYears = $createdAt->diffInYears($now);
         $diffInHours = $createdAt->diffInHours($now);
+        $diffInMins = $createdAt->diffInMinutes($now);
         @endphp
         <div class="d-flex align-items-center justify-content-between mt-4 p-3 border-top">
             <div class="d-flex align-items-start gap-3">
@@ -66,8 +73,10 @@
                         {{ floor($diffInDays / 7) }} semaine{{ floor($diffInDays / 7) > 1 ? 's' : '' }}
                         @elseif ($diffInDays > 0)
                         {{ $diffInDays }} jour{{ $diffInDays > 1 ? 's' : '' }}
-                        @else
+                        @elseif ($diffInHours > 0)
                         {{ $diffInHours }} heure{{ $diffInHours > 1 ? 's' : '' }}
+                        @else
+                        {{ $diffInMins }} minute{{ $diffInMins > 1 ? 's' : '' }}
                         @endif
                     </p>
                 </div>
@@ -78,16 +87,16 @@
             <li class="list-group-item d-flex justify-content-between">
                 <span class="fw-bold card-title text-black-50 text-truncate">
                     <strong>
-                        <i class="bi bi-geo-alt-fill text-primary"></i> {{ $bien->lieu }} |
-                        <i class="bi bi-building-fill-gear text-primary"></i> {{ $bien->categorieBien->titre }} en
-                        {{ $bien->type_offre }} à
+                        <i class="bi bi-geo-alt-fill text-primary"></i> {{ $bien->lieu !== null ? $bien->lieu : 'N/A' }} |
+                        <i class="bi bi-building-fill-gear text-primary"></i> {{ $bien->categorieBien->titre !== null ? $bien->categorieBien->titre : 'N/A' }} en
+                        {{ $bien->type_offre !== null ? $bien->type_offre : 'N/A' }} à
                         {{ number_format($bien->prix, 0, ',', ' ') }} FCFA
                     </strong>
                 </span>
             </li>
             <li class="list-group-item d-flex justify-content-between">
                 <span id="descriptionText" class="text-black-50">
-                    {{ Str::limit($bien->description, 25) }}
+                    {{ Str::limit($bien->description !== null ? $bien->description : 'Aucune description', 25) }}
                 </span>
                 @if(strlen($bien->description) > 25)
                 <button class="btn btn-link btn-sm" id="toggleDescription" style="text-decoration: none; color: #007bff;">
@@ -98,12 +107,19 @@
         </ul>
         <h5 class="mt-4 text-center">Caractéristiques</h5>
         <ul class="list-group list-group-flush">
-            @foreach($bien->valeurs as $valeur)
-            <li class="list-group-item d-flex justify-content-between">
-                <span class="fw-bold">{{ $valeur->associationCategorie->parametre->nom_parametre }} :</span>
-                <span>{{ $valeur->valeur }}</span>
-            </li>
-            @endforeach
+            @if($bien->valeurs->isEmpty())
+                <li class="list-group-item d-flex justify-content-between">
+                    <span class="fw-bold">Aucune caractéristique</span>
+                </li>
+            @else
+                @foreach($bien->valeurs as $valeur)
+                <li class="list-group-item d-flex justify-content-between">
+                    <span class="fw-bold">{{ $valeur->associationCategorie->parametre->nom_parametre }} :</span>
+                    <span>{{ $valeur->valeur }}</span>
+                </li>
+                @endforeach
+            @endif
+
         </ul>
         <h5 class="text-success text-center mt-4">Contact et Signalement</h5>
         <div class="d-flex flex-column gap-3 p-3">

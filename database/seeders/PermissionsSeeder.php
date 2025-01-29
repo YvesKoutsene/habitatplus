@@ -14,7 +14,6 @@ class PermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        //
         // Permissions de gestion des utilisateurs
         $manageUsers = Permission::create(['name' => 'gérer utilisateurs']);
         Permission::create(['name' => 'voir utilisateurs', 'parent_id' => $manageUsers->id]);

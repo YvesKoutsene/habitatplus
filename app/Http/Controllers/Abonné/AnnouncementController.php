@@ -17,9 +17,31 @@ class AnnouncementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    //Fonction permettant d'afficher la liste des biens crées dans la base de données
+    public function index(Request $request)
     {
-       //
+        $search = $request->input('search', '');
+        $perPage = $request->input('perPage', 10);
+
+        $query = Bien::with(['user','categorieBien', 'photos', 'valeurs'])->where(function($query) {
+                 $query->where('statut', 'publié')
+                     ->orWhere('statut', 'bloqué')
+                     ->orWhere('statut', 'terminé');
+             })->orderBy('created_at', 'asc');
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->whereRaw('LOWER(titre) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(lieu) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(type_offre) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+        }
+
+        $biens = $query->paginate($perPage);
+
+        return view('admin.pages.announcement.index', compact('biens', 'search', 'perPage'));
     }
 
     /**
@@ -129,6 +151,10 @@ class AnnouncementController extends Controller
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à modifier cette annonce.');
         }
 
+        if ($bien->statut == 'bloqué') {
+            return redirect()->back()->with('error', 'Impossible de modifier cette annonce.');
+        }
+
         $categories = CategorieBien::with('associations.parametre')->get();
         $parametresCategories = AssociationCategorieParametre::with('parametre')->get();
         $existingPhotoIds = $bien->photos->pluck('id')->toArray();
@@ -148,6 +174,10 @@ class AnnouncementController extends Controller
         $bien = Bien::with(['photos', 'categorieBien', 'valeurs'])->findOrFail($id);
         if ($bien->id_user !== auth()->id()) {
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à modifier cette annonce.');
+        }
+
+        if ($bien->statut == 'bloqué') {
+            return redirect()->back()->with('error', 'Impossible de modifier cette annonce.');
         }
 
         //dd($request->all());
@@ -302,7 +332,7 @@ class AnnouncementController extends Controller
         if ($annonce->id_user !== auth()->id()) {
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à mettre fin cette annonce.');
         }
-        if ($annonce->statut !== 'publié' && $annonce->statut !== 'republié') {
+        if ($annonce->statut !== 'publié') {
             return redirect()->back()->with('error', 'Seules les annonces publiées peuvent être arrêtées.');
         }
 
@@ -327,7 +357,7 @@ class AnnouncementController extends Controller
             return redirect()->back()->with('error', 'Seules les annonces arrêtées peuvent être republées.');
         }
 
-        $annonce->statut = 'republié';
+        $annonce->statut = 'publié';
         $annonce->save();
 
         return redirect()->route('dashboard')->with('success', 'Annonce republiée avec succès.');
@@ -353,4 +383,57 @@ class AnnouncementController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Annonce supprimée avec succès!');
     }
+
+    //Fonction pour bloquer une annonce
+    public function block($id)
+    {
+        $annonce = Bien::find($id);
+        if (!$annonce) {
+            return redirect()->back()->with('error', 'Annonce introuvable.');
+        }
+
+        if ($annonce->statut !== 'publié') {
+            return redirect()->back()->with('error', 'Seules les annonces publiées peuvent être bloquées.');
+        }
+
+        $annonce->statut = 'bloqué';
+        $annonce->save();
+
+        return redirect()->back()->with('success', 'Annonce bloquée avec succès.');
+    }
+
+    //Fonction pour réactiver une annonce bloquée par un admin
+    public function reactivate($id)
+    {
+        $annonce = Bien::find($id);
+        if (!$annonce) {
+            return redirect()->back()->with('error', 'Annonce introuvable.');
+        }
+
+        if ($annonce->statut !== 'bloqué') {
+            return redirect()->back()->with('error', 'Seules les annonces bloquées peuvent être réactivées.');
+        }
+
+        $annonce->statut = 'publié';
+        $annonce->save();
+
+        return redirect()->back()->with('success', 'Annonce réactivée avec succès.');
+    }
+
+    //Fonction pour affiche le details d'une annonce pour un admin
+    public function details($id)
+    {
+        $bien = Bien::with(['user','categorieBien', 'photos', 'valeurs'])->findOrFail($id);
+
+        if (!$bien) {
+            return redirect()->back()->with('error', 'Annonce introuvable.');
+        }
+        if (!in_array($bien->statut, ['publié', 'bloqué', 'terminé'])) {
+            return redirect()->back()->with('error', 'Cette annonce n\'est pas disponible.');
+        }
+
+        return view('admin.pages.announcement.show', compact('bien'));
+    }
+
+
 }

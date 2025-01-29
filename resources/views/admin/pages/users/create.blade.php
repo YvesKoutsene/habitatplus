@@ -15,9 +15,8 @@
 <section class="section">
     <div class="row justify-content-center">
         <div class="col-lg-6">
-        <form method="POST" action="{{ route('users.store') }}" class="needs-validation" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('users.store') }}" class="needs-validation" enctype="multipart/form-data" onsubmit="return validatePasswords002()">
         @csrf
-            <!-- Carte Photo de Profil -->
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Photo de profil</h5>
@@ -38,12 +37,9 @@
                 </div>
             </div>
 
-            <!-- Carte Informations sur l'Utilisateur -->
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Information sur l'utilisateur</h5>
-                    <!-- Formulaire -->
-                        <!-- Nom -->
                         <div class="mb-3">
                             <label for="name" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
                             <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}" placeholder="Nom complet de l'utilisateur" required>
@@ -52,7 +48,6 @@
                             @enderror
                         </div>
 
-                        <!-- Email -->
                         <div class="mb-3">
                             <label for="email" class="form-label">Email<span class="text-danger" title="obligatoire">*</span></label>
                             <input type="email" name="email" class="form-control" id="email" value="{{ old('email') }}" required placeholder="Email de l'utilisateur">
@@ -61,7 +56,6 @@
                             @enderror
                         </div>
 
-                        <!-- Téléphone -->
                         <div class="mb-3">
                             <label for="inputState" class="form-label">Téléphone<span class="text-danger" title="obligatoire">*</span></label>
                             <div class="row">
@@ -77,7 +71,6 @@
                             </div>
                         </div>
 
-                        <!-- Mot de passe -->
                         <div class="mb-3">
                             <label for="password" class="form-label">Mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                             <div class="input-group">
@@ -91,7 +84,6 @@
                             @enderror
                         </div>
 
-                        <!-- Confirmation mot de passe -->
                         <div class="mb-3">
                             <label for="password_confirmation" class="form-label">Confirmer mot de passe<span class="text-danger" title="obligatoire">*</span></label>
                             <div class="input-group">
@@ -100,9 +92,8 @@
                                     <i class="bi bi-eye" id="eye-icon-confirmation"></i>
                                 </button>
                             </div>
+                            <div id="passwordMessage002" class="text-danger mt-2" style="display: none;">Les mots de passe ne correspondent pas.</div>
                         </div>
-
-
                 </div>
             </div>
 
@@ -123,7 +114,6 @@
                         @enderror
                     </div>
 
-                        <!-- Boutons -->
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Ajouter</button>
                         <!--
@@ -169,7 +159,20 @@
         }
     }
 
-    // Charger la liste des indicatifs téléphoniques
+    function validatePasswords002() {
+        const register_password = document.getElementById('password').value;
+        const password_confirmation = document.getElementById('password_confirmation').value;
+        const message = document.getElementById('passwordMessage002');
+
+        if (register_password !== password_confirmation) {
+            message.style.display = 'block';
+            return false;
+        } else {
+            message.style.display = 'none';
+            return true;
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         fetch('https://restcountries.com/v3.1/all')
             .then(response => response.json())

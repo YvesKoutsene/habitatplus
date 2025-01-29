@@ -35,11 +35,9 @@
                     </button>
                 </label>
                 <input type="file" class="d-none" id="photo_{{ $i }}" name="photos[{{ $i }}]" accept="image/*">
-                <!-- Champ caché pour les photos existantes -->
                 @if ($photo)
                 <input type="hidden" name="existing_photos[]" value="{{ $photo->id }}">
                 @endif
-                <!-- Champ caché pour suivre les suppressions -->
                 <input type="hidden" name="deleted_photos[]" value="" id="deleted_photo_{{ $i }}">
                 <span class="text-muted mt-2" style="font-size: 14px;">Photo {{ $i === 0 ? 'principale' : 'annexe ' . $i }}</span>
             </div>
@@ -142,7 +140,7 @@
     <div class="modal fade" id="validationModal" tabindex="-1" aria-labelledby="validationModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header yes">
                     <h5 class="modal-title" id="validationModalLabel">Erreur de Validation</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -315,7 +313,6 @@
                 var parameterId = assoc.parametre.id;
                 var parameterName = assoc.parametre.nom_parametre;
 
-                // Récupérer la valeur associée au paramètre pour le bien
                 var parameterValue = bien.valeurs.find(function (val) {
                     return val.id_association_categorie === assoc.id;
                 })?.valeur || '';
@@ -364,13 +361,11 @@
             });
         }
 
-        // Charger les paramètres initiaux
         var initialCategoryId = categorySelect.value;
         if (initialCategoryId) {
             updateParameters(initialCategoryId);
         }
 
-        // Mettre à jour les paramètres lors du changement de catégorie
         categorySelect.addEventListener('change', function () {
             var selectedCategoryId = this.value;
             updateParameters(selectedCategoryId);
@@ -421,6 +416,10 @@
     .is-invalid {
         border-color: red;
         background-color: #f8d7da;
+    }
+
+    .yes{
+        background-color: #007bff;
     }
 
 </style>

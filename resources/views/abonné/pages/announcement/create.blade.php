@@ -97,7 +97,7 @@
     <div class="modal fade" id="validationModal" tabindex="-1" aria-labelledby="validationModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header yes">
                     <h5 class="modal-title" id="validationModalLabel">Erreur de Validation</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -331,6 +331,10 @@
     .is-invalid {
         border-color: red;
         background-color: #f8d7da;
+    }
+
+    .yes{
+        background-color: #007bff;
     }
 
 </style>

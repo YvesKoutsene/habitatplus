@@ -127,7 +127,7 @@
             <a href="{{ $url }}" target="_blank" rel="noopener noreferrer">{{ $url }}</a>
         </div>
         <p class="expiration-message">
-            Attention : Ce lien expirera dans 1 heures<span id="expiration-time"></span>.
+            Attention : Ce lien expirera dans 59 minutes<span id="expiration-time"></span>.
         </p>
         <p>Merci pour votre confiance,<br>L'équipe <strong>Habitat+</strong>.</p>
     </div>
@@ -155,9 +155,7 @@
         }
     }
 
-    // Mettre à jour toutes les secondes
     setInterval(updateExpiration, 1000);
-    // Appeler immédiatement pour l'affichage initial
     updateExpiration();
 </script>
 

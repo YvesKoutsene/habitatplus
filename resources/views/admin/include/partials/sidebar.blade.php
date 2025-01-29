@@ -6,13 +6,14 @@
             <span>Tableau de bord</span>
         </a>
     </li>
-
+    @if( Auth::user()->typeUser === 0 || Auth::user()->can('voir annonces'))
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
+        <a class="nav-link collapsed {{ request()->routeIs('announcement.list') || request()->routeIs('announcement.details') ? 'active' : '' }}" href="{{ route('announcement.list') }}">
             <i class="bi bi-megaphone"></i>
             <span>Annonce</span>
         </a>
     </li>
+    @endif
 
     @if( Auth::user()->typeUser === 0 || Auth::user()->can('voir catégories') || Auth::user()->can('créer catégories') || Auth::user()->can('voir paramètres catégories') || Auth::user()->can('ajouter paramètres catégories'))
     <li class="nav-item">
