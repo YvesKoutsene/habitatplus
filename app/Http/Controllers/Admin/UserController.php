@@ -23,7 +23,6 @@ use Illuminate\Support\Carbon;
 class UserController extends Controller
 {
 
-
     /**
      * Display a listing of the resource.
      */
@@ -71,7 +70,8 @@ class UserController extends Controller
         $validateUser = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:8',
+            //'password' => 'required|string|confirmed|min:8',
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'pays' => 'required|string',
             'numero' => 'required|string|max:15',
             'photo_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
@@ -79,6 +79,7 @@ class UserController extends Controller
         ],
             [
                 'password.confirmed' => 'Les mots de passe ne correspondent pas.',
+                'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.'
             ]);
 
         if ($validateUser->fails()) {
@@ -89,7 +90,6 @@ class UserController extends Controller
 
         $profilePath = null;
 
-        // Gestion de l'upload de l'image
         if ($request->hasFile('photo_profil')) {
             $profile = $request->file('photo_profil');
             $profileName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $profile->getClientOriginalName());
@@ -160,7 +160,8 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'current_password' => 'nullable|required_with:password|current_password',
-            'password' => 'nullable|string|confirmed|min:8',
+            //'password' => 'nullable|string|confirmed|min:8',
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
             'pays' => 'required|string',
             'numero' => 'required|string|max:15',
             'photo_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
@@ -168,6 +169,7 @@ class UserController extends Controller
         ],[
             'current_password.current_password' => 'Mot de passe actuel incorrect.',
             'password.confirmed' => 'Les mots de passe ne correspondent pas.',
+            'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.'
         ]);
 
         if ($validateUser->fails()) {

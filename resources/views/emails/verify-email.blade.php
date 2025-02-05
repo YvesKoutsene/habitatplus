@@ -36,7 +36,6 @@
         }
 
         .email-header img {
-            max-width: 120px;
             margin-right: 10px;
         }
         .email-header h1 {
@@ -113,7 +112,7 @@
 <body>
 <div class="email-container">
     <div class="email-header">
-        <img src="{{ asset('assets/img/logo.png') }}" alt="Logo Habitat+">
+        <img src="{{ asset('assets/img/logo.png') }}" alt="Logo">
         <h1>Habitat+</h1>
     </div>
 

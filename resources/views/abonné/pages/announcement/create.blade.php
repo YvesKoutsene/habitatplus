@@ -66,7 +66,7 @@
 
             <div class="mb-3">
                 <label for="description" class="form-label text-black">Description<span class="text-danger" title="obligatoire pour publier votre annonce">*</span></label>
-                <textarea class="form-control form-control-sm" id="description" name="description" rows="4" placeholder="Une petite description de votre annonce"></textarea>
+                <textarea class="form-control form-control-sm" id="description" name="description" rows="4" maxlength="200" placeholder="Une petite description de votre annonce"></textarea>
                 <small class="text-muted">Ne pas dépasser 200 caractères maximum.</small>
             </div>
         </div>

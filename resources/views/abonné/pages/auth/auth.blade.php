@@ -42,9 +42,13 @@
                                 <label for="phone" class="form-label text-black">Téléphone<span class="text-danger" title="obligatoire">*</span></label>
                                 <div class="row">
                                     <div class="col-5 col-md-5 mb-2 mb-md-0">
-                                        <select id="inputState" class="form-select form-control form-select-sm" name="pays" required>
-                                            <option value="">Choisir un indicatif</option>
-                                        </select>
+                                        <div class="dropdown">
+                                            <input type="text" id="searchIndicatif" class="form-control form-control-sm" placeholder="Rechercher un indicatif" onfocus="showDropdown()" oninput="filterOptions()" required>
+                                            <div class="dropdown-menu" id="dropdownMenu" style="max-height: 200px; overflow-y: auto;">
+                                                <div id="indicatifsList"></div>
+                                            </div>
+                                            <input type="hidden" name="pays" id="indicatif">
+                                        </div>
                                     </div>
                                     <div class="col-7 col-md-7">
                                         <input type="text" name="numero" class="form-control form-control-sm" id="numero00" required oninput="validateInput00()" placeholder="Ex: 98560265">
@@ -128,7 +132,6 @@
     </div>
 </div>
 
-<!-- Script pour activer la modale -->
 @if(request()->get('showModal') === 'create')
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -199,12 +202,13 @@
     }
 </style>
 
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         fetch('https://restcountries.com/v3.1/all')
             .then(response => response.json())
             .then(data => {
-                const selectElement = document.getElementById("inputState");
+                const indicatifsList = document.getElementById("indicatifsList");
 
                 data.sort((a, b) => {
                     const nameA = a.translations.fra?.common || a.name.common;
@@ -215,13 +219,46 @@
                 data.forEach(country => {
                     const indicatif = country.idd.root + (country.idd.suffixes ? country.idd.suffixes[0] : '');
                     const nameInFrench = country.translations.fra?.common || country.name.common;
-                    const option = document.createElement("option");
-                    option.value = indicatif;
-                    option.textContent = `${indicatif} - ${nameInFrench}`;
-                    selectElement.appendChild(option);
+
+                    const listItem = document.createElement("div");
+                    listItem.textContent = `${indicatif} - ${nameInFrench}`;
+                    listItem.classList.add("dropdown-item");
+
+                    listItem.onclick = () => {
+                        const selectedIndicatif = `${indicatif} - ${nameInFrench}`;
+                        document.getElementById("searchIndicatif").value = selectedIndicatif;
+                        document.getElementById("indicatif").value = indicatif; // Mettre à jour le champ caché avec l'indicatif
+                        document.getElementById("dropdownMenu").classList.remove("show");
+                    };
+
+                    indicatifsList.appendChild(listItem);
                 });
             })
             .catch(error => console.error('Erreur lors de la récupération des données:', error));
+    });
+
+    function filterOptions() {
+        const searchInput = document.getElementById('searchIndicatif').value.toLowerCase();
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+        dropdownItems.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(searchInput) ? '' : 'none';
+        });
+
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        dropdownMenu.classList.add("show");
+    }
+
+    function showDropdown() {
+        document.getElementById("dropdownMenu").classList.add("show");
+    }
+
+    document.addEventListener("click", function(event) {
+        const dropdown = document.querySelector('.dropdown');
+        if (!dropdown.contains(event.target)) {
+            document.getElementById("dropdownMenu").classList.remove("show");
+        }
     });
 
     function togglePassword02(inputId, iconId) {

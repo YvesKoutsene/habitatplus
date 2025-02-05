@@ -76,8 +76,10 @@ class AnnouncementController extends Controller
                 'prix' => 'required|numeric|min:1',
                 'lieu' => 'required|string|max:200',
                 'type_offre' => 'required|string',
-                'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'photos.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'description' => 'required|string|max:200',
+            ],[
+                'photos.*.required' => 'Vous devez ajouter au moins la photo principale avant de publier'
             ]);
         }
 

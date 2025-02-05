@@ -12,6 +12,10 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 
+use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 Route::middleware('guest')->group(function () {
 
     //New by Jean-Yves
@@ -60,4 +64,23 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
 });
+
+/*Route::get('/verify-email/{id}/{hash}', function (EmailVerificationRequest $request) {
+    try {
+        $user = User::findOrFail($request->route('id'));
+    } catch (ModelNotFoundException $e) {
+        abort(404, 'Utilisateur non trouvé.');
+    }
+
+    if (!hash_equals(sha1($user->getEmailForVerification()), $request->route('hash'))) {
+        abort(403, 'Lien invalide.');
+    }
+
+    if (!$user->hasVerifiedEmail()) {
+        $user->markEmailAsVerified();
+    }
+
+    return redirect('/login')->with('success', 'Email vérifié avec succès. Connectez-vous !');
+})->middleware(['signed'])->name('verification.verify');
+*/
 

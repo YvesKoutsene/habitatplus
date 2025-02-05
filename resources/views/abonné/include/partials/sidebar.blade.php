@@ -1,28 +1,14 @@
 <aside class="bg-white shadow p-4 rounded sidebar" style="max-width: 250px;" id="sidebar">
     <h5 class="text-primary text-center fw-bold mb-4">Affiner la Recherche</h5>
     <form action="" method="GET">
-        <!-- Type de Bien -->
         <div class="mb-4">
-            <label for="type" class="form-label text-secondary fw-semibold">Type de bien</label>
+            <label for="type" class="form-label text-secondary fw-semibold">Type d'annonce</label>
             <select name="type" id="type" class="form-select form-control-sm border-primary">
                 <option value="" disabled selected>Choisissez un type</option>
                 <option value="vente">Vente</option>
                 <option value="location">Location</option>
             </select>
         </div>
-
-        <!-- Zone Géographique -->
-        <div class="mb-4">
-            <label for="localisation" class="form-label text-secondary fw-semibold">Localisation</label>
-            <select name="localisation" id="localisation" class="form-select form-control-sm border-primary">
-                <option value="" disabled selected>Choisissez une zone</option>
-                <option value="centre-ville">Centre-ville</option>
-                <option value="banlieue">Banlieue</option>
-                <option value="campagne">Campagne</option>
-            </select>
-        </div>
-
-        <!-- Catégorie de Bien -->
         <div class="mb-4">
             <label for="categorie" class="form-label text-secondary fw-semibold">Catégorie de bien</label>
             <select name="categorie" id="categorie" class="form-select form-control-sm border-primary">
@@ -31,8 +17,10 @@
                 <option value="terrain">Terrain</option>
             </select>
         </div>
-
-        <!-- Prix -->
+        <div class="mb-4">
+            <label for="localisation" class="form-label text-secondary fw-semibold">Localisation</label>
+            <input type="text" name="lieu" id="lieu" class="form-control form-control-sm border-primary" placeholder="Taper un lieu de référence">
+        </div>
         <div class="mb-4">
             <label for="prix_min" class="form-label text-secondary fw-semibold">Prix (FCFA)</label>
             <div class="row">
@@ -44,8 +32,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Boutons -->
         <div class="d-flex justify-content-center gap-2">
             <button type="submit" class="btn btn-outline-primary btn-sm">Filtrer</button>
             <button type="reset" class="btn btn-outline-secondary btn-sm">Réinitialiser</button>
