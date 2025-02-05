@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable(); // Peut être nul
             $table->decimal('prix', 12, 2)->nullable(); // Peut être nul
             $table->string('lieu')->nullable(); // Peut être nul
+            $table->datetime('datePublication')->nullable(); // Peut être nul
             $table->string('statut');
             $table->string('type_offre')->nullable(); // Peut être nul
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade'); // Obligatoire

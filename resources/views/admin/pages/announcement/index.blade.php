@@ -24,7 +24,7 @@
 
                     @if(!$biens->isEmpty())
                     <div class="d-flex mb-3 justify-content-between">
-                        <form action="{{ route('category_bien.index') }}" method="GET" class="d-flex">
+                        <form action="{{ route('announcement.list') }}" method="GET" class="d-flex">
                             <select name="perPage" class="form-select me-2" onchange="this.form.submit()">
                                 <option value="5" {{ $perPage == 5 ? 'selected' : '' }}>5 entrées/page</option>
                                 <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10 entrées/page</option>

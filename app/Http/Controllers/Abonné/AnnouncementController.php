@@ -10,6 +10,7 @@ use App\Models\Bien;
 use App\Models\PhotoBien;
 use App\Models\ValeurBien;
 use App\Models\AssociationCategorieParametre;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage; // Ajoutez cette ligne
 
 class AnnouncementController extends Controller
@@ -89,6 +90,7 @@ class AnnouncementController extends Controller
             'lieu' => $request->input('lieu', ''),
             'statut' => $action === 'publish' ? 'publié' : 'brouillon',
             'type_offre' => $request->input('type_offre', ''),
+            'datePublication' => Carbon::now(),
             'id_user' => auth()->id(),
             'id_categorie_bien' => $validated['category'],
         ]);
@@ -210,6 +212,7 @@ class AnnouncementController extends Controller
             'statut' => ($action === 'publish' && in_array($bien->statut, ['brouillon', 'terminé'])) ? 'publié' : $bien->statut,
             'type_offre' => $request->input('type_offre', $bien->type_offre),
             'id_categorie_bien' => $validated['category'],
+            'datePublication' => Carbon::now(),
         ]);
 
         $this->updatePhotos($bien, $request);
@@ -358,6 +361,7 @@ class AnnouncementController extends Controller
         }
 
         $annonce->statut = 'publié';
+        $annonce->datePublication = Carbon::now();
         $annonce->save();
 
         return redirect()->route('dashboard')->with('success', 'Annonce republiée avec succès.');
@@ -415,6 +419,7 @@ class AnnouncementController extends Controller
         }
 
         $annonce->statut = 'publié';
+        $annonce->datePublication = Carbon::now();
         $annonce->save();
 
         return redirect()->back()->with('success', 'Annonce réactivée avec succès.');

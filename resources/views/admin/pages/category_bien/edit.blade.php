@@ -22,8 +22,6 @@
                     <form action="{{ route('category_bien.update', $categorie->id) }}" method="POST" class="needs-validation">
                         @csrf
                         @method('PUT')
-
-                        <!-- Nom de la Catégorie -->
                         <div class="mb-4">
                             <label for="nom_categorie" class="form-label">Nom<span class="text-danger">*</span></label>
                             <input
@@ -38,8 +36,6 @@
                                 Veuillez fournir un nom pour la catégorie.
                             </div>
                         </div>
-
-                        <!-- Description -->
                         <div class="mb-4">
                             <label for="description" class="form-label">Description<span class="text-danger">*</span></label>
                             <textarea
@@ -55,8 +51,6 @@
                             </div>
                             <small class="text-muted">Ne pas dépasser 200 caractères maximum.</small>
                         </div>
-
-                        <!-- Paramètres de Catégorie -->
                         <div class="mb-4">
                             <label class="form-label">Paramètres catégories<span class="text-danger">*</span></label>
                             <div class="row" id="parametres_existants">
@@ -76,13 +70,16 @@
                                         </div>
                                     </div>
                                 @endforeach
+                                <div id="nouveaux_parametres" class="row"></div>
                             </div>
                             <div class="invalid-feedback">
                                 Veuillez sélectionner au moins un paramètre.
                             </div>
+                            <label class="form-label">
+                                <a href="#" id="ajouter_parametre" style="text-decoration: underline;" onclick="ouvrirModaleAjout()"><i class="bi bi-plus-circle"></i> Ajouter autres paramètres</a>
+                            </label>
                         </div>
 
-                        <!-- Boutons d'Action -->
                         <div class="d-flex justify-content-center gap-3">
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-circle"></i> Mettre à jour
@@ -92,12 +89,6 @@
                             </a>
                         </div>
                     </form>
-                    <label class="form-label">
-                        <a href="#" id="ajouter_parametre" style="text-decoration: underline;" onclick="ouvrirModaleAjout()"><i class="bi bi-plus-circle"></i> Ajouter autres paramètres</a>
-                    </label>
-
-                    <div id="nouveaux_parametres" class="row"></div>
-
                     <!-- Modale pour ajouter un paramètre -->
                     <div class="modal fade" id="modalParametre" tabindex="-1" aria-labelledby="modalParametreLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -206,7 +197,7 @@
 
             formCheck.appendChild(checkbox);
             formCheck.appendChild(label);
-            buttonContainer.appendChild(modifierButton);
+            //buttonContainer.appendChild(modifierButton);
             buttonContainer.appendChild(supprimerButton);
             col.appendChild(formCheck);
             col.appendChild(buttonContainer);

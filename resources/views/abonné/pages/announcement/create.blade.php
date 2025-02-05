@@ -58,10 +58,12 @@
                     <span class="input-group-text">CFA</span>
                 </div>
             </div>
+
             <div class="mb-3">
                 <label for="location" class="form-label text-black">Lieu<span class="text-danger" title="obligatoire pour publier votre annonce">*</span></label>
                 <input type="text" class="form-control form-control-sm" id="location" name="lieu" placeholder="Lieu où se trouve votre bien">
             </div>
+
             <div class="mb-3">
                 <label for="description" class="form-label text-black">Description<span class="text-danger" title="obligatoire pour publier votre annonce">*</span></label>
                 <textarea class="form-control form-control-sm" id="description" name="description" rows="4" placeholder="Une petite description de votre annonce"></textarea>

@@ -21,7 +21,6 @@
 
                     <form action="{{ route('category_bien.store') }}" method="POST" class="needs-validation">
                         @csrf
-                        <!-- Nom de la Catégorie -->
                         <div class="mb-4">
                             <label for="nom_categorie" class="form-label">Nom<span class="text-danger" title="Obligatoire">*</span></label>
                             <input
@@ -36,7 +35,6 @@
                             </div>
                         </div>
 
-                        <!-- Description -->
                         <div class="mb-4">
                             <label for="description" class="form-label">Description<span class="text-danger" title="Obligatoire">*</span></label>
                             <textarea
@@ -53,7 +51,6 @@
                             <small class="text-muted">Ne pas dépasser 200 caractères maximum.</small>
                         </div>
 
-                        <!-- Paramètres de Catégorie -->
                         <div class="mb-4">
                             <label class="form-label">Paramètres catégories<span class="text-danger" title="Obligatoire">*</span></label>
                             <div class="row" id="parametres_existants">
@@ -72,13 +69,15 @@
                                     </div>
                                 </div>
                                 @endforeach
+                                <div id="nouveaux_parametres" class="row"></div>
                             </div>
                             <div class="invalid-feedback">
                                 Veuillez sélectionner au moins un paramètre.
                             </div>
-
+                            <label class="form-label">
+                                <a href="#" id="ajouter_parametre" style="text-decoration: underline;" onclick="ouvrirModaleAjout()">Ajouter autres paramètres</a>
+                            </label>
                         </div>
-
                         <div class="d-flex justify-content-center gap-3">
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-circle"></i> Créer
@@ -89,12 +88,6 @@
                         </div>
                     </form>
 
-                    <label class="form-label">
-                        <a href="#" id="ajouter_parametre" style="text-decoration: underline;" onclick="ouvrirModaleAjout()"><i class="bi bi-plus-circle"></i> Ajouter autres paramètres</a>
-                    </label>
-                    <div id="nouveaux_parametres" class="row"></div>
-
-                    <!-- Modale pour ajouter un paramètre -->
                     <div class="modal fade" id="modalParametre" tabindex="-1" aria-labelledby="modalParametreLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -202,7 +195,7 @@
 
             formCheck.appendChild(checkbox);
             formCheck.appendChild(label);
-            buttonContainer.appendChild(modifierButton);
+            //buttonContainer.appendChild(modifierButton);
             buttonContainer.appendChild(supprimerButton);
             col.appendChild(formCheck);
             col.appendChild(buttonContainer);

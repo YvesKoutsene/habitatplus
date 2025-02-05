@@ -31,9 +31,6 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Suivant</span>
             </button>
-            <span class="like-icon position-absolute top-10 end-0 m-2 p-2">
-                <i class="bi bi-heart text-danger fs-5" title="Favoris"></i>
-            </span>
         </div>
         <div class="d-flex justify-content-center gap-2 mt-3">
             @if($bien->photos && count($bien->photos) > 0)
@@ -51,7 +48,7 @@
         @endif
 
         @php
-        $createdAt = \Carbon\Carbon::parse($bien->updated_at);
+        $createdAt = \Carbon\Carbon::parse($bien->datePublication);
         $now = \Carbon\Carbon::now();
         $diffInDays = $createdAt->diffInDays($now);
         $diffInMonths = $createdAt->diffInMonths($now);
@@ -59,7 +56,9 @@
         $diffInHours = $createdAt->diffInHours($now);
         $diffInMins = $createdAt->diffInMinutes($now);
         @endphp
+
         <div class="d-flex align-items-center justify-content-between mt-4 p-3 border-top">
+            @if($bien->statut == 'publié')
             <div class="d-flex align-items-start gap-3">
                 <img src="{{ asset($bien->user->photo_profil) }}" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" alt="Photo de profil">
                 <div>
@@ -81,8 +80,14 @@
                     </p>
                 </div>
             </div>
-            <a href="mailto:{{ $bien->user->email }}" class="btn btn-outline-primary"><i class="bi bi-send fs-5"></i> Contacter</a> <!-- bi-envelope-fill -->
+
+            <span class="like-icon position-absolute top-10 end-0 m-4 p-2">
+                <i class="bi bi-heart text-danger fs-5" title="Favoris"></i>
+            </span>
+            @endif
+
         </div>
+
         <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between">
                 <span class="fw-bold card-title text-black-50 text-truncate">
@@ -153,7 +158,7 @@
                         <textarea name="motif" id="motif" rows="4" class="form-control" placeholder="Donnez le motif du signalement..."></textarea>
                     </div>
                     <div class="d-flex justify-content-end gap-3">
-                        <button type="submit" class="btn btn-danger"><i class="bi bi-plus-circle"></i> Envoyer</button>
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-send"></i> Envoyer</button>
                     </div>
                 </form>
             </div>
