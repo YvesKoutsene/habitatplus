@@ -27,6 +27,11 @@
 
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown">
                         <li>
+                            <a class="dropdown-item d-flex align-items-center" href="{{ route('announcement.create') }}">
+                                <i class="bi bi-megaphone me-2"></i> Publier Annonce
+                            </a>
+                        </li>
+                        <li>
                             <a class="dropdown-item d-flex align-items-center" href="{{ route('dashboard') }}">
                                 <i class="bi bi-person me-2"></i> Mon Espace
                             </a>
@@ -43,12 +48,15 @@
                             </form>
                         </li>
                     </ul>
+
                     @else
                     <a class="nav-link text-black-50 d-flex align-items-center px-2 py-1" href="#" data-bs-toggle="modal" data-bs-target="#authModal">
                         <i class="bi bi-person-circle me-2 text-black-50"></i>Se Connecter
                     </a>
                     @endauth
                 </li>
+
+                <!--
                 @auth
                 <li class="nav-item ">
                     <a class="nav-link text-white d-flex align-items-center bg-danger btn-publish px-2 py-1" href="{{ route('announcement.create') }}">
@@ -62,9 +70,10 @@
                         </a>
                     </li>
                 @endauth
+                -->
+
             </ul>
         </nav>
-
     </div>
 </header>
 
@@ -155,12 +164,17 @@
         padding: 0.5rem 1rem;
         color: #333;
         transition: all 0.2s ease;
+        font-size: 16px;
     }
 
     .dropdown-item:hover {
         background-color: #007bff;
         color: white;
         border-radius: 10px;
+    }
+
+    .dropdown-item + .dropdown-item {
+        margin-top: 10px;
     }
 
     .dropdown-divider {
@@ -176,6 +190,7 @@
     .nav-link.dropdown-toggle::after {
         margin-left: 0.5rem;
     }
+
 
 </style>
 
