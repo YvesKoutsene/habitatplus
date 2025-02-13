@@ -53,9 +53,13 @@
                     <li class="list-inline-item">
                         <a href="#">Politique de confidentialité</a>
                     </li>
+
+                    <!--
                     <li class="list-inline-item">
                         <a href="#">Conditions d'utilisation</a>
                     </li>
+                    -->
+
                 </ul>
             </div>
         </div>

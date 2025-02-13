@@ -67,7 +67,6 @@
         <script src="\assets/js/main.js"></script>
 
         <style>
-            /* Applique flexbox à l'ensemble de la page */
             html, body {
                 height: 100%;
                 margin: 0;
@@ -75,7 +74,6 @@
                 flex-direction: column;
             }
 
-            /* Le contenu principal occupe l'espace restant entre le header et le footer */
             main.main {
                 flex: 1;
             }

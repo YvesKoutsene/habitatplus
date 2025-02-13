@@ -8,32 +8,33 @@
         </div>
 
         <div class="search-bar mx-auto">
-            <form action="" method="GET" class="d-flex">
-                <input type="text" name="query" class="form-control me-2" placeholder="Rechercher sur habitat+">
+            <form action="{{ route('acceuil') }}" method="GET" class="d-flex" onsubmit="return validateSearch()">
+                <input type="text" id="search-input" name="search" class="form-control me-2" placeholder="Rechercher sur habitat+" value="{{ request()->get('search') }}" required>
                 <button type="submit" class="btn shadow-sm">
                     <i class="bi bi-search"></i>
                 </button>
             </form>
         </div>
-
         <nav>
             <ul class="nav">
                 <li class="nav-item dropdown me-2">
                     @auth
-                    <a class="nav-link dropdown-toggle text-black-50 px-2 py-1 d-flex align-items-center me-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ asset(Auth::user()->photo_profil) }}" alt="Profil" class="rounded-circle me-1" style="width: 25px; height: 25px; object-fit: cover; border: 2px solid #f8f9fa;">
-                        {{ auth()->user()->name }}
+                    <a class="nav-link d-flex flex-column align-items-center" href="#"
+                       id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{ asset(Auth::user()->photo_profil) }}" alt="Profil"
+                             class="rounded-circle mb-1"
+                             style="width: 35px; height: 35px; object-fit: cover; border: 2px solid #f8f9fa;">
+                        <span class="text-black-50 small"><strong>{{ auth()->user()->name }}</strong></span>
                     </a>
-
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown">
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="{{ route('announcement.create') }}">
-                                <i class="bi bi-megaphone me-2"></i> Publier Annonce
+                            <a class="dropdown-item d-flex align-items-center" href="{{ route('dashboard') }}">
+                                <i class="bi bi-person me-2"></i> Mon Compte
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="{{ route('dashboard') }}">
-                                <i class="bi bi-person me-2"></i> Mon Espace
+                            <a class="dropdown-item d-flex align-items-center" href="{{ route('announcement.create') }}">
+                                <i class="bi bi-megaphone me-2"></i> Publier Annonce
                             </a>
                         </li>
                         <li>
@@ -89,7 +90,7 @@
     }
 
     .logo-img {
-        height: 40px;
+        height: 35px;
         width: auto;
     }
 
@@ -133,7 +134,9 @@
 
     @media (max-width: 768px) {
         .search-bar {
-            display: none;
+            display: block;
+            width: 50%;
+            padding-bottom: 5px;
         }
 
         .nav {
@@ -191,7 +194,6 @@
         margin-left: 0.5rem;
     }
 
-
 </style>
 
 <script>
@@ -201,6 +203,14 @@
 
         const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
         loginTab.show();
+    }
+
+    function validateSearch() {
+        const searchInput = document.getElementById('search-input').value.trim();
+        if (searchInput.length === 0) {
+            return false;
+        }
+        return true;
     }
 </script>
 

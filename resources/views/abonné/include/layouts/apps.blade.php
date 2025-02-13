@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Favicons -->
+    <link href="\assets/img/favicon.png" rel="icon">
+    <link href="\assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
 </head>
 <body class="d-flex flex-column min-vh-100">
 @include('abonné.include.partials.header')
@@ -14,17 +19,17 @@
 
 <div class="container my-4 flex-grow-1">
     <div class="row habitat">
-        <aside class="col-12 col-md-3 mb-3 d-none d-md-block">
+        <aside class="col-12 col-md-3 d-none d-md-block">
             <div class="pagetitle text-center mb-2">
-                <p class="text-muted text-start">Mon Espace</p>
+                <p class="text-muted text-start">Mon Compte</p>
             </div>
             @include('abonné.include.partials.sidebars')
         </aside>
 
-        <aside class="col-12 col-md-3 mb-3 d-md-none">
+        <aside class="col-12 col-md-3 d-md-none">
             <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle px-2 py-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    Menu<span class="navbar-toggler-icon"></span>
+                    <span>Mon Compte</span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     @include('abonné.include.partials.sidebars')
@@ -50,7 +55,7 @@
 <style>
 
     .habitat{
-        margin-top: 70px;
+        margin-top: 80px;
     }
 
 </style>

@@ -42,15 +42,26 @@ class HomeController extends Controller
     }
 
     //Fonction pour taper sur la route "/"
-    public function indexHome(){
-        $biens = Bien::with(['categorieBien'])->where(function($query) {
-                $query->where('statut', 'publié');
-                    //->orWhere('statut', 'republié');
-            })
-            ->orderBy('updated_at', 'desc')
-            ->get();
+    public function indexHome(Request $request) {
+        $search = $request->input('search', '');
+        $perPage = $request->input('perPage', 24);
 
-        return view('welcome', compact('biens'));
+        $query = Bien::with(['categorieBien'])
+            ->where('statut', 'publié')
+            ->orderBy('updated_at', 'desc');
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->whereRaw('LOWER(titre) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(lieu) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(type_offre) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+        }
+
+        $biens = $query->paginate($perPage);
+
+        return view('welcome', compact('biens', 'search'));
     }
 
     //Fonction d'affichage de page de details d'un bien

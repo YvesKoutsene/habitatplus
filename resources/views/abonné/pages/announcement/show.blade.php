@@ -198,6 +198,7 @@
         border-bottom: 3px solid #007bff;
         object-fit: cover;
         width: 100%;
+        height: 400px;
     }
 
     .card {

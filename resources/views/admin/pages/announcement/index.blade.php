@@ -189,6 +189,7 @@
                         </tr>
                         </tfoot>
                     </table>
+
                     <nav aria-label="...">
                         <ul class="pagination justify-content-end">
                             <li class="page-item {{ $biens->onFirstPage() ? 'disabled' : '' }}">
@@ -205,6 +206,7 @@
                             </li>
                         </ul>
                     </nav>
+
                     @endif
                 </div>
             </div>
