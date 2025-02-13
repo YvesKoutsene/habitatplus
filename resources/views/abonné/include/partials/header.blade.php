@@ -64,6 +64,7 @@
                 @endauth
             </ul>
         </nav>
+
     </div>
 </header>
 

@@ -109,7 +109,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class=""> <!-- mb-3 -->
+                            <div class="">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember" id="rememberMe" value="true">
                                     <label class="form-check-label text-black" for="rememberMe">Se rappeler de moi</label>

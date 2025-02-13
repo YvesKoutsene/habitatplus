@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Estate;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -51,7 +51,7 @@ class ModelSubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -157,7 +157,7 @@ class ModelSubscriptionController extends Controller
         return redirect()->route('model_subscription.index')->with('success', "Modèle d'abonnement {$modele->nom} mis à jour avec succès.");
     }
 
-    
+
     /**
      * Remove the specified resource from storage.
      */
@@ -170,7 +170,7 @@ class ModelSubscriptionController extends Controller
                 ->with('error', "Impossible de supprimer le modèle d'abonnement {$modele->nom}.");
         }
 
-        $modele->parametres()->detach(); 
+        $modele->parametres()->detach();
 
         $modele->delete();
 

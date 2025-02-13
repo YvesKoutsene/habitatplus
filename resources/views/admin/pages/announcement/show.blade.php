@@ -21,7 +21,7 @@
                     <img src="{{ asset($bien->user->photo_profil) }}" alt="Profil" class="rounded-circle border shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
                     <div>
                         <h5 class="card-title mb-0">{{ $bien->user->email }}</h5>
-                        <small class="text-muted d-block">A crée cette annonce le {{ $bien->created_at->format('d M Y') }}.</small>
+                        <small class="text-muted d-block">A publié cette annonce le {{ \Carbon\Carbon::parse($bien->datePublication)->translatedFormat('d F Y') }}.</small>
                     </div>
                 </div>
             </div>

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Estate;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\CategorieTicket; 
+use App\Models\CategorieTicket;
 
 class CategoryTicketController extends Controller
 {
@@ -15,7 +15,7 @@ class CategoryTicketController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search', '');
-        $perPage = $request->input('perPage', 10); 
+        $perPage = $request->input('perPage', 10);
 
         $query = CategorieTicket::query();
 
@@ -25,7 +25,7 @@ class CategoryTicketController extends Controller
                 ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%']);
             });
         }
- 
+
         $categories = $query->orderBy('created_at', 'asc')->paginate($perPage);
 
         return view('admin.pages.category_ticket.index', compact('categories', 'search', 'perPage'));
@@ -78,18 +78,18 @@ class CategoryTicketController extends Controller
     public function update(Request $request, $id)
     {
         $categorie = CategorieTicket::findOrFail($id);
-    
+
         $request->validate([
             'nom_categorie' => 'required|string|max:255|unique:categorie_tickets,nom_categorie,' . $id . ',id',
         ], [
             'nom_categorie.unique' => 'Cette catégorie de ticket existe déjà'
 
         ]);
-    
+
         $categorie->nom_categorie = $request->nom_categorie;
         $categorie->description = $request->description;
         $categorie->save();
-    
+
         return redirect()->route('category_ticket.index')->with('success', "Catégorie de ticket {$categorie->nom_categorie} mis à jour avec succès.");
     }
 
@@ -100,13 +100,13 @@ class CategoryTicketController extends Controller
     {
         $categorie = CategorieTicket::findOrFail($categorie);
 
-        if ($categorie->tickets()->exists()) { 
+        if ($categorie->tickets()->exists()) {
             return redirect()->route('category_ticket.index')
                 ->with('error', "La catégorie de ticket {$categorie->nom_categorie} ne peut pas être supprimé.");
         }
-     
+
         $categorie->delete();
-     
+
         return redirect()->route('category_ticket.index')->with('success', "Catégorie de ticket {$categorie->nom_categorie} supprimé avec succès.");
     }
 

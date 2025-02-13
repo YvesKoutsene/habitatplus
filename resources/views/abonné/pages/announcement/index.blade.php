@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container-fluid px-3 mt4">
     @if($biens->isEmpty())
     <div class="alert alert-info text-center text-black">
         Vous n'avez pas encore créé ou publié d'annonces.
@@ -30,7 +30,7 @@
             <div class="row">
                 @foreach($biens as $bien)
                 @if($bien->statut == 'brouillon')
-                <div class="col-6 col-md-6 col-lg-4 mb-4">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
                         <div class="position-relative">
                             @if($bien->photos && count($bien->photos) > 0)
@@ -47,7 +47,7 @@
                             </span>
                         </div>
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 15, '...') }}</h5>
+                            <h5 class="card-title fw-bold text-black-50 text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
                             <p class="card-text text-muted mb-3">
                                 <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : 'N/A', 20, '...') }}<br>
                                 <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '0', 10, '...') }} FCFA </strong>
@@ -102,7 +102,7 @@
             <div class="row">
                 @foreach($biens as $bien)
                 @if($bien->statut == 'publié' || $bien->statut == 'bloqué')
-                <div class="col-6 col-md-6 col-lg-4 mb-4">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
                         <div class="position-relative">
                             @if($bien->photos && count($bien->photos) > 0)
@@ -120,12 +120,12 @@
                         </div>
                         <div class="card-body d-flex flex-column">
                             @if($bien->statut == 'bloqué')
-                                <h5 class="card-title fw-bold text-danger text-truncate"><i class="bi bi-exclamation-triangle-fill text-danger"></i> Annonce bloquée</h5>
+                            <h5 class="card-title fw-bold text-black-50 text-truncate"><i class="bi bi-exclamation-triangle-fill text-danger"></i> Annonce bloquée</h5>
                             @else
-                                <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
+                            <h5 class="card-title fw-bold text-black-50 text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
                             @endif
                             <p class="card-text text-muted mb-3">
-                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : 'N/A', 10, '...') }}<br>
+                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : 'N/A', 20, '...') }}<br>
                                 <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '0', 10, '...') }} FCFA </strong>
                             </p>
                             <div class="row justify-content-center">
@@ -135,16 +135,16 @@
                                     </a>
                                 </div>
                                 @if($bien->statut != 'bloqué')
-                                    <div class="col-auto">
-                                        <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                    </div>
-                                    <div class="col-auto">
-                                        <button type="button" class="btn btn-warning btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#terminateConfirmation{{ $bien->id }}" title="Arrêté">
-                                            <i class="bi bi-x-circle"></i>
-                                        </button>
-                                    </div>
+                                <div class="col-auto">
+                                    <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-warning btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#terminateConfirmation{{ $bien->id }}" title="Arrêté">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
                                 @endif
                             </div>
                         </div>
@@ -180,7 +180,7 @@
             <div class="row">
                 @foreach($biens as $bien)
                 @if($bien->statut == 'terminé')
-                <div class="col-6 col-md-6 col-lg-4 mb-4">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
                         <div class="position-relative">
                             @if($bien->photos && count($bien->photos) > 0)
@@ -200,7 +200,7 @@
                             <h5 class="card-title fw-bold text-danger text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
                             <p class="card-text text-muted mb-3">
                                 <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : 'N/A', 10, '...') }}<br>
-                                <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '0', 10, '...') }} FCFA </strong>
+                                <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '0', 20, '...') }} FCFA </strong>
                             </p>
                             <div class="row justify-content-center">
                                 <div class="col-auto mb-3">
@@ -303,9 +303,10 @@
     }
 
     .card-img-top {
-        height: 220px;
-        object-fit: cover;
         border-bottom: 3px solid #007bff;
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
     }
 
     .badge {
@@ -318,9 +319,12 @@
     }
 
     .card-title {
-        font-size: 1.2rem;
-        line-height: 1.5;
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
+
 
     .card-text {
         font-size: 0.95rem;
@@ -332,5 +336,11 @@
 
     .yes{
         background-color: #007bff;
+    }
+
+    .btn {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        white-space: nowrap;
     }
 </style>

@@ -50,8 +50,8 @@
                             <th>Abonné</th>
                             <th>Titre</th>
                             <th>Prix (FCFA)</th>
-                            <th>Valeur bien</th>
-                            <th>Date création</th>
+                            <th>Caractéristiques</th>
+                            <th>Publié le</th>
                             <th>Statut</th>
                             <th>Actions</th>
                         </tr>
@@ -140,7 +140,7 @@
                                 <span class="text-muted">Aucune valeur associée</span>
                                 @endif
                             </td>
-                            <td>{{ \Carbon\Carbon::parse($bien->created_at)->format('d M Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($bien->datePublication)->translatedFormat('d F Y') }}</td>
                             <td>
                                 <span class="badge {{ $classe = ($bien->statut == 'publié') ? 'bg-primary' : (($bien->statut == 'terminé') ? 'bg-warning' : 'bg-danger'); }}">
                                     {{ ucfirst($bien->statut) }}
@@ -182,8 +182,8 @@
                             <th>Abonné</th>
                             <th>Titre</th>
                             <th>Prix (FCFA)</th>
-                            <th>Valeur bien</th>
-                            <th>Date création</th>
+                            <th>Caractéristiques</th>
+                            <th>Publié le</th>
                             <th>Statut</th>
                             <th>Actions</th>
                         </tr>

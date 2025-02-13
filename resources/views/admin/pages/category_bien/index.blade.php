@@ -124,7 +124,7 @@
                                                 </div>
                                             @endif
                                         </td>
-                                        <td>{{ \Carbon\Carbon::parse($categorie->created_at)->format('d M Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($categorie->created_at)->translatedFormat('d F Y') }}</td>
                                         <td>
                                             <span class="badge {{ $categorie->statut == 'actif' ? 'bg-success' : 'bg-danger' }}">
                                                 {{ ucfirst($categorie->statut) }}

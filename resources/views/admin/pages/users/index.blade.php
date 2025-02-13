@@ -61,7 +61,7 @@ use Carbon\Carbon;
                                 <th scope="col">Utilisateur</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Téléphone</th>
-                                <th scope="col">Rôle</th>
+                                <th scope="col">Profil</th>
                                 <th scope="col">Crée le</th>
                                 <th scope="col">Vérifié le</th>
                                 <th scope="col">Statut</th>
@@ -82,9 +82,9 @@ use Carbon\Carbon;
                                     {{ ucfirst($user->roles->first()) ? ucfirst($user->roles->first()->name) : 'Abonné' }}
                                 </span>
                             </td>
-                            <td>{{ \Carbon\Carbon::parse($user->created_at)->format('d M Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($user->created_at)->translatedFormat('d F Y') }}</td>
                             <td>
-                                {!! $user->email_verified_at ? \Carbon\Carbon::parse($user->email_verified_at)->format('d M Y') : '<span class="badge bg-info">Non vérifié</span>' !!}
+                                {!! $user->email_verified_at ? \Carbon\Carbon::parse($user->email_verified_at)->translatedFormat('d F Y') : '<span class="badge bg-info">Non vérifié</span>' !!}
                             </td>
                             <td>
                                 <span class="badge {{ $user->statut == 'actif' ? 'bg-success' : 'bg-danger' }}">
@@ -160,7 +160,7 @@ use Carbon\Carbon;
                                 <th scope="col">Utilisateur</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Téléphone</th>
-                                <th scope="col">Rôle</th>
+                                <th scope="col">Profil</th>
                                 <th scope="col">Crée le</th>
                                 <th scope="col">Vérifié le</th>
                                 <th scope="col">Statut</th>

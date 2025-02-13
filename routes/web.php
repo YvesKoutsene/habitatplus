@@ -1,17 +1,18 @@
 <?php
 
+use App\Http\Controllers\Estate\AnnouncementController;
+use App\Http\Controllers\Estate\CategoryBienController;
+use App\Http\Controllers\Estate\CategoryTicketController;
+use App\Http\Controllers\Estate\ModelSubscriptionController;
+use App\Http\Controllers\Estate\ParameterCategoryController;
+use App\Http\Controllers\Estate\ParameterModelController;
+use App\Http\Controllers\Estate\RoleController;
+use App\Http\Controllers\Estate\UserController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Estate\ReportingController;
 
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\ParameterCategoryController;
-use App\Http\Controllers\Admin\CategoryBienController;
-use App\Http\Controllers\Admin\ParameterModelController;
-use App\Http\Controllers\Admin\ModelSubscriptionController;
-use App\Http\Controllers\Admin\CategoryTicketController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Abonné\AnnouncementController;
 
 Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -51,6 +52,12 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
     Route::get('announcement/admin/{bien}/details', [AnnouncementController::class, 'details'])->name('announcement.details');
     Route::put('announcement/admin/{bien}/block', [AnnouncementController::class, 'block'])->name('announcement.block');
     Route::put('announcement/admin/{bien}/reactivate', [AnnouncementController::class, 'reactivate'])->name('announcement.reactivate');
+
+});
+
+#Pour abonné
+Route::middleware(['auth', 'checkUserType:2','check.email.verified'])->group(function () {
+    Route::post('/announcement/{bien}/reporting', [ReportingController::class, 'report'])->name('announcement.report');
 
 });
 

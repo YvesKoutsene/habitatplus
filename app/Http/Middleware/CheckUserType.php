@@ -24,10 +24,12 @@ class CheckUserType
                 return $next($request);
             }
 
-            return redirect('/')->with('error', 'Accès refusé');
+            return redirect('/')->with('error', 'Accès refusé.');
+            //redirect()->back()->with('error', 'Accès refusé.');
         }
 
-        return redirect('/login')->with('error', 'Veuillez vous connecter');
+        //return redirect('/login')->with('error', 'Veuillez vous connecter.');
+        return redirect('acceuil',['showModal' => 'create'])->with('error', 'Veuillez vous connecter.');
     }
 
 }

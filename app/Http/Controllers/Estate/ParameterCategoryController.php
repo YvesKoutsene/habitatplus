@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Estate;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\ParametreCategorie; 
-use App\Models\AssociationCategorieParametre; 
+use App\Models\ParametreCategorie;
+use App\Models\AssociationCategorieParametre;
 
 class ParameterCategoryController extends Controller
 {
@@ -80,19 +80,19 @@ class ParameterCategoryController extends Controller
      public function update(Request $request, $id)
      {
          $parametreCategorie = ParametreCategorie::findOrFail($id);
-     
+
          $request->validate([
              'nom_parametre' => 'required|string|max:255|unique:parametre_categories,nom_parametre,' . $id . ',id',
          ], [
              'nom_parametre.unique' => 'Ce paramètre de catégorie de bien existe déjà'
          ]);
-     
+
          $parametreCategorie->nom_parametre = $request->nom_parametre;
          $parametreCategorie->save();
-     
+
          return redirect()->route('parameter_category.index')->with('success', "Paramètre {$parametreCategorie->nom_parametre} mis à jour avec succès.");
      }
-     
+
 
     /**
      * Remove the specified resource from storage.
@@ -107,11 +107,11 @@ class ParameterCategoryController extends Controller
             return redirect()->route('parameter_category.index')
                 ->with('error', "Le paramètre {$parametre->nom_parametre} ne peut pas être supprimé.");
         }
-     
+
         $parametre->delete();
-     
+
         return redirect()->route('parameter_category.index')->with('success', "Paramètre {$parametre->nom_parametre} supprimé avec succès.");
     }
-    
-    
+
+
 }

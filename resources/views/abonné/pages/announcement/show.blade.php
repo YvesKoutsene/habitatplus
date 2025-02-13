@@ -1,7 +1,15 @@
 @extends('abonné.include.layouts.ap')
 @section('content')
-<div class="container mt-4">
-    <div class="card shadow-lg mb-4">
+
+<div class="container-fluid px-3 mt4">
+    <h4 class="text-black-50 mb-2">
+        <strong>
+            {{ $bien->categorieBien->titre !== null ? $bien->categorieBien->titre : 'N/A' }} en
+            {{ $bien->type_offre !== null ? $bien->type_offre : 'N/A' }} à
+            {{ number_format($bien->prix, 0, ',', ' ') }} FCFA
+        </strong>
+    </h4>
+    <div class="card mb-4 h-100 w-100 shadow-sm border-0 rounded-lg overflow-hidden">
         <div id="bienCarousel" class="carousel slide" data-bs-ride="carousel">
             <ol class="carousel-indicators">
                 @if($bien->photos && count($bien->photos) > 0)
@@ -60,10 +68,10 @@
         <div class="d-flex align-items-center justify-content-between mt-4 p-3 border-top">
             @if($bien->statut == 'publié')
             <div class="d-flex align-items-start gap-3">
-                <img src="{{ asset($bien->user->photo_profil) }}" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" alt="Photo de profil">
+                <img src="{{ asset($bien->user->photo_profil) }}" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;" alt="Photo de profil">
                 <div>
-                    <h5 class="mb-0">{{ $bien->user->name }}</h5>
-                    <p class="text-black-50 mb-0">Publié il y a
+                    <h6 class="mb-0">{{ $bien->user->name }}</h6>
+                    <p class="text-black-50 mb-0 small">A publié il y a
                         @if ($diffInYears > 0)
                         {{ $diffInYears }} an{{ $diffInYears > 1 ? 's' : '' }}
                         @elseif ($diffInMonths > 0)
@@ -81,21 +89,19 @@
                 </div>
             </div>
 
+            <!---
             <span class="like-icon position-absolute top-10 end-0 m-4 p-2">
                 <i class="bi bi-heart text-danger fs-5" title="Favoris"></i>
             </span>
+            -->
+
             @endif
-
         </div>
-
         <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between">
                 <span class="fw-bold card-title text-black-50 text-truncate">
                     <strong>
-                        <i class="bi bi-geo-alt-fill text-primary"></i> {{ $bien->lieu !== null ? $bien->lieu : 'N/A' }} |
-                        <i class="bi bi-building-fill-gear text-primary"></i> {{ $bien->categorieBien->titre !== null ? $bien->categorieBien->titre : 'N/A' }} en
-                        {{ $bien->type_offre !== null ? $bien->type_offre : 'N/A' }} à
-                        {{ number_format($bien->prix, 0, ',', ' ') }} FCFA
+                        <i class="bi bi-geo-alt-fill text-danger"></i> {{ $bien->lieu !== null ? $bien->lieu : 'N/A' }}
                     </strong>
                 </span>
             </li>
@@ -110,7 +116,7 @@
                 @endif
             </li>
         </ul>
-        <h5 class="mt-4 text-center">Caractéristiques</h5>
+        <h5 class="mt-4 text-center">Caractéristiques du bien</h5>
         <ul class="list-group list-group-flush">
             @if($bien->valeurs->isEmpty())
                 <li class="list-group-item d-flex justify-content-between">
@@ -124,16 +130,18 @@
                 </li>
                 @endforeach
             @endif
-
         </ul>
         <h5 class="text-success text-center mt-4">Contact et Signalement</h5>
         <div class="d-flex flex-column gap-3 p-3">
+
             @php
             $url = url()->current();
-            $message = "Je suis interessé par votre annonce de bien \"{$bien->titre}\" publiée sur Habitat+. Lien de l'annonce : $url";
+            $message = "Je suis intéressé par votre annonce de bien \"{$bien->titre}\" publiée sur Habitat+. Lien de l'annonce : {$url}";
             $encodedMessage = urlencode($message);
             @endphp
-            <a href="https://web.whatsapp.com/send?phone={{ $bien->user->numero }}&text={{ $encodedMessage }}" class="btn btn-success d-flex align-items-center justify-content-center gap-2" target="_blank">
+
+            @auth
+            <a href="https://wa.me/{{ $bien->user->numero }}?text={{ $encodedMessage }}" class="btn btn-success d-flex align-items-center justify-content-center gap-2" target="_blank">
                 <i class="bi bi-whatsapp fs-5"></i>
                 <span>WhatsApp</span>
             </a>
@@ -141,30 +149,44 @@
                 <i class="bi bi-flag fs-5"></i>
                 <span>Signaler cette annonce</span>
             </button>
+            @else
+            <a href="{{ route('acceuil',['showModal' => 'create']) }}" class="btn btn-warning d-flex align-items-center justify-content-center gap-2">
+                <i class="bi bi-lock fs-5"></i>
+                <span>Connectez-vous pour contacter le propriétaire</span>
+            </a>
+            <a href="{{ route('acceuil',['showModal' => 'create']) }}" class="btn btn-outline-danger d-flex align-items-center justify-content-center gap-2">
+                <i class="bi bi-lock fs-5"></i>
+                <span>Connectez-vous pour signaler cette annonce</span>
+            </a>
+            @endauth
+
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header yes">
-                <h5 class="modal-title" id="reportModalLabel">Signaler cette annonce</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
             <div class="modal-body">
-                <form action="" method="POST">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Fermer"></button>
+                </div>
+                <form action="{{ route('announcement.report', ['bien' => $bien->id]) }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <textarea name="motif" id="motif" rows="4" class="form-control" placeholder="Donnez le motif du signalement..."></textarea>
+                        <textarea name="motif" id="motif" rows="4" class="form-control" placeholder="Donnez le motif du signalement..." maxlength="200" required></textarea>
                     </div>
                     <div class="d-flex justify-content-end gap-3">
-                        <button type="submit" class="btn btn-danger"><i class="bi bi-send"></i> Envoyer</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-send"></i> Envoyer
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -173,8 +195,9 @@
     }
 
     .carousel img {
-        height: 400px;
+        border-bottom: 3px solid #007bff;
         object-fit: cover;
+        width: 100%;
     }
 
     .card {
@@ -188,6 +211,13 @@
     .card:hover {
         transform: translateY(-5px);
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .btn {
@@ -249,7 +279,6 @@
     }
 
     .btn-primary, .btn-outline-primary, .btn-success {
-        text-transform: uppercase;
         transition: all 0.3s ease;
     }
 
@@ -292,8 +321,8 @@
 
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
-        width: 3rem;
-        height: 3rem;
+        width: 2.5rem;
+        height: 2.5rem;
         background-color: rgba(0, 0, 0, 0.5);
         border-radius: 50%;
         border: 2px solid white;

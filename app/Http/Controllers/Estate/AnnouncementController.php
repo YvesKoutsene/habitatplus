@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Abonné;
+namespace App\Http\Controllers\Estate;
 
 use App\Http\Controllers\Controller;
-use App\Models\ParametreCategorie;
-use Illuminate\Http\Request;
-use App\Models\CategorieBien;
+use App\Models\AssociationCategorieParametre;
 use App\Models\Bien;
+use App\Models\CategorieBien;
 use App\Models\PhotoBien;
 use App\Models\ValeurBien;
-use App\Models\AssociationCategorieParametre;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Storage; // Ajoutez cette ligne
+use Illuminate\Support\Facades\Storage;
+
+// Ajoutez cette ligne
 
 class AnnouncementController extends Controller
 {
@@ -441,6 +442,5 @@ class AnnouncementController extends Controller
 
         return view('admin.pages.announcement.show', compact('bien'));
     }
-
 
 }

@@ -41,7 +41,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Information sur l'utilisateur</h5>
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
+                            <label for="name" class="form-label">Nom et Prénom(s)<span class="text-danger" title="obligatoire">*</span></label>
                             <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}" placeholder="Nom complet de l'utilisateur" required>
                             @error('name')
                             <div class="text-danger">{{ $message }}</div>

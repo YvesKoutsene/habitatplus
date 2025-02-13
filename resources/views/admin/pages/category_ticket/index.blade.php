@@ -97,7 +97,7 @@
                                                 {{ ucfirst($model->description) }}
                                             @endif
                                         </td>
-                                        <td>{{ Carbon::parse($categorie->created_at)->format('d M Y') }}</td>
+                                        <td>{{ Carbon::parse($categorie->created_at)->translatedFormat('d F Y') }}</td>
                                         <td>
                                             <div class="d-flex">
                                                 @can ('editer catégories ticket')

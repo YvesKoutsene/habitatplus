@@ -85,7 +85,7 @@ use Carbon\Carbon;
                                             <span class="text-muted">Aucune permission associée</span>
                                         @endif
                                     </td>
-                                    <td>{{ \Carbon\Carbon::parse($role->created_at)->format('d M Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($role->created_at)->translatedFormat('d F Y') }}</td>
                                     <td>
                                         <span class="badge {{ $role->statut == 'actif' ? 'bg-success' : 'bg-danger' }}">
                                             {{ ucfirst($role->statut) }}

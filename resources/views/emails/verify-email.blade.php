@@ -133,7 +133,7 @@
 
     <div class="email-footer">
         © {{ date('Y') }} Habitat+. Tous droits réservés. <br>
-        <a href="https://www.habitatplus.tg" target="_blank" rel="noopener noreferrer">www.habitatplus.tg</a>
+        <a href="https://immobilier.dis.tg" target="_blank" rel="noopener noreferrer">https://immobilier.dis.tg</a>
     </div>
 </div>
 

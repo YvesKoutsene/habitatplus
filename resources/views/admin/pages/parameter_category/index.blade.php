@@ -70,7 +70,7 @@
                                     <tr>
                                         <td>{{ $parametre->id }}</td>
                                         <td>{{ ucfirst($parametre->nom_parametre) }}</td>
-                                        <td>{{ Carbon::parse($parametre->created_at)->format('d M Y') }}</td>
+                                        <td>{{ Carbon::parse($parametre->created_at)->translatedFormat('d F Y') }}</td>
                                         <td>
                                             <div class="d-flex">
                                                 @if(Auth::user()->typeUser === 0 || Auth::user()->can('editer paramètres catégories'))

@@ -18,9 +18,4 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
-
-    # Redirection correcte pour le stockage des images
-    RewriteCond %{REQUEST_URI} ^/storage/ [NC]
-    RewriteCond %{DOCUMENT_ROOT}/public/%{REQUEST_URI} -f
-    RewriteRule ^storage/(.*)$ public/storage/$1 [L]
 </IfModule>
