@@ -55,103 +55,104 @@
                             @endif
                         </div>
                     @else
+                    <div class="table-responsive">
                         <table class="table table-hover table-striped">
                             <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nom</th>
-                                    <th scope="col">Date création</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Date création</th>
+                                <th scope="col">Actions</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach($parametres as $parametre)
-                                    <tr>
-                                        <td>{{ $parametre->id }}</td>
-                                        <td>{{ ucfirst($parametre->nom_parametre) }}</td>
-                                        <td>{{ Carbon::parse($parametre->created_at)->format('d M Y') }}</td>
-                                        <td>
-                                            <div class="d-flex">
-                                                @can('editer paramètres modèles d\'abonnements')
-                                                    <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editParameterModal{{ $parametre->id }}">
-                                                        <i class="bi bi-pencil-square" title="Editer"></i>
-                                                    </button>
-                                                @endcan
-                                                @can('supprimer paramètres modèles d\'abonnements')
-                                                    @if ($parametre->associations->isEmpty())
-                                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $parametre->id }}">
-                                                            <i class="bi bi-trash" title="Supprimer"></i>
-                                                        </button>
-                                                    @endif
-                                                @endcan
-                                                <!-- Modal de confirmation de suppression -->
-                                                <div class="modal fade" id="deleteConfirmation{{ $parametre->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $parametre->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <i class="bi bi-exclamation-triangle me-1"></i>
-                                                                <h5 class="modal-title" id="deleteConfirmationLabel{{ $parametre->id }}">Confirmation de Suppression</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Êtes-vous sûr de vouloir supprimer le paramètre "{{ $parametre->nom_parametre }}" ? Cette action est irréversible.
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                                                <form action="{{ route('parameter_model.destroy', $parametre->id) }}" method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
+                            @foreach($parametres as $parametre)
+                            <tr>
+                                <td>{{ $parametre->id }}</td>
+                                <td>{{ ucfirst($parametre->nom_parametre) }}</td>
+                                <td>{{ Carbon::parse($parametre->created_at)->format('d M Y') }}</td>
+                                <td>
+                                    <div class="d-flex">
+                                        @can('editer paramètres modèles d\'abonnements')
+                                        <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editParameterModal{{ $parametre->id }}">
+                                            <i class="bi bi-pencil-square" title="Editer"></i>
+                                        </button>
+                                        @endcan
+                                        @can('supprimer paramètres modèles d\'abonnements')
+                                        @if ($parametre->associations->isEmpty())
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $parametre->id }}">
+                                            <i class="bi bi-trash" title="Supprimer"></i>
+                                        </button>
+                                        @endif
+                                        @endcan
+                                        <!-- Modal de confirmation de suppression -->
+                                        <div class="modal fade" id="deleteConfirmation{{ $parametre->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $parametre->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <i class="bi bi-exclamation-triangle me-1"></i>
+                                                        <h5 class="modal-title" id="deleteConfirmationLabel{{ $parametre->id }}">Confirmation de Suppression</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                </div>
-                                                <!-- Fin de la modal -->
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <!-- Modal pour modifier un paramètre -->
-                                    <div class="modal fade" id="editParameterModal{{ $parametre->id }}" tabindex="-1" aria-labelledby="editParameterModalLabel{{ $parametre->id }}" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="editParameterModalLabel{{ $parametre->id }}">Modifier Paramètre</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form action="{{ route('parameter_model.update', $parametre->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <div class="mb-3">
-                                                            <label for="nom_parametre{{ $parametre->id }}" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
-                                                            <input type="hidden" name="id" value="{{ $parametre->id }}">
-                                                            <input type="text" name="nom_parametre" class="form-control" placeholder="Nom du paramètre de modèle" id="nom_parametre{{ $parametre->id }}" value="{{ $parametre->nom_parametre }}" required>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-arrow-left"></i> Retour</button>
-                                                            <button type="submit" class="btn btn-success"><i class="bi bi-check2-circle"></i> Mettre à jour</button>
-                                                        </div>
-                                                    </form>
+                                                    <div class="modal-body">
+                                                        Êtes-vous sûr de vouloir supprimer le paramètre "{{ $parametre->nom_parametre }}" ? Cette action est irréversible.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                                                        <form action="{{ route('parameter_model.destroy', $parametre->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- Fin de la modal -->
                                     </div>
+                                </td>
+                            </tr>
 
-                                    <!-- Fin du modal -->
-                                @endforeach
+                            <!-- Modal pour modifier un paramètre -->
+                            <div class="modal fade" id="editParameterModal{{ $parametre->id }}" tabindex="-1" aria-labelledby="editParameterModalLabel{{ $parametre->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editParameterModalLabel{{ $parametre->id }}">Modifier Paramètre</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('parameter_model.update', $parametre->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="mb-3">
+                                                    <label for="nom_parametre{{ $parametre->id }}" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
+                                                    <input type="hidden" name="id" value="{{ $parametre->id }}">
+                                                    <input type="text" name="nom_parametre" class="form-control" placeholder="Nom du paramètre de modèle" id="nom_parametre{{ $parametre->id }}" value="{{ $parametre->nom_parametre }}" required>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-arrow-left"></i> Retour</button>
+                                                    <button type="submit" class="btn btn-success"><i class="bi bi-check2-circle"></i> Mettre à jour</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fin du modal -->
+                            @endforeach
                             </tbody>
                             <tfoot>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nom</th>
-                                    <th scope="col">Date création</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Date création</th>
+                                <th scope="col">Actions</th>
+                            </tr>
                             </tfoot>
                         </table>
-
+                    </div>
                         <!-- Pagination personnalisée -->
                         <nav aria-label="...">
                             <ul class="pagination justify-content-end">

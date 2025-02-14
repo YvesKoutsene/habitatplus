@@ -56,146 +56,147 @@
                             @endif
                         </div>
                     @else
+                    <div class="table-responsive">
                         <table class="table table-hover table-striped">
                             <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nom</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Date création</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Date création</th>
+                                <th scope="col">Actions</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach($categories as $categorie)
-                                    <tr>
-                                        <td>{{ $categorie->id }}</td>
-                                        <td>{{ ucfirst($categorie->nom_categorie) }}</td>
-                                        <td>
-                                            @if(strlen($categorie->description) > 8)
-                                                {{ ucfirst(substr($categorie->description, 0, 8)) }}...
-                                                <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#descriptionModal{{ $categorie->id }}">
-                                                    Lire suite
-                                                </button>
-                                                <div class="modal fade" id="descriptionModal{{ $categorie->id }}" tabindex="-1" aria-labelledby="descriptionModalLabel{{ $categorie->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="descriptionModalLabel{{ $categorie->id }}">Description complète de la catégorie {{ ucfirst($categorie->nom_categorie) }}</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                {{ ucfirst($categorie->description) }}
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @else
-                                                {{ ucfirst($model->description) }}
-                                            @endif
-                                        </td>
-                                        <td>{{ Carbon::parse($categorie->created_at)->translatedFormat('d F Y') }}</td>
-                                        <td>
-                                            <div class="d-flex">
-                                                @can ('editer catégories ticket')
-                                                    <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $categorie->id }}">
-                                                        <i class="bi bi-pencil-square" title="Editer"></i>
-                                                    </button>
-                                                @endcan
-                                                @can ('supprimer catégories ticket')
-                                                    @if ($categorie->tickets->isEmpty())
-                                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $categorie->id }}">
-                                                            <i class="bi bi-trash" title="Supprimer"></i>
-                                                        </button>
-                                                    @endif
-                                                @endcan
-                                                <!-- Modal de confirmation de suppression -->
-                                                <div class="modal fade" id="deleteConfirmation{{ $categorie->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $categorie->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <i class="bi bi-exclamation-triangle me-1"></i>
-                                                                <h5 class="modal-title" id="deleteConfirmationLabel{{ $categorie->id }}">Confirmation de Suppression</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Êtes-vous sûr de vouloir supprimer la catégorie de ticket "{{ $categorie->nom_categorie }}" ? Cette action est irréversible.
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                                                <form action="{{ route('category_ticket.destroy', $categorie->id) }}" method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Fin de la modal -->
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <!-- Modal pour modifier un paramètre -->
-                                    <div class="modal fade" id="editCategoryModal{{ $categorie->id }}" tabindex="-1" aria-labelledby="editCategoryModalLabel{{ $categorie->id }}" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
+                            @foreach($categories as $categorie)
+                            <tr>
+                                <td>{{ $categorie->id }}</td>
+                                <td>{{ ucfirst($categorie->nom_categorie) }}</td>
+                                <td>
+                                    @if(strlen($categorie->description) > 8)
+                                    {{ ucfirst(substr($categorie->description, 0, 8)) }}...
+                                    <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#descriptionModal{{ $categorie->id }}">
+                                        Lire suite
+                                    </button>
+                                    <div class="modal fade" id="descriptionModal{{ $categorie->id }}" tabindex="-1" aria-labelledby="descriptionModalLabel{{ $categorie->id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="editCategoryModalLabel{{ $categorie->id }}">Modifier Catégorie</h5>
+                                                    <h5 class="modal-title" id="descriptionModalLabel{{ $categorie->id }}">Description complète de la catégorie {{ ucfirst($categorie->nom_categorie) }}</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('category_ticket.update', $categorie->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <div class="mb-3">
-                                                            <label for="nom_categorie{{ $categorie->id }}" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
-                                                            <input type="hidden" name="id" value="{{ $categorie->id }}">
-                                                            <input type="text" name="nom_categorie" class="form-control" placeholder="Nom de categorie de ticket" id="nom_categorie{{ $categorie->id }}" value="{{ $categorie->nom_categorie }}" required>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label for="description" class="form-label">Description<span class="text-danger">*</span></label>
-                                                            <textarea
-                                                                name="description"
-                                                                id="description"
-                                                                class="form-control"
-                                                                rows="3"
-                                                                maxlength="200"
-                                                                placeholder="Ajoutez une description"
-                                                                required>{{ old('description',  $categorie->description) }}</textarea>
-                                                            <div class="invalid-feedback">
-                                                                Veuillez fournir une description valide.
-                                                            </div>
-                                                            <small class="text-muted">Ne pas dépasser 200 caractères maximum.</small>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-arrow-left"></i> Retour</button>
-                                                            <button type="submit" class="btn btn-success"><i class="bi bi-check2-circle"></i> Mettre à jour</button>
-                                                        </div>
-                                                    </form>
+                                                    {{ ucfirst($categorie->description) }}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    @else
+                                    {{ ucfirst($model->description) }}
+                                    @endif
+                                </td>
+                                <td>{{ Carbon::parse($categorie->created_at)->translatedFormat('d F Y') }}</td>
+                                <td>
+                                    <div class="d-flex">
+                                        @can ('editer catégories ticket')
+                                        <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $categorie->id }}">
+                                            <i class="bi bi-pencil-square" title="Editer"></i>
+                                        </button>
+                                        @endcan
+                                        @can ('supprimer catégories ticket')
+                                        @if ($categorie->tickets->isEmpty())
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $categorie->id }}">
+                                            <i class="bi bi-trash" title="Supprimer"></i>
+                                        </button>
+                                        @endif
+                                        @endcan
+                                        <!-- Modal de confirmation de suppression -->
+                                        <div class="modal fade" id="deleteConfirmation{{ $categorie->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $categorie->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <i class="bi bi-exclamation-triangle me-1"></i>
+                                                        <h5 class="modal-title" id="deleteConfirmationLabel{{ $categorie->id }}">Confirmation de Suppression</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Êtes-vous sûr de vouloir supprimer la catégorie de ticket "{{ $categorie->nom_categorie }}" ? Cette action est irréversible.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                                                        <form action="{{ route('category_ticket.destroy', $categorie->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Fin de la modal -->
+                                    </div>
+                                </td>
+                            </tr>
 
-                                    <!-- Fin du modal -->
-                                @endforeach
+                            <!-- Modal pour modifier un paramètre -->
+                            <div class="modal fade" id="editCategoryModal{{ $categorie->id }}" tabindex="-1" aria-labelledby="editCategoryModalLabel{{ $categorie->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editCategoryModalLabel{{ $categorie->id }}">Modifier Catégorie</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('category_ticket.update', $categorie->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="mb-3">
+                                                    <label for="nom_categorie{{ $categorie->id }}" class="form-label">Nom<span class="text-danger" title="obligatoire">*</span></label>
+                                                    <input type="hidden" name="id" value="{{ $categorie->id }}">
+                                                    <input type="text" name="nom_categorie" class="form-control" placeholder="Nom de categorie de ticket" id="nom_categorie{{ $categorie->id }}" value="{{ $categorie->nom_categorie }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="description" class="form-label">Description<span class="text-danger">*</span></label>
+                                                    <textarea
+                                                        name="description"
+                                                        id="description"
+                                                        class="form-control"
+                                                        rows="3"
+                                                        maxlength="200"
+                                                        placeholder="Ajoutez une description"
+                                                        required>{{ old('description',  $categorie->description) }}</textarea>
+                                                    <div class="invalid-feedback">
+                                                        Veuillez fournir une description valide.
+                                                    </div>
+                                                    <small class="text-muted">Ne pas dépasser 200 caractères maximum.</small>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-arrow-left"></i> Retour</button>
+                                                    <button type="submit" class="btn btn-success"><i class="bi bi-check2-circle"></i> Mettre à jour</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fin du modal -->
+                            @endforeach
                             </tbody>
                             <tfoot>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nom</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Date création</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Date création</th>
+                                <th scope="col">Actions</th>
+                            </tr>
                             </tfoot>
                         </table>
-
+                    </div>
                         <!-- Pagination personnalisée -->
                         <nav aria-label="...">
                             <ul class="pagination justify-content-end">

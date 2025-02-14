@@ -49,157 +49,159 @@
                             @endif
                         </div>
                     @else
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Nom</th>
-                                    <th>Prix (FCFA)</th>
-                                    <th>Durée (Mois)</th>
-                                    <th>Description</th>
-                                    <th>Paramètres/valeurs</th>
-                                    <th>Date création</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($modeles as $model)
-                                    <tr>
-                                        <td>{{ $model->id }}</td>
-                                        <td>{{ ucfirst($model->nom) }}</td>
-                                        <td>{{ number_format($model->prix, 0, ',', ' ') }}</td>
-                                        <td>{{ $model->duree }}</td>
-                                        <td>
-                                            @if(strlen($model->description) > 8)
-                                                {{ ucfirst(substr($model->description, 0, 8)) }}...
-                                                <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#descriptionModal{{ $model->id }}">
-                                                    Lire suite
-                                                </button>
-                                                <div class="modal fade" id="descriptionModal{{ $model->id }}" tabindex="-1" aria-labelledby="descriptionModalLabel{{ $model->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="descriptionModalLabel{{ $model->id }}">Description complète du modèle {{ ucfirst($model->nom) }}</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                {{ ucfirst($model->description) }}
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @else
+                    <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nom</th>
+                            <th>Prix (FCFA)</th>
+                            <th>Durée (Mois)</th>
+                            <th>Description</th>
+                            <th>Paramètres/valeurs</th>
+                            <th>Date création</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($modeles as $model)
+                        <tr>
+                            <td>{{ $model->id }}</td>
+                            <td>{{ ucfirst($model->nom) }}</td>
+                            <td>{{ number_format($model->prix, 0, ',', ' ') }}</td>
+                            <td>{{ $model->duree }}</td>
+                            <td>
+                                @if(strlen($model->description) > 8)
+                                {{ ucfirst(substr($model->description, 0, 8)) }}...
+                                <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#descriptionModal{{ $model->id }}">
+                                    Lire suite
+                                </button>
+                                <div class="modal fade" id="descriptionModal{{ $model->id }}" tabindex="-1" aria-labelledby="descriptionModalLabel{{ $model->id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="descriptionModalLabel{{ $model->id }}">Description complète du modèle {{ ucfirst($model->nom) }}</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
                                                 {{ ucfirst($model->description) }}
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($model->parametres->isNotEmpty())
-                                                @foreach($model->parametres->take(1) as $parametre)
-                                                    @if($parametre)
-                                                        <span class="badge bg-success">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @else
+                                {{ ucfirst($model->description) }}
+                                @endif
+                            </td>
+                            <td>
+                                @if($model->parametres->isNotEmpty())
+                                @foreach($model->parametres->take(1) as $parametre)
+                                @if($parametre)
+                                <span class="badge bg-success">
                                                         {{ $parametre->nom_parametre }}
                                                         </span> :
-                                                        <span class="badge bg-warning">
+                                <span class="badge bg-warning">
                                                         {{ $parametre->pivot->valeur }}
                                                         </span>
-                                                    @endif
-                                                @endforeach
-                                                @if($model->parametres->count() > 1)
-                                                    <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametersModal{{ $model->id }}">
-                                                        Voir plus ({{ $model->parametres->count() -1 }})
-                                                    </button>
-                                                    <div class="modal fade" id="parametersModal{{ $model->id }}" tabindex="-1" aria-labelledby="parametersModalLabel{{ $model->id }}" aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="parametersModalLabel{{ $model->id }}">Paramètres du modèle {{ ucfirst($model->nom) }}</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <ul class="list-group">
-                                                                        @foreach($model->parametres as $parametre)
-                                                                            @if($parametre)
-                                                                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                                                    {{ $parametre->nom_parametre }}
-                                                                                    <span class="badge bg-primary rounded-pill">
+                                @endif
+                                @endforeach
+                                @if($model->parametres->count() > 1)
+                                <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#parametersModal{{ $model->id }}">
+                                    Voir plus ({{ $model->parametres->count() -1 }})
+                                </button>
+                                <div class="modal fade" id="parametersModal{{ $model->id }}" tabindex="-1" aria-labelledby="parametersModalLabel{{ $model->id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="parametersModalLabel{{ $model->id }}">Paramètres du modèle {{ ucfirst($model->nom) }}</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <ul class="list-group">
+                                                    @foreach($model->parametres as $parametre)
+                                                    @if($parametre)
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{ $parametre->nom_parametre }}
+                                                        <span class="badge bg-primary rounded-pill">
                                                                                         {{ $parametre->pivot->valeur }}
                                                                                     </span>
-                                                                                </li>
-                                                                            @endif
-                                                                        @endforeach
-                                                                    </ul>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                                        <i class="bi bi-x-circle"></i> Fermer
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            @else
-                                                <span class="text-muted">Aucun paramètre associé</span>
-                                            @endif
-                                        </td>
-                                        <td>{{ \Carbon\Carbon::parse($model->created_at)->format('d M Y') }}</td>
-                                        <td>
-                                            <div class="d-flex">
-                                                @can('editer modèles d\'abonnements')
-                                                    <a href="{{ route('model_subscription.edit', $model->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" title="Modifier">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </a>
-                                                @endcan
-                                                @can('supprimer modèles d\'abonnements')
-                                                    @if ($model->transactions->isEmpty())
-                                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $model->id }}" data-bs-toggle="tooltip" title="Supprimer">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                        <div class="modal fade" id="deleteConfirmation{{ $model->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $model->id }}" aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <i class="bi bi-exclamation-triangle me-1"></i>
-                                                                        <h5 class="modal-title" id="deleteConfirmationLabel{{ $model->id }}">Confirmation de Suppression</h5>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        Êtes-vous sûr de vouloir supprimer le modèle "{{ $model->nom }}" ? Cette action est irréversible.
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                                                        <form action="{{ route('model_subscription.destroy', $model->id) }}" method="POST" class="d-inline">
-                                                                            @csrf
-                                                                            @method('DELETE')
-                                                                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    </li>
                                                     @endif
-                                                @endcan
+                                                    @endforeach
+                                                </ul>
                                             </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Nom</th>
-                                    <th>Prix (FCFA)</th>
-                                    <th>Durée (Mois)</th>
-                                    <th>Description</th>
-                                    <th>Paramètres/valeurs</th>
-                                    <th>Date création</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    <i class="bi bi-x-circle"></i> Fermer
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                @else
+                                <span class="text-muted">Aucun paramètre associé</span>
+                                @endif
+                            </td>
+                            <td>{{ \Carbon\Carbon::parse($model->created_at)->format('d M Y') }}</td>
+                            <td>
+                                <div class="d-flex">
+                                    @can('editer modèles d\'abonnements')
+                                    <a href="{{ route('model_subscription.edit', $model->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" title="Modifier">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    @endcan
+                                    @can('supprimer modèles d\'abonnements')
+                                    @if ($model->transactions->isEmpty())
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $model->id }}" data-bs-toggle="tooltip" title="Supprimer">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                    <div class="modal fade" id="deleteConfirmation{{ $model->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $model->id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <i class="bi bi-exclamation-triangle me-1"></i>
+                                                    <h5 class="modal-title" id="deleteConfirmationLabel{{ $model->id }}">Confirmation de Suppression</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Êtes-vous sûr de vouloir supprimer le modèle "{{ $model->nom }}" ? Cette action est irréversible.
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                                                    <form action="{{ route('model_subscription.destroy', $model->id) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    @endcan
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Nom</th>
+                            <th>Prix (FCFA)</th>
+                            <th>Durée (Mois)</th>
+                            <th>Description</th>
+                            <th>Paramètres/valeurs</th>
+                            <th>Date création</th>
+                            <th>Actions</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    </div>
                         <nav aria-label="...">
                             <ul class="pagination justify-content-end">
                                 <li class="page-item {{ $modeles->onFirstPage() ? 'disabled' : '' }}">

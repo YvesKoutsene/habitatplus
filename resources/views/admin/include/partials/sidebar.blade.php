@@ -98,12 +98,12 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse {{ request()->is('payment*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
             <li>
-                <a href="tables-general.html">
+                <a href="#">
                     <i class="bi bi-circle"></i><span>Transaction</span>
                 </a>
             </li>
             <li>
-                <a href="tables-data.html">
+                <a href="#">
                     <i class="bi bi-circle"></i><span>Abonnement</span>
                 </a>
             </li>

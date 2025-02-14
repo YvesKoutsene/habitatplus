@@ -55,77 +55,78 @@ use Carbon\Carbon;
                             @endif
                         </div>
                     @else
+                    <div class="table-responsive">
                         <table class="table table-hover table-striped">
                             <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nom</th>
-                                    <th scope="col">Permissions associées</th>
-                                    <th scope="col">Date création</th>
-                                    <th scope="col">Statut</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Permissions associées</th>
+                                <th scope="col">Date création</th>
+                                <th scope="col">Statut</th>
+                                <th scope="col">Actions</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach($roles as $role)
-                                <tr>
-                                    <td>{{ $role->id }}</td>
-                                    <td>{{ ucfirst($role->name) }}</td>
-                                    <td>
-                                        @if($role->permissions->isNotEmpty())
-                                            @foreach($role->permissions->take(1) as $permission)
-                                                <span class="badge bg-success">{{ ucfirst($permission->name) }}</span>
-                                            @endforeach
-                                            @if($role->permissions->count() >1)
-                                                <button class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#permissionsModal{{ $role->id }}"> <!--class="btn btn-link"-->
-                                                    Voir plus ({{ $role->permissions->count() - 1 }})
-                                                </button>
-                                            @endif
-                                        @else
-                                            <span class="text-muted">Aucune permission associée</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ \Carbon\Carbon::parse($role->created_at)->translatedFormat('d F Y') }}</td>
-                                    <td>
+                            @foreach($roles as $role)
+                            <tr>
+                                <td>{{ $role->id }}</td>
+                                <td>{{ ucfirst($role->name) }}</td>
+                                <td>
+                                    @if($role->permissions->isNotEmpty())
+                                    @foreach($role->permissions->take(1) as $permission)
+                                    <span class="badge bg-success">{{ ucfirst($permission->name) }}</span>
+                                    @endforeach
+                                    @if($role->permissions->count() >1)
+                                    <button class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#permissionsModal{{ $role->id }}"> <!--class="btn btn-link"-->
+                                        Voir plus ({{ $role->permissions->count() - 1 }})
+                                    </button>
+                                    @endif
+                                    @else
+                                    <span class="text-muted">Aucune permission associée</span>
+                                    @endif
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($role->created_at)->translatedFormat('d F Y') }}</td>
+                                <td>
                                         <span class="badge {{ $role->statut == 'actif' ? 'bg-success' : 'bg-danger' }}">
                                             {{ ucfirst($role->statut) }}
                                         </span>
-                                    </td>
+                                </td>
 
-                                    <td>
+                                <td>
                                     <div class="d-flex">
                                         @if(Auth::user()->typeUser === 0 || Auth::user()->can('désactiver/réactiver rôles'))
-                                            @if($role->statut == 'actif')
-                                            <form action="{{ route('roles.suspend', $role->id) }}" method="POST" class="me-2">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Désactiver">
-                                                    <i class="bi bi-slash-circle"></i>
-                                                </button>
-                                            </form>
-                                            @else
-                                            <form action="{{ route('roles.reactivate', $role->id) }}" method="POST" class="me-2">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver">
-                                                    <i class="bi bi-check-circle"></i>
-                                                </button>
-                                            </form>
-                                            @endif
+                                        @if($role->statut == 'actif')
+                                        <form action="{{ route('roles.suspend', $role->id) }}" method="POST" class="me-2">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Désactiver">
+                                                <i class="bi bi-slash-circle"></i>
+                                            </button>
+                                        </form>
+                                        @else
+                                        <form action="{{ route('roles.reactivate', $role->id) }}" method="POST" class="me-2">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver">
+                                                <i class="bi bi-check-circle"></i>
+                                            </button>
+                                        </form>
+                                        @endif
                                         @endif
 
                                         @if(Auth::user()->typeUser === 0 || Auth::user()->can('editer rôles'))
                                         <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
-                                                <i class="bi bi-pencil-square"></i>
+                                            <i class="bi bi-pencil-square"></i>
                                         </a>
                                         @endif
 
                                         @if(Auth::user()->typeUser === 0 || Auth::user()->can('supprimer rôles'))
-                                            @if($role && $role->users->isEmpty())
-                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $role->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                            @endif
+                                        @if($role && $role->users->isEmpty())
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $role->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                        @endif
                                         @endif
 
                                         <!-- Modal de confirmation de suppression -->
@@ -156,42 +157,42 @@ use Carbon\Carbon;
                                 </td>
                             </tr>
 
-                                <!-- Modale pour afficher toutes les permissions -->
-                                <div class="modal fade" id="permissionsModal{{ $role->id }}" tabindex="-1" aria-labelledby="permissionsModalLabel{{ $role->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="permissionsModalLabel{{ $role->id }}">Permissions pour {{ ucfirst($role->name) }}</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <ul class="list-group">
-                                                    @foreach($role->permissions as $permission)
-                                                        <li class="list-group-item">{{ ucfirst($permission->name) }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
-                                            </div>
+                            <!-- Modale pour afficher toutes les permissions -->
+                            <div class="modal fade" id="permissionsModal{{ $role->id }}" tabindex="-1" aria-labelledby="permissionsModalLabel{{ $role->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="permissionsModalLabel{{ $role->id }}">Permissions pour {{ ucfirst($role->name) }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <ul class="list-group">
+                                                @foreach($role->permissions as $permission)
+                                                <li class="list-group-item">{{ ucfirst($permission->name) }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
                                         </div>
                                     </div>
                                 </div>
-                                @endforeach
+                            </div>
+                            @endforeach
                             </tbody>
                             <tfoot>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nom</th>
-                                    <th scope="col">Permissions associées</th>
-                                    <th scope="col">Date création</th>
-                                    <th scope="col">Statut</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Permissions associées</th>
+                                <th scope="col">Date création</th>
+                                <th scope="col">Statut</th>
+                                <th scope="col">Actions</th>
+                            </tr>
                             </tfoot>
                         </table>
+                    </div>
 
-                        <!-- Pagination personnalisée -->
                     <nav aria-label="...">
                             <ul class="pagination justify-content-end">
                                 <li class="page-item {{ $roles->onFirstPage() ? 'disabled' : '' }}">

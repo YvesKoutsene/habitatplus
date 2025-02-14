@@ -55,8 +55,9 @@ use Carbon\Carbon;
                         @endif
                     </div>
                     @else
-                    <table class="table table-hover table-striped">
-                        <thead>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead>
                             <tr>
                                 <th scope="col">Utilisateur</th>
                                 <th scope="col">Email</th>
@@ -67,95 +68,95 @@ use Carbon\Carbon;
                                 <th scope="col">Statut</th>
                                 <th scope="col">Actions</th>
                             </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($users as $user)
-                        <tr>
-                            <td>
-                                <img src="{{ asset($user->photo_profil) }}" alt="Profil" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;">
-                                | {{ $user->name }}
-                            </td>
-                            <td>{{ $user->email }}</td>
-                            <td>({{ $user->pays }}) {{ $user->numero }}</td>
-                            <td>
+                            </thead>
+                            <tbody>
+                            @foreach($users as $user)
+                            <tr>
+                                <td>
+                                    <img src="{{ asset($user->photo_profil) }}" alt="Profil" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;">
+                                    | {{ $user->name }}
+                                </td>
+                                <td>{{ $user->email }}</td>
+                                <td>({{ $user->pays }}) {{ $user->numero }}</td>
+                                <td>
                                 <span class="badge bg-primary">
                                     {{ ucfirst($user->roles->first()) ? ucfirst($user->roles->first()->name) : 'Abonné' }}
                                 </span>
-                            </td>
-                            <td>{{ \Carbon\Carbon::parse($user->created_at)->translatedFormat('d F Y') }}</td>
-                            <td>
-                                {!! $user->email_verified_at ? \Carbon\Carbon::parse($user->email_verified_at)->translatedFormat('d F Y') : '<span class="badge bg-info">Non vérifié</span>' !!}
-                            </td>
-                            <td>
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($user->created_at)->translatedFormat('d F Y') }}</td>
+                                <td>
+                                    {!! $user->email_verified_at ? \Carbon\Carbon::parse($user->email_verified_at)->translatedFormat('d F Y') : '<span class="badge bg-info">Non vérifié</span>' !!}
+                                </td>
+                                <td>
                                 <span class="badge {{ $user->statut == 'actif' ? 'bg-success' : 'bg-danger' }}">
                                     {{ ucfirst($user->statut) }}
                                 </span>
-                            </td>
-                            <td>
-                                <div class="d-flex">
-                                    @if(Auth::user()->typeUser === 0 || Auth::user()->can('editer utilisateurs'))
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        @if(Auth::user()->typeUser === 0 || Auth::user()->can('editer utilisateurs'))
                                         @if($user->typeUser !== 2)
                                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
                                         @endif
-                                    @endif
-                                    @if(Auth::user()->typeUser === 0 || Auth::user()->can('suspendre/réactiver utilisateurs'))
-                                        @if(auth()->id() !== $user->id)
-                                            @if($user->statut == 'actif')
-                                            <form action="{{ route('users.suspend', $user->id) }}" method="POST" class="me-2">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Suspendre">
-                                                    <i class="bi bi-slash-circle"></i>
-                                                </button>
-                                            </form>
-                                            @else
-                                            <form action="{{ route('users.reactivate', $user->id) }}" method="POST" class="me-2">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver">
-                                                    <i class="bi bi-check-circle"></i>
-                                                </button>
-                                            </form>
                                         @endif
-                                    @endif
-                                    @if(Auth::user()->typeUser === 0)
+                                        @if(Auth::user()->typeUser === 0 || Auth::user()->can('suspendre/réactiver utilisateurs'))
+                                        @if(auth()->id() !== $user->id)
+                                        @if($user->statut == 'actif')
+                                        <form action="{{ route('users.suspend', $user->id) }}" method="POST" class="me-2">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Suspendre">
+                                                <i class="bi bi-slash-circle"></i>
+                                            </button>
+                                        </form>
+                                        @else
+                                        <form action="{{ route('users.reactivate', $user->id) }}" method="POST" class="me-2">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver">
+                                                <i class="bi bi-check-circle"></i>
+                                            </button>
+                                        </form>
+                                        @endif
+                                        @endif
+                                        @if(Auth::user()->typeUser === 0)
                                         @if($user->typeUser === 1)
                                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-placement="top" title="Réinitialiser"> <!--data-bs-target="#deleteConfirmation{{ $user->id }}" -->
                                             <i class="bi bi-arrow-clockwise"></i>
                                         </button>
                                         @endif
-                                    @endif
-                                    <div class="modal fade" id="deleteConfirmation{{ $user->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $user->id }}" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <i class="bi bi-exclamation-triangle me-1"></i>
-                                                    <h5 class="modal-title" id="deleteConfirmationLabel{{ $user->id }}">Confirmation de Suppression</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Êtes-vous sûr de vouloir supprimer l'utilisateur "{{ $user->name }}" ? Cette action est irréversible.
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
-                                                    </form>
+                                        @endif
+                                        <div class="modal fade" id="deleteConfirmation{{ $user->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $user->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <i class="bi bi-exclamation-triangle me-1"></i>
+                                                        <h5 class="modal-title" id="deleteConfirmationLabel{{ $user->id }}">Confirmation de Suppression</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Êtes-vous sûr de vouloir supprimer l'utilisateur "{{ $user->name }}" ? Cette action est irréversible.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        @endif
                                     </div>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                        </tbody>
-                        <tfoot>
+                                </td>
+                            </tr>
+                            @endforeach
+                            </tbody>
+                            <tfoot>
                             <tr>
                                 <th scope="col">Utilisateur</th>
                                 <th scope="col">Email</th>
@@ -166,8 +167,9 @@ use Carbon\Carbon;
                                 <th scope="col">Statut</th>
                                 <th scope="col">Actions</th>
                             </tr>
-                        </tfoot>
-                    </table>
+                            </tfoot>
+                        </table>
+                    </div>
                     <nav aria-label="...">
                             <ul class="pagination justify-content-end">
                                 <li class="page-item {{ $users->onFirstPage() ? 'disabled' : '' }}">
