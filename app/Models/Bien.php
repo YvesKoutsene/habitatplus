@@ -32,4 +32,5 @@ class Bien extends Model
         return $this->hasMany(ValeurBien::class, 'id_bien');
     }
 
+
 }

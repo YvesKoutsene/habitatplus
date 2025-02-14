@@ -24,7 +24,6 @@ class PermissionsSeeder extends Seeder
         #New
         Permission::create(['name' => 'supprimer utilisateurs', 'parent_id' => $manageUsers->id]);
 
-
         // Permissions de gestion des rôles
         $manageRoles = Permission::create(['name' => 'gérer rôles']);
         Permission::create(['name' => 'voir rôles', 'parent_id' => $manageRoles->id]);

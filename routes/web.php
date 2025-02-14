@@ -50,8 +50,12 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
 
     Route::get('announcement/list', [AnnouncementController::class, 'index'])->name('announcement.list');
     Route::get('announcement/admin/{bien}/details', [AnnouncementController::class, 'details'])->name('announcement.details');
-    Route::put('announcement/admin/{bien}/block', [AnnouncementController::class, 'block'])->name('announcement.block');
-    Route::put('announcement/admin/{bien}/reactivate', [AnnouncementController::class, 'reactivate'])->name('announcement.reactivate');
+
+    Route::get('announcement/admin/reporting', [ReportingController::class, 'index'])->name('report.index');
+    Route::get('announcement/admin/report/{bien}', [ReportingController::class, 'show'])->name('report.show');
+    Route::put('announcement/admin/{bien}/block', [ReportingController::class, 'block'])->name('announcement.block');
+    Route::put('announcement/admin/{bien}/reactivate', [ReportingController::class, 'reactivate'])->name('announcement.reactivate');
+
 
 });
 

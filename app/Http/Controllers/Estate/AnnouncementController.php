@@ -30,7 +30,7 @@ class AnnouncementController extends Controller
                  $query->where('statut', 'publié')
                      ->orWhere('statut', 'bloqué')
                      ->orWhere('statut', 'terminé');
-             })->orderBy('created_at', 'asc');
+             })->orderBy('datePublication', 'desc');
 
         if ($search) {
             $query->where(function($q) use ($search) {
@@ -49,6 +49,8 @@ class AnnouncementController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+
+    //Fonction permettant de renvoyer la page de création d'annonce
     public function create()
     {
         $categories = CategorieBien::where('statut', '=', 'actif')->with('associations.parametre')->get();
@@ -60,6 +62,7 @@ class AnnouncementController extends Controller
      * Store a newly created resource in storage.
      */
 
+    //Fonction permettant d'enregistrer ou publier une annonce de bien
     public function store(Request $request)
     {
         $action = $request->input('action', 'save');
@@ -132,6 +135,7 @@ class AnnouncementController extends Controller
      * Display the specified resource.
      */
 
+    //Fonction permettant d'afficher la liste des annonces d'un abonné
     public function show($id)
     {
         $bien = Bien::with(['user','categorieBien', 'photos', 'valeurs'])->findOrFail($id);
@@ -149,6 +153,8 @@ class AnnouncementController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+
+    //Fonction permettant de renvoyer la page de modification d'une annonce de bien
     public function edit($id)
     {
         $bien = Bien::with(['photos', 'categorieBien', 'valeurs'])->findOrFail($id);
@@ -173,6 +179,7 @@ class AnnouncementController extends Controller
         ]);
     }
 
+    //Fonction permettant de mettre à jour un bien immobilier
     public function update(Request $request, $id)
     {
         $action = $request->input('action', 'save');
@@ -328,7 +335,7 @@ class AnnouncementController extends Controller
      * Remove the specified resource from storage.
      */
 
-    //Fonction de mise fin d'une annonce
+    //Fonction permettant de mettre fin une annonce
     public function terminate($id)
     {
         $annonce = Bien::find($id);
@@ -348,7 +355,7 @@ class AnnouncementController extends Controller
         return redirect()->route('dashboard')->with('success', 'Annonce arrêtée avec succès.');
     }
 
-    // Fonction pour relancer une annonce
+    //Fonction permettant de relancer une annonce
     public function relaunch($id)
     {
         $annonce = Bien::find($id);
@@ -370,6 +377,7 @@ class AnnouncementController extends Controller
         return redirect()->route('dashboard')->with('success', 'Annonce republiée avec succès.');
     }
 
+    //Fonction permettant à un abonné de supprimer une de ses annonces
     public function destroy($id)
     {
         $annonce = Bien::with('photos')->findOrFail($id);
@@ -391,44 +399,7 @@ class AnnouncementController extends Controller
         return redirect()->route('dashboard')->with('success', 'Annonce supprimée avec succès!');
     }
 
-    //Fonction pour bloquer une annonce
-    public function block($id)
-    {
-        $annonce = Bien::find($id);
-        if (!$annonce) {
-            return redirect()->back()->with('error', 'Annonce introuvable.');
-        }
-
-        if ($annonce->statut !== 'publié') {
-            return redirect()->back()->with('error', 'Seules les annonces publiées peuvent être bloquées.');
-        }
-
-        $annonce->statut = 'bloqué';
-        $annonce->save();
-
-        return redirect()->back()->with('success', 'Annonce bloquée avec succès.');
-    }
-
-    //Fonction pour réactiver une annonce bloquée par un admin
-    public function reactivate($id)
-    {
-        $annonce = Bien::find($id);
-        if (!$annonce) {
-            return redirect()->back()->with('error', 'Annonce introuvable.');
-        }
-
-        if ($annonce->statut !== 'bloqué') {
-            return redirect()->back()->with('error', 'Seules les annonces bloquées peuvent être réactivées.');
-        }
-
-        $annonce->statut = 'publié';
-        $annonce->datePublication = Carbon::now();
-        $annonce->save();
-
-        return redirect()->back()->with('success', 'Annonce réactivée avec succès.');
-    }
-
-    //Fonction pour affiche le details d'une annonce pour un admin
+    //Fonction pour affiche le details d'une annonce pour un super ou admin
     public function details($id)
     {
         $bien = Bien::with(['user','categorieBien', 'photos', 'valeurs'])->findOrFail($id);
@@ -442,5 +413,8 @@ class AnnouncementController extends Controller
 
         return view('admin.pages.announcement.show', compact('bien'));
     }
+
+
+
 
 }

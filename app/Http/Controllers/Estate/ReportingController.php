@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Signalement;
 use App\Models\Bien;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class ReportingController extends Controller
@@ -53,14 +54,110 @@ class ReportingController extends Controller
         return redirect()->route('acceuil')->with('success', 'Annonce signalée avec succès.');
     }
 
-    public function index()
+    //Fonction permettant d'afficher la liste des annonces signalées pour un super ou admin
+    public function index(Request $request)
     {
-        //
+        $search = $request->input('search', '');
+        $perPage = $request->input('perPage', 10);
+
+        $query = Signalement::with(['bien', 'user'])
+            ->selectRaw('id_bien, COUNT(*) as total_signals, MAX(created_at) as last_signal_date')
+            ->whereHas('bien', function ($q) {
+                $q->whereIn('statut', ['publié', 'bloqué', 'terminé']);
+            })
+            ->groupBy('id_bien')
+            ->orderByDesc('last_signal_date');
+
+        if ($search) {
+            $query->whereHas('bien', function ($q) use ($search) {
+                $q->where('titre', 'LIKE', '%' . strtolower($search) . '%')
+                    ->orWhere('lieu', 'LIKE', '%' . strtolower($search) . '%')
+                    ->orWhere('type_offre', 'LIKE', '%' . strtolower($search) . '%')
+                    ->orWhere('description', 'LIKE', '%' . strtolower($search) . '%');
+            });
+        }
+
+        $signalements = $query->paginate($perPage);
+
+        return view('admin.pages.reporting.index', compact('signalements', 'search', 'perPage'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+
+    //Fonction permettant d'afficher les signalements d'une annonce
+    public function show(Request $request, $id)
+    {
+        $search = $request->input('search', '');
+        $perPage = $request->input('perPage', 10);
+
+        // Vérifier si l'annonce existe
+        $bien = Bien::findOrFail($id);
+
+        // Construire la requête pour récupérer les signalements de ce bien
+        $query = Signalement::with('user')
+            ->where('id_bien', $id)
+            ->orderByDesc('created_at'); // Trier par date de signalement
+
+        // Filtrage par motif OU par utilisateur
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('motif', 'LIKE', '%' . strtolower($search) . '%')
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'LIKE', '%' . strtolower($search) . '%');
+                    });
+            });
+        }
+
+        // Paginer les résultats
+        $signalements = $query->paginate($perPage);
+
+        return view('admin.pages.reporting.show', compact('bien', 'signalements', 'search', 'perPage'));
+    }
+
+    //Fonction permettant à un super ou admin de bloquer une annonce
+    public function block($id)
+    {
+        $annonce = Bien::find($id);
+        if (!$annonce) {
+            return redirect()->back()->with('error', 'Annonce introuvable.');
+        }
+
+        if ($annonce->statut !== 'publié') {
+            return redirect()->back()->with('error', 'Seules les annonces publiées peuvent être bloquées.');
+        }
+
+        $annonce->statut = 'bloqué';
+        $annonce->save();
+
+        return redirect()->back()->with('success', 'Annonce bloquée avec succès.');
+    }
+
+    //Fonction pour réactiver une annonce bloquée par un super ou admin
+    public function reactivate($id)
+    {
+        $annonce = Bien::find($id);
+        if (!$annonce) {
+            return redirect()->back()->with('error', 'Annonce introuvable.');
+        }
+
+        if ($annonce->statut !== 'bloqué') {
+            return redirect()->back()->with('error', 'Seules les annonces bloquées peuvent être réactivées.');
+        }
+
+        $annonce->statut = 'publié';
+        $annonce->datePublication = Carbon::now();
+        $annonce->save();
+
+        return redirect()->back()->with('success', 'Annonce réactivée avec succès.');
     }
 
     /**
      * Show the form for creating a new resource.
      */
+
+    //Fonction permettant d'afficher les signalements d'une annonce pour un super ou admin
     public function create()
     {
         //
@@ -74,13 +171,6 @@ class ReportingController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.

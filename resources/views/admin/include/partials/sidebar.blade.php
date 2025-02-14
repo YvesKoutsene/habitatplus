@@ -180,12 +180,14 @@
     </li>
     @endif
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-            <i class="bi bi-flag"></i>
-            <span>Rapport</span>
-        </a>
-    </li>
+    @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir annonces'))
+        <li class="nav-item">
+            <a class="nav-link collapsed {{ request()->routeIs('report.index') || request()->routeIs('report.show') ? 'active' : '' }}" href="{{ route('report.index') }}">
+                <i class="bi bi-flag"></i>
+                <span>Rapport</span>
+            </a>
+        </li>
+    @endif
 
     <li class="nav-heading">Annexes</li>
 

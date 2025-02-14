@@ -147,32 +147,11 @@
                                 </span>
                             </td>
                             <td>
-                                <div class="d-flex">
-                                    @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir annonces'))
+                                @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir annonces'))
                                     <a href="{{ route('announcement.details', $bien->id) }}" class="btn btn-sm btn-outline-info me-2" title="Détails">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    @endif
-                                    @if(Auth::user()->typeUser === 0 || Auth::user()->can('suspendre/réactiver annonces'))
-                                        @if($bien->statut == 'publié')
-                                        <form action="{{ route('announcement.block', $bien->id) }}" method="POST" class="me-2">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Bloquer">
-                                                <i class="bi bi-slash-circle"></i>
-                                            </button>
-                                        </form>
-                                        @elseif($bien->statut == 'bloqué')
-                                        <form action="{{ route('announcement.reactivate', $bien->id) }}" method="POST" class="me-2">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver">
-                                                <i class="bi bi-check-circle"></i>
-                                            </button>
-                                        </form>
-                                        @endif
-                                    @endif
-                                </div>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
