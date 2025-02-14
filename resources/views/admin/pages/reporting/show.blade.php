@@ -47,10 +47,10 @@
                     <table class="table table-hover table-striped">
                         <thead>
                         <tr>
-                            <th>Abonné</th>
-                            <th>Motif</th>
-                            <th>A signalé le</th>
-                            <th>Statut abonné</th>
+                            <th>Signaleur</th>
+                            <th>Motif signalement</th>
+                            <th>Signalé le</th>
+                            <th>Statut signaleur</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -71,7 +71,7 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="descriptionModalLabel{{ $signal->id }}">Motif complet</h5>
+                                                <h5 class="modal-title" id="descriptionModalLabel{{ $signal->id }}">Motif complet du signaleur "{{$signal->user->name}}"</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
@@ -96,11 +96,11 @@
                             <td>
                                 <div class="d-flex">
                                     @if(Auth::user()->typeUser === 0 || Auth::user()->can('suspendre/réactiver utilisateurs'))
-                                        @if($signal->user == 'actif')
+                                        @if($signal->user->statut == 'actif')
                                             <form action="{{ route('users.suspend', $signal->user->id) }}" method="POST" class="me-2">
                                                 @csrf
                                                 @method('PATCH')
-                                                <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Suspendre">
+                                                <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Suspendre cet abonné">
                                                     <i class="bi bi-slash-circle"></i>
                                                 </button>
                                             </form>
@@ -108,7 +108,7 @@
                                             <form action="{{ route('users.reactivate', $signal->user->id) }}" method="POST" class="me-2">
                                                 @csrf
                                                 @method('PATCH')
-                                                <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver">
+                                                <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver cet abonné">
                                                     <i class="bi bi-check-circle"></i>
                                                 </button>
                                             </form>
@@ -121,10 +121,10 @@
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th>Abonné</th>
-                            <th>Motif</th>
-                            <th>A signalé le</th>
-                            <th>Statut abonné</th>
+                            <th>Signaleur</th>
+                            <th>Motif signalement</th>
+                            <th>Signalé le</th>
+                            <th>Statut signaleur</th>
                             <th>Actions</th>
                         </tr>
                         </tfoot>

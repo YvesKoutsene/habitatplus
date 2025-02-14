@@ -150,6 +150,12 @@
         margin-top: 80px;
     }
 
+    @media (max-width: 768px) {
+        .habitat{
+            margin-top: 50px;
+        }
+    }
+
 </style>
 </body>
 </html>

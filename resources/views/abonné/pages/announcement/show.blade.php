@@ -71,7 +71,7 @@
                 <img src="{{ asset($bien->user->photo_profil) }}" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;" alt="Photo de profil">
                 <div>
                     <h6 class="mb-0">{{ $bien->user->name }}</h6>
-                    <p class="text-black-50 mb-0 small">A publié il y a
+                    <p class="text-black-50 mb-0 small">Publié il y a
                         @if ($diffInYears > 0)
                         {{ $diffInYears }} an{{ $diffInYears > 1 ? 's' : '' }}
                         @elseif ($diffInMonths > 0)

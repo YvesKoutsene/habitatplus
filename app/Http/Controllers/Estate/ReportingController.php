@@ -92,15 +92,12 @@ class ReportingController extends Controller
         $search = $request->input('search', '');
         $perPage = $request->input('perPage', 10);
 
-        // Vérifier si l'annonce existe
         $bien = Bien::findOrFail($id);
 
-        // Construire la requête pour récupérer les signalements de ce bien
         $query = Signalement::with('user')
             ->where('id_bien', $id)
-            ->orderByDesc('created_at'); // Trier par date de signalement
+            ->orderByDesc('created_at');
 
-        // Filtrage par motif OU par utilisateur
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('motif', 'LIKE', '%' . strtolower($search) . '%')
@@ -110,9 +107,7 @@ class ReportingController extends Controller
             });
         }
 
-        // Paginer les résultats
         $signalements = $query->paginate($perPage);
-
         return view('admin.pages.reporting.show', compact('bien', 'signalements', 'search', 'perPage'));
     }
 

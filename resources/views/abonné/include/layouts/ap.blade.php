@@ -30,7 +30,7 @@
 
 <div class="container my-4 flex-grow-1">
     <main class="col-md-8 mx-auto">
-        <div class="content">
+        <div class="content habitat">
             @include('admin.include.partials.message')
             @yield('content')
         </div>
@@ -44,8 +44,14 @@
 
 <style>
 
-    .content {
+    .habitat{
         margin-top: 80px;
+    }
+
+    @media (max-width: 768px) {
+        .habitat{
+            margin-top: 50px;
+        }
     }
 
 </style>

@@ -47,11 +47,11 @@
                     <table class="table table-hover table-striped">
                         <thead>
                         <tr>
-                            <th>Abonné</th>
-                            <th>Titre</th>
+                            <th>Propriétaire</th>
+                            <th>Titre annonce</th>
                             <th>Prix (FCFA)</th>
                             <th>Caractéristiques</th>
-                            <th>Total Signal</th>
+                            <th>Total signal</th>
                             <th>Statut</th>
                             <th>Actions</th>
                         </tr>
@@ -149,7 +149,7 @@
                             <td>
                                 <div class="d-flex">
                                     @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir annonces'))
-                                    <a href="{{ route('announcement.details', $signal->bien->id) }}" class="btn btn-sm btn-outline-info me-2" title="Détails">
+                                    <a href="{{ route('announcement.details', $signal->bien->id) }}" class="btn btn-sm btn-outline-info me-2" title="Détails de l'annonce">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                     @endif
@@ -163,7 +163,7 @@
                                         <form action="{{ route('announcement.block', $signal->bien->id) }}" method="POST" class="me-2">
                                             @csrf
                                             @method('PUT')
-                                            <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Bloquer">
+                                            <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Bloquer cette annonce">
                                                 <i class="bi bi-slash-circle"></i>
                                             </button>
                                         </form>
@@ -171,7 +171,7 @@
                                         <form action="{{ route('announcement.reactivate', $signal->bien->id) }}" method="POST" class="me-2">
                                             @csrf
                                             @method('PUT')
-                                            <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver">
+                                            <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver cette annonce">
                                                 <i class="bi bi-check-circle"></i>
                                             </button>
                                         </form>
@@ -184,11 +184,11 @@
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th>Abonné</th>
-                            <th>Titre</th>
+                            <th>Propriétaire</th>
+                            <th>Titre annonce</th>
                             <th>Prix (FCFA)</th>
                             <th>Caractéristiques</th>
-                            <th>Total Signal</th>
+                            <th>Total signal</th>
                             <th>Statut</th>
                             <th>Actions</th>
                         </tr>

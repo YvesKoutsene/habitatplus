@@ -47,8 +47,8 @@
                     <table class="table table-hover table-striped">
                         <thead>
                         <tr>
-                            <th>Abonné</th>
-                            <th>Titre</th>
+                            <th>Propriétaire</th>
+                            <th>Titre annonce</th>
                             <th>Prix (FCFA)</th>
                             <th>Caractéristiques</th>
                             <th>Publié le</th>
@@ -147,19 +147,40 @@
                                 </span>
                             </td>
                             <td>
-                                @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir annonces'))
-                                    <a href="{{ route('announcement.details', $bien->id) }}" class="btn btn-sm btn-outline-info me-2" title="Détails">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                @endif
+                                <div class="d-flex">
+                                    @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir annonces'))
+                                        <a href="{{ route('announcement.details', $bien->id) }}" class="btn btn-sm btn-outline-info me-2" title="Détails de l'annonce">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        @endif
+                                        @if(Auth::user()->typeUser === 0 || Auth::user()->can('suspendre/réactiver annonces'))
+                                        @if($bien->statut == 'publié')
+                                        <form action="{{ route('announcement.block', $bien->id) }}" method="POST" class="me-2">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Bloquer cette annonce">
+                                                <i class="bi bi-slash-circle"></i>
+                                            </button>
+                                        </form>
+                                        @elseif($bien->statut == 'bloqué')
+                                        <form action="{{ route('announcement.reactivate', $bien->id) }}" method="POST" class="me-2">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver cette annonce">
+                                                <i class="bi bi-check-circle"></i>
+                                            </button>
+                                        </form>
+                                        @endif
+                                    @endif
+                                </div
                             </td>
                         </tr>
                         @endforeach
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th>Abonné</th>
-                            <th>Titre</th>
+                            <th>Propriétaire</th>
+                            <th>Titre annonce</th>
                             <th>Prix (FCFA)</th>
                             <th>Caractéristiques</th>
                             <th>Publié le</th>

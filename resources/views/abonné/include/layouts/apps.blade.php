@@ -21,7 +21,7 @@
     <div class="row habitat">
         <aside class="col-12 col-md-3 d-none d-md-block">
             <div class="pagetitle text-center mb-2">
-                <p class="text-muted text-start">Mon Compte</p>
+                <p class="text-muted text-start">Mon compte</p>
             </div>
             @include('abonné.include.partials.sidebars')
         </aside>
@@ -29,7 +29,7 @@
         <aside class="col-12 col-md-3 d-md-none">
             <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle px-2 py-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span>Mon Compte</span>
+                    <span>Mon compte</span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     @include('abonné.include.partials.sidebars')
@@ -56,6 +56,12 @@
 
     .habitat{
         margin-top: 80px;
+    }
+
+    @media (max-width: 768px) {
+        .habitat{
+            margin-top: 50px;
+        }
     }
 
 </style>

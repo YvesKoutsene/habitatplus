@@ -1,4 +1,4 @@
-<div class="container-fluid px-3 mt4">
+<div class="mt-3">
     @if($biens->isEmpty())
     <div class="alert alert-info text-center text-black">
         Vous n'avez pas encore créé ou publié d'annonces.
@@ -9,12 +9,12 @@
         <div class="row">
             <div class="col-auto">
                 <li class="nav-item flex-fill py-2 me-2" role="presentation">
-                    <a class="nav-link active" id="brouillon-tab" data-bs-toggle="tab" href="#brouillon" role="tab" aria-controls="brouillon" aria-selected="true">Brouillons</a>
+                    <a class="nav-link active" id="publie-tab" data-bs-toggle="tab" href="#publie" role="tab" aria-controls="publie" aria-selected="false">Publications</a>
                 </li>
             </div>
             <div class="col-auto">
                 <li class="nav-item flex-fill py-2 me-2" role="presentation">
-                    <a class="nav-link" id="publie-tab" data-bs-toggle="tab" href="#publie" role="tab" aria-controls="publie" aria-selected="false">Publications</a>
+                    <a class="nav-link" id="brouillon-tab" data-bs-toggle="tab" href="#brouillon" role="tab" aria-controls="brouillon" aria-selected="true">Brouillons</a>
                 </li>
             </div>
             <div class="col-auto">
@@ -26,79 +26,7 @@
     </ul>
 
     <div class="tab-content">
-        <div class="tab-pane fade show active" id="brouillon" role="tabpanel" aria-labelledby="brouillon-tab">
-            <div class="row">
-                @foreach($biens as $bien)
-                @if($bien->statut == 'brouillon')
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
-                        <div class="position-relative">
-                            @if($bien->photos && count($bien->photos) > 0)
-                            <img src="{{ asset($bien->photos[0]->url_photo) }}"
-                                 class="card-img-top"
-                                 alt="Image de l'annonce">
-                            @else
-                            <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}"
-                                 class="card-img-top"
-                                 alt="Image par défaut">
-                            @endif
-                            <span class="badge bg-primary position-absolute top-0 start-0 m-2 p-2">
-                                {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
-                            </span>
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title fw-bold text-black-50 text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
-                            <p class="card-text text-muted mb-3">
-                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : 'N/A', 20, '...') }}<br>
-                                <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '0', 10, '...') }} FCFA </strong>
-                            </p>
-                            <div class="row justify-content-center">
-                                <div class="col-auto">
-                                    <a href="{{ route('announcement.show', $bien->id) }}" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                </div>
-                                <div class="col-auto">
-                                    <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                </div>
-                                <div class="col-auto">
-                                    <button type="button" class="btn btn-danger btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal fade" id="deleteConfirmation{{ $bien->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $bien->id }}" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header yes">
-                                <i class="bi bi-exclamation-triangle me-1"></i>
-                                <h5 class="modal-title" id="deleteConfirmationLabel{{ $bien->id }}">Confirmation de Suppression</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-black">
-                                Êtes-vous sûr de vouloir supprimer cette annonce ? Cette action est irréversible.
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                <form action="{{ route('announcement.destroy', $bien->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endif
-                @endforeach
-            </div>
-        </div>
-        <div class="tab-pane fade" id="publie" role="tabpanel" aria-labelledby="publie-tab">
+        <div class="tab-pane fade show active" id="publie" role="tabpanel" aria-labelledby="publie-tab">
             <div class="row">
                 @foreach($biens as $bien)
                 @if($bien->statut == 'publié' || $bien->statut == 'bloqué')
@@ -167,6 +95,78 @@
                                     @csrf
                                     @method('PUT')
                                     <button type="submit" class="btn btn-danger"><i class="bi bi-check"></i> Arrêté</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+                @endforeach
+            </div>
+        </div>
+        <div class="tab-pane fade" id="brouillon" role="tabpanel" aria-labelledby="brouillon-tab">
+            <div class="row">
+                @foreach($biens as $bien)
+                @if($bien->statut == 'brouillon')
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
+                        <div class="position-relative">
+                            @if($bien->photos && count($bien->photos) > 0)
+                            <img src="{{ asset($bien->photos[0]->url_photo) }}"
+                                 class="card-img-top"
+                                 alt="Image de l'annonce">
+                            @else
+                            <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}"
+                                 class="card-img-top"
+                                 alt="Image par défaut">
+                            @endif
+                            <span class="badge bg-primary position-absolute top-0 start-0 m-2 p-2">
+                                {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
+                            </span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold text-black-50 text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
+                            <p class="card-text text-muted mb-3">
+                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu !== null ? $bien->lieu : 'N/A', 20, '...') }}<br>
+                                <strong>{{ Str::limit($bien->prix !== null ? number_format($bien->prix, 0, ',', ' ') : '0', 10, '...') }} FCFA </strong>
+                            </p>
+                            <div class="row justify-content-center">
+                                <div class="col-auto">
+                                    <a href="{{ route('announcement.show', $bien->id) }}" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-danger btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="deleteConfirmation{{ $bien->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $bien->id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header yes">
+                                <i class="bi bi-exclamation-triangle me-1"></i>
+                                <h5 class="modal-title" id="deleteConfirmationLabel{{ $bien->id }}">Confirmation de Suppression</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-black">
+                                Êtes-vous sûr de vouloir supprimer cette annonce ? Cette action est irréversible.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                                <form action="{{ route('announcement.destroy', $bien->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button>
                                 </form>
                             </div>
                         </div>
