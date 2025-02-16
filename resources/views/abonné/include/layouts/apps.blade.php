@@ -28,7 +28,7 @@
 
         <aside class="col-12 col-md-3 d-md-none">
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle px-2 py-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-primary dropdown-toggle px-2 py-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <span>Mon compte</span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">

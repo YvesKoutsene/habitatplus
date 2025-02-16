@@ -14,9 +14,16 @@
                 </button>
             </form>
         </div>
-        <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
-            <i class="bi bi-list text-black" style="font-size: 1.5rem;"></i>
+
+        <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="offcanvas"
+                @auth
+                data-bs-target="#mobileMenu" aria-controls="mobileMenu"
+                @else
+                href="javascript:void(0);" onclick="showAuthModal()">
+                @endauth>
+            <i class="bi bi-person-circle text-black-50" style="font-size: 1.5rem;"></i>
         </button>
+
         <nav class="d-none d-md-block">
             <ul class="nav">
                 <li class="nav-item dropdown me-2">
@@ -57,15 +64,15 @@
                 </li>
             </ul>
         </nav>
+
         <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
-            <div class="offcanvas-header text-white">
+            <div class="offcanvas-header bg-gradient">
                 <div class="logo d-flex align-items-center" id="mobileMenuLabel">
                     <a href="{{ route('acceuil') }}" class="d-flex align-items-center text-white text-decoration-none">
                         <img src="/assets/img/logo.png" alt="Logo" class="me-2 logo-img">
                         <span class="fw-bold text-black">Habitat+</span>
                     </a>
                 </div>
-                <button type="button" class="btn-close btn-close-black" data-bs-dismiss="offcanvas" aria-label="Close" title="Fermé"></button>
             </div>
             <div class="offcanvas-body d-flex flex-column justify-content-between">
                 <ul class="nav flex-column text-center">
@@ -119,6 +126,7 @@
             </div>
             @endauth
         </div>
+
     </div>
 </header>
 
@@ -187,7 +195,7 @@
     }
 
     .offcanvas {
-        width: 80%;
+        width: 50%;
         max-width: 320px;
     }
 

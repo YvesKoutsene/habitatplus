@@ -1,5 +1,5 @@
 <aside class="bg-white shadow p-4 rounded sidebar" style="max-width: 250px;" id="sidebar">
-    <h5 class="text-primary text-center fw-bold mb-4">Affiner la Recherche</h5>
+    <h5 class="text-primary text-center fw-bold mb-4">Filtrer et trier</h5> <!-- Affiner la Recherche -->
     <form action="" method="GET">
         <div class="mb-4">
             <label for="type" class="form-label text-secondary fw-semibold">Type d'annonce</label>
@@ -22,7 +22,7 @@
             <input type="text" name="lieu" id="lieu" class="form-control form-control-sm border-primary" placeholder="Taper un lieu de référence">
         </div>
         <div class="mb-4">
-            <label for="prix_min" class="form-label text-secondary fw-semibold">Prix (FCFA)</label>
+            <label for="prix_min" class="form-label text-secondary fw-semibold">Prix (CFA)</label>
             <div class="row">
                 <div class="col-6">
                     <input type="number" name="prix_min" id="prix_min" class="form-control form-control-sm border-primary" placeholder="Min">

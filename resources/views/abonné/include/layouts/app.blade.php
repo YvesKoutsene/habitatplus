@@ -28,15 +28,14 @@
 
         <aside class="col-12 col-md-3 mb-3 d-md-none">
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle px-2 py-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span>Filtre</span>
+                <button class="btn btn-outline-primary dropdown-toggle px-2 py-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span><i class="bi bi-funnel"></i>Filtrer et trier </span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     @include('abonné.include.partials.sidebar')
                 </ul>
             </div>
         </aside>
-
         <main class="col-12 col-md-9">
             <div class="content">
                 @include('admin.include.partials.message')
@@ -120,6 +119,11 @@
         color: #b0b0b0;
         border: 1px solid #ddd;
         pointer-events: none;
+    }
+
+    /* Supprime la flèche du dropdown */
+    .dropdown-toggle::after {
+        display: none !important;
     }
 
     .bi {

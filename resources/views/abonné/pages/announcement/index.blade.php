@@ -9,17 +9,17 @@
         <div class="row">
             <div class="col-auto">
                 <li class="nav-item flex-fill py-2 me-2" role="presentation">
-                    <a class="nav-link active" id="publie-tab" data-bs-toggle="tab" href="#publie" role="tab" aria-controls="publie" aria-selected="false">Publications</a>
+                    <a class="nav-link active" id="publie-tab" data-bs-toggle="tab" href="#publie" role="tab" aria-controls="publie" aria-selected="false">Publiées</a>
                 </li>
             </div>
             <div class="col-auto">
                 <li class="nav-item flex-fill py-2 me-2" role="presentation">
-                    <a class="nav-link" id="brouillon-tab" data-bs-toggle="tab" href="#brouillon" role="tab" aria-controls="brouillon" aria-selected="true">Brouillons</a>
+                    <a class="nav-link" id="brouillon-tab" data-bs-toggle="tab" href="#brouillon" role="tab" aria-controls="brouillon" aria-selected="true">Enrégistrées</a>
                 </li>
             </div>
             <div class="col-auto">
                 <li class="nav-item flex-fill py-2 me-2" role="presentation">
-                    <a class="nav-link" id="annule-tab" data-bs-toggle="tab" href="#annule" role="tab" aria-controls="annule" aria-selected="false">Annulations</a>
+                    <a class="nav-link" id="annule-tab" data-bs-toggle="tab" href="#annule" role="tab" aria-controls="annule" aria-selected="false">Annulées</a>
                 </li>
             </div>
         </div>

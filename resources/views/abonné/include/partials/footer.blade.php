@@ -6,24 +6,36 @@
             </div>
 
             <div class="col-md-3">
-                <h5>À Propos</h5>
+                <h5>À propos</h5>
                 <p>
                     Votre plateforme de confiance, dédiée à vous accompagner dans la recherche de biens immobiliers parfaitement adaptés à vos besoins et à vos aspirations.
                 </p>
             </div>
 
             <div class="col-md-3">
-                <h5>Nous Contacter</h5>
+                <h5>Nous contacter</h5>
                 <ul class="list-unstyled">
                     <li>Email : <a href="mailto:info@dis.tg">contact@dis.tg</a></li>
                     <li>Téléphone : <a href="tel:+22891456282">+228 93816766</a></li>
-                    <li>Adresse : Nukafu, Bld Jean Paul II en face de SOMAYAF Jean Paul II Lomé, TOGO</li>
+                    <li>Adresse : Nukafu, Bld Jean Paul II en face de SOMAYAF Jean Paul II Lomé, Togo</li>
                 </ul>
             </div>
 
             <div class="col-md-3">
-                <h5>Nous Suivre</h5>
+                <h5>Assistance</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        Si vous rencontrez des problèmes, n'hésitez pas à <a href="" class="text-warning">signaler un problème</a>.
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-3">
+                <h5>Nous suivre</h5>
                 <ul class="list-inline footer-links">
+                    <li class="list-inline-item">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </li>
                     <li class="list-inline-item">
                         <a href="#"><i class="fab fa-facebook"></i></a>
                     </li>
@@ -32,12 +44,9 @@
                     </li>
                     <!--
                     <li class="list-inline-item">
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </li>
-                    -->
-                    <li class="list-inline-item">
                         <a href="#"><i class="fab fa-linkedin"></i></a>
                     </li>
+                    -->
                 </ul>
             </div>
         </div>
@@ -53,13 +62,11 @@
                     <li class="list-inline-item">
                         <a href="#">Politique de confidentialité</a>
                     </li>
-
-                    <!--
+<!--
                     <li class="list-inline-item">
                         <a href="#">Conditions d'utilisation</a>
                     </li>
-                    -->
-
+-->
                 </ul>
             </div>
         </div>
