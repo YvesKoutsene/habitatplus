@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Annonce Bloquée</title>
+    <title>Annonce Réactivée</title>
     <style>
         body {
             font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -118,8 +118,7 @@
 
     <div class="email-body">
         <h2>Bonjour {{ $annonce->user->name }} !</h2>
-        <p>Nous vous informons que votre annonce <strong>{{ $annonce->titre }}</strong> a été bloquée pour la raison suivante :</p>
-        <blockquote>{{ $annonce->motifBlocage }}</blockquote>
+        <p>Nous vous informons que votre annonce <strong>{{ $annonce->titre }}</strong> vient d'être réactivée et disponible à nouveau sur la plateforme.</p>
         <p>Si vous avez des questions, veuillez nous contacter.</p>
         <p>Merci pour votre confiance,<br>L'équipe <strong>Habitat+</strong>.</p>
     </div>

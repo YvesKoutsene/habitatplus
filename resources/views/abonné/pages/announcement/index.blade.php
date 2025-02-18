@@ -1,7 +1,9 @@
 <div class="mt-3">
     @if($biens->isEmpty())
-    <div class="alert alert-info text-center text-black">
-        Vous n'avez pas encore créé ou publié d'annonces.
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 mb-4">
+        <div class="alert alert-info text-center text-black">
+            Vous n'avez pas encore créé ou publié d'annonces.
+        </div>
     </div>
     @else
 
@@ -58,18 +60,18 @@
                             </p>
                             <div class="row justify-content-center">
                                 <div class="col-auto">
-                                    <a href="{{ route('announcement.show', $bien->id) }}" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
+                                    <a href="{{ route('announcement.show', $bien->id) }}" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails de cette annonce">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </div>
                                 @if($bien->statut != 'bloqué')
                                 <div class="col-auto">
-                                    <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
+                                    <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier cette annonce">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                 </div>
                                 <div class="col-auto">
-                                    <button type="button" class="btn btn-warning btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#terminateConfirmation{{ $bien->id }}" title="Arrêté">
+                                    <button type="button" class="btn btn-warning btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#terminateConfirmation{{ $bien->id }}" title="Annuler cette annonce">
                                         <i class="bi bi-x-circle"></i>
                                     </button>
                                 </div>
@@ -83,7 +85,7 @@
                         <div class="modal-content">
                             <div class="modal-header yes">
                                 <i class="bi bi-exclamation-triangle me-1"></i>
-                                <h5 class="modal-title" id="terminateConfirmationLabel{{ $bien->id }}">Confirmation d'arrêt</h5>
+                                <h5 class="modal-title" id="terminateConfirmationLabel{{ $bien->id }}">Confirmation d'annulation</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-black">
@@ -94,16 +96,23 @@
                                 <form action="{{ route('announcement.terminate', $bien->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="btn btn-danger"><i class="bi bi-check"></i> Arrêté</button>
+                                    <button type="submit" class="btn btn-danger"><i class="bi bi-check"></i> Valider</button>
                                 </form>
                             </div>
                         </div>
+                    </div>
+                </div>
+                @elseif(!($bien->statut == 'publié' || $bien->statut == 'bloqué'))
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 mb-4">
+                    <div class="alert alert-info text-center text-black">
+                        Vous n'avez pas encore publié d'annonces.
                     </div>
                 </div>
                 @endif
                 @endforeach
             </div>
         </div>
+
         <div class="tab-pane fade" id="brouillon" role="tabpanel" aria-labelledby="brouillon-tab">
             <div class="row">
                 @foreach($biens as $bien)
@@ -132,17 +141,17 @@
                             </p>
                             <div class="row justify-content-center">
                                 <div class="col-auto">
-                                    <a href="{{ route('announcement.show', $bien->id) }}" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
+                                    <a href="{{ route('announcement.show', $bien->id) }}" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails de cette annonce">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
+                                    <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier cette annonce">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                 </div>
                                 <div class="col-auto">
-                                    <button type="button" class="btn btn-danger btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer">
+                                    <button type="button" class="btn btn-danger btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer cette annonce">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
@@ -172,10 +181,17 @@
                         </div>
                     </div>
                 </div>
+                @elseif(!($bien->statut == 'brouillon'))
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 mb-4">
+                    <div class="alert alert-info text-center text-black">
+                        Vous n'avez aucune annonce enrégistré.
+                    </div>
+                </div>
                 @endif
                 @endforeach
             </div>
         </div>
+
         <div class="tab-pane fade" id="annule" role="tabpanel" aria-labelledby="annule-tab">
             <div class="row">
                 @foreach($biens as $bien)
@@ -204,22 +220,24 @@
                             </p>
                             <div class="row justify-content-center">
                                 <div class="col-auto mb-3">
-                                    <a href="{{ route('announcement.show', $bien->id) }}" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails">
+                                    <a href="{{ route('announcement.show', $bien->id) }}" class="btn btn-outline-info mt-auto btn-block shadow-sm" title="Détails cette  annonce">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </div>
                                 <div class="col-auto mb-3">
-                                    <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier">
+                                    <a href="{{ route('announcement.edit', $bien->id) }}" class="btn btn-primary btn-block shadow-sm" title="Modifier cette annonce">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                 </div>
+                                <!--
                                 <div class="col-auto mb-3">
-                                    <button type="button" class="btn btn-secondary btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#relaunchConfirmation{{ $bien->id }}" title="Republier">
+                                    <button type="button" class="btn btn-secondary btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#relaunchConfirmation{{ $bien->id }}" title="Republier cette annonce">
                                         <i class="bi bi-check"></i>
                                     </button>
                                 </div>
+                                -->
                                 <div class="col-auto mb-3">
-                                    <button type="button" class="btn btn-danger btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer">
+                                    <button type="button" class="btn btn-danger btn-block shadow-sm delete-button" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $bien->id }}" title="Supprimer cette annonce">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
@@ -265,10 +283,16 @@
                                 <form action="{{ route('announcement.relaunch', $bien->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="btn btn-secondary"><i class="bi bi-check"></i> Republié</button>
+                                    <button type="submit" class="btn btn-secondary"><i class="bi bi-check"></i> Republier</button>
                                 </form>
                             </div>
                         </div>
+                    </div>
+                </div>
+                @elseif(!($bien->statut == 'terminé'))
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 mb-4">
+                    <div class="alert alert-info text-center text-black">
+                        Vous n'avez aucune annonce annulé.
                     </div>
                 </div>
                 @endif

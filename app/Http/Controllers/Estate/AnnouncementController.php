@@ -97,7 +97,6 @@ class AnnouncementController extends Controller
             'statut' => $action === 'publish' ? 'publié' : 'brouillon',
             'type_offre' => $request->input('type_offre', ''),
             'datePublication' => $action === 'publish' ? Carbon::now() : null,
-            //'datePublication' => Carbon::now(),
             'id_user' => auth()->id(),
             'id_categorie_bien' => $validated['category'],
         ]);
@@ -127,7 +126,7 @@ class AnnouncementController extends Controller
             }
         }
 
-        $message = $action === 'publish' ? 'Annonce publiée avec succès!' : 'Annonce enregistrée comme brouillon!';
+        $message = $action === 'publish' ? 'Annonce publiée avec succès!' : 'Annonce enregistrée avec succès!';
         return redirect()->route('dashboard')->with('success', $message);
     }
 
@@ -223,14 +222,13 @@ class AnnouncementController extends Controller
             'statut' => ($action === 'publish' && in_array($bien->statut, ['brouillon', 'terminé'])) ? 'publié' : $bien->statut,
             'type_offre' => $request->input('type_offre', $bien->type_offre),
             'id_categorie_bien' => $validated['category'],
-
             'datePublication' => ($action === 'publish' && in_array($bien->statut, ['brouillon', 'terminé'])) ? Carbon::now() : $bien->datePublication,
-            //'datePublication' => Carbon::now(),
         ]);
 
         $this->updatePhotos($bien, $request);
         $this->updateParameters($bien, $validated, $isCategoryChanged);
-        return redirect()->route('dashboard')->with('success', 'Annonce mise à jour avec succès!');
+        $message = $action === 'publish' ? 'Annonce publiée avec succès!' : 'Annonce mise à jour avec succès!';
+        return redirect()->route('dashboard')->with('success', $message);
     }
 
     /**
@@ -338,7 +336,7 @@ class AnnouncementController extends Controller
      * Remove the specified resource from storage.
      */
 
-    //Fonction permettant de mettre fin une annonce
+    //Fonction permettant de mettre fin une annonce (annuler une annonce)
     public function terminate($id)
     {
         $annonce = Bien::find($id);
@@ -346,16 +344,16 @@ class AnnouncementController extends Controller
             return redirect()->back()->with('error', 'Annonce introuvable.');
         }
         if ($annonce->id_user !== auth()->id()) {
-            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à mettre fin cette annonce.');
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à annuler cette annonce.');
         }
         if ($annonce->statut !== 'publié') {
-            return redirect()->back()->with('error', 'Seules les annonces publiées peuvent être arrêtées.');
+            return redirect()->back()->with('error', 'Seules les annonces publiées peuvent être annulées.');
         }
 
         $annonce->statut = 'terminé';
         $annonce->save();
 
-        return redirect()->route('dashboard')->with('success', 'Annonce arrêtée avec succès.');
+        return redirect()->route('dashboard')->with('success', 'Annonce annulée avec succès.');
     }
 
     //Fonction permettant de relancer une annonce
@@ -366,11 +364,11 @@ class AnnouncementController extends Controller
             return redirect()->back()->with('error', 'Annonce introuvable.');
         }
         if ($annonce->id_user !== auth()->id()) {
-            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à mettre fin cette annonce.');
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à republier cette annonce.');
         }
 
         if ($annonce->statut !== 'terminé') {
-            return redirect()->back()->with('error', 'Seules les annonces arrêtées peuvent être republées.');
+            return redirect()->back()->with('error', 'Seules les annonces annulées peuvent être republiées.');
         }
 
         $annonce->statut = 'publié';

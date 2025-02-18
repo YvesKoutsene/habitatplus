@@ -181,8 +181,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Fin du modal -->
                             @endforeach
                             </tbody>
                             <tfoot>
@@ -213,7 +211,6 @@
                                 </li>
                             </ul>
                         </nav>
-
                     @endif
                 </div>
             </div>

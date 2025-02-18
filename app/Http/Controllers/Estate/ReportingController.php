@@ -9,9 +9,9 @@ use App\Models\Signalement;
 use App\Models\Bien;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AnnonceBloqueeMail;
+use App\Mail\AnnonceReactiveeMail;
 
 class ReportingController extends Controller
 {
@@ -115,23 +115,6 @@ class ReportingController extends Controller
     }
 
     //Fonction permettant à un super ou admin de bloquer une annonce
-    /*public function block($id)
-    {
-        $annonce = Bien::find($id);
-        if (!$annonce) {
-            return redirect()->back()->with('error', 'Annonce introuvable.');
-        }
-
-        if ($annonce->statut !== 'publié') {
-            return redirect()->back()->with('error', 'Seules les annonces publiées peuvent être bloquées.');
-        }
-
-        $annonce->statut = 'bloqué';
-        $annonce->save();
-
-        return redirect()->back()->with('success', 'Annonce bloquée avec succès.');
-    }*/
-
     public function block(Request $request, $id)
     {
         $request->validate([
@@ -156,7 +139,7 @@ class ReportingController extends Controller
 
         Mail::to($annonce->user->email)->send(new AnnonceBloqueeMail($annonce));
 
-        return redirect()->back()->with('success', "Annonce bloquée avec succès et notifiée à l'abonné {$annonce->user->name}");
+        return redirect()->back()->with('success', "Annonce bloquée avec succès et notifiée au propriétaire : {$annonce->user->name}");
     }
 
     //Fonction pour réactiver une annonce bloquée par un super ou admin
@@ -172,10 +155,13 @@ class ReportingController extends Controller
         }
 
         $annonce->statut = 'publié';
+        $annonce->motifBlocage = null;
         $annonce->datePublication = Carbon::now();
         $annonce->save();
 
-        return redirect()->back()->with('success', 'Annonce réactivée avec succès.');
+        Mail::to($annonce->user->email)->send(new AnnonceReactiveeMail($annonce));
+
+        return redirect()->back()->with('success', "Annonce réactivée avec succès et notifiée au propriétaire : {$annonce->user->name}");
     }
 
     /**

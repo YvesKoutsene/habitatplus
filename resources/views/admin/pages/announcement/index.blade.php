@@ -154,23 +154,85 @@
                                         </a>
                                         @endif
                                         @if(Auth::user()->typeUser === 0 || Auth::user()->can('suspendre/réactiver annonces'))
-                                        @if($bien->statut == 'publié')
-                                        <form action="{{ route('announcement.block', $bien->id) }}" method="POST" class="me-2">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Bloquer cette annonce">
+                                            @if($bien->statut == 'publié')
+                                            <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#blockModal{{ $bien->id }}" title="Bloquer cette annonce">
                                                 <i class="bi bi-slash-circle"></i>
                                             </button>
-                                        </form>
-                                        @elseif($bien->statut == 'bloqué')
-                                        <form action="{{ route('announcement.reactivate', $bien->id) }}" method="POST" class="me-2">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver cette annonce">
-                                                <i class="bi bi-check-circle"></i>
+                                            <!-- Modal pour le motif de blocage -->
+                                            <div class="modal fade" id="blockModal{{ $bien->id }}" tabindex="-1" aria-labelledby="blockModalLabel{{ $bien->id }}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="blockModalLabel{{ $bien->id }}">Blocage de l'annonce "{{ $bien->titre }}"</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                                        </div>
+                                                        <form id="blockForm{{ $bien->id }}" action="{{ route('announcement.block', $bien->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="modal-body">
+                                                                <div class="mb-3">
+                                                                    <label for="motif{{ $bien->id }}" class="form-label">Motif<span class="text-danger" title="Obligatoire">*</span></label>
+                                                                    <textarea name="motif" class="form-control" id="motif{{ $bien->id }}" rows="3" maxlength="200" placeholder="Donnez la raison de suspension de cette annonce." required></textarea>
+                                                                    <div class="invalid-feedback">
+                                                                        Veuillez fournir une description valide.
+                                                                    </div>
+                                                                    <small class="text-muted">Ne pas dépasser 200 caractères maximum.</small>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                                                                <button type="button" class="btn btn-danger" onclick="showConfirmModal({{ $bien->id }})"><i class="bi bi-check-circle"></i> Bloquer</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal de confirmation de blocage -->
+                                            <div class="modal fade" id="confirmBlockModal{{ $bien->id }}" tabindex="-1" aria-labelledby="confirmBlockModalLabel{{ $bien->id }}" aria-hidden="true">
+                                                <div class="modal-dialog  modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <i class="bi bi-exclamation-triangle me-1"></i>
+                                                            <h5 class="modal-title" id="confirmBlockModalLabel{{ $bien->id }}">Confirmation du blocage</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Êtes-vous sûr de vouloir bloquer l'annonce "{{ $bien->titre }}" ? Elle deviendra invisible par les abonnés.</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                                                            <button type="button" class="btn btn-danger" onclick="submitBlockForm({{ $bien->id }})"><i class="bi bi-check-circle"></i> Confirmer</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @elseif($bien->statut == 'bloqué')
+                                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#confirmReactivateModal{{ $bien->id }}">
+                                                <i class="bi bi-check-circle" title="Réactiver cette annonce"></i>
                                             </button>
-                                        </form>
-                                        @endif
+                                            <div class="modal fade" id="confirmReactivateModal{{ $bien->id }}" tabindex="-1" aria-labelledby="confirmReactivateModalLabel{{ $bien->id }}" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <i class="bi bi-exclamation-triangle me-1"></i>
+                                                            <h5 class="modal-title" id="confirmReactivateModalLabel{{ $bien->id }}">Confirmation de réactivation.</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Êtes-vous sûr de vouloir réactiver l'annonce "{{ $bien->titre }}" ? Elle redeviendra visible par les abonnés.
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
+                                                            <form action="{{ route('announcement.reactivate', $bien->id) }}" method="POST">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <button type="submit" class="btn btn-danger"><i class="bi bi-check-circle"></i> Réactiver</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endif
                                         @endif
                                     </div
                                 </td>
@@ -190,8 +252,6 @@
                             </tfoot>
                         </table>
                     </div>
-
-
                     <nav aria-label="...">
                         <ul class="pagination justify-content-end">
                             <li class="page-item {{ $biens->onFirstPage() ? 'disabled' : '' }}">
@@ -215,5 +275,28 @@
         </div>
     </div>
 </section>
+
+<script>
+    function showConfirmModal(id) {
+        let blockModal = document.getElementById('blockModal' + id);
+        let confirmModal = new bootstrap.Modal(document.getElementById('confirmBlockModal' + id));
+
+        let motif = document.getElementById('motif' + id).value.trim();
+
+        if (!motif) {
+            alert("Veuillez saisir un motif avant de bloquer l'annonce.");
+            return;
+        }
+
+        let bsBlockModal = bootstrap.Modal.getInstance(blockModal);
+        bsBlockModal.hide();
+
+        setTimeout(() => confirmModal.show(), 300);
+    }
+
+    function submitBlockForm(id) {
+        document.getElementById('blockForm' + id).submit();
+    }
+</script>
 
 @endsection

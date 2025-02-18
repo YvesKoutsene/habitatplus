@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="container-fluid px-3 mt4">
-    <h4 class="text-black-50 mb-2">
+    <h4 class="text-black-50 mb-2 text-center">
         <strong>
             {{ $bien->categorieBien->titre !== null ? $bien->categorieBien->titre : 'N/A' }} en
             {{ $bien->type_offre !== null ? $bien->type_offre : 'N/A' }} à
@@ -141,10 +141,11 @@
             @endphp
 
             @auth
-            <a href="https://wa.me/{{ $bien->user->numero }}?text={{ $encodedMessage }}" class="btn btn-success d-flex align-items-center justify-content-center gap-2" target="_blank">
+            <a href="https://wa.me/{{ $bien->user->numero }}?text={{ urlencode($message) }}" class="btn btn-success d-flex align-items-center justify-content-center gap-2" target="_blank">
                 <i class="bi bi-whatsapp fs-5"></i>
                 <span>WhatsApp</span>
             </a>
+
             <button class="btn btn-outline-danger d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#reportModal">
                 <i class="bi bi-flag fs-5"></i>
                 <span>Signaler cette annonce</span>
