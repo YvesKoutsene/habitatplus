@@ -101,19 +101,18 @@
                                 <td>{{ Carbon::parse($categorie->created_at)->translatedFormat('d F Y') }}</td>
                                 <td>
                                     <div class="d-flex">
-                                        @can ('editer catégories ticket')
-                                        <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $categorie->id }}">
-                                            <i class="bi bi-pencil-square" title="Editer"></i>
-                                        </button>
-                                        @endcan
-                                        @can ('supprimer catégories ticket')
-                                        @if ($categorie->tickets->isEmpty())
-                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $categorie->id }}">
-                                            <i class="bi bi-trash" title="Supprimer"></i>
-                                        </button>
+                                        @if(Auth::user()->typeUser === 0 || Auth::user()->can('editer catégories ticket'))
+                                            <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $categorie->id }}">
+                                                <i class="bi bi-pencil-square" title="Editer"></i>
+                                            </button>
                                         @endif
-                                        @endcan
-                                        <!-- Modal de confirmation de suppression -->
+                                        @if (Auth::user()->typeUser === 0 || Auth::user()->can('supprimer catégories ticket'))
+                                            @if ($categorie->tickets->isEmpty())
+                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $categorie->id }}">
+                                                <i class="bi bi-trash" title="Supprimer"></i>
+                                            </button>
+                                            @endif
+                                        @endif
                                         <div class="modal fade" id="deleteConfirmation{{ $categorie->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $categorie->id }}" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
@@ -197,7 +196,6 @@
                             </tfoot>
                         </table>
                     </div>
-                        <!-- Pagination personnalisée -->
                         <nav aria-label="...">
                             <ul class="pagination justify-content-end">
                                 <li class="page-item {{ $categories->onFirstPage() ? 'disabled' : '' }}">
@@ -223,7 +221,6 @@
     </div>
 </section>
 
-<!-- Script pour activer la modale -->
 @if(request()->get('showModal') === 'create')
     <script>
         document.addEventListener("DOMContentLoaded", function() {

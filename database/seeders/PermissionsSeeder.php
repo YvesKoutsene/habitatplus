@@ -22,7 +22,7 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'suspendre/réactiver utilisateurs', 'parent_id' => $manageUsers->id]);
 
         #New
-        Permission::create(['name' => 'supprimer utilisateurs', 'parent_id' => $manageUsers->id]);
+        Permission::create(['name' => 'supprimer utilisateur admin', 'parent_id' => $manageUsers->id]);
 
         // Permissions de gestion des rôles
         $manageRoles = Permission::create(['name' => 'gérer rôles']);
@@ -83,5 +83,9 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'editer catégories ticket', 'parent_id' => $manageCategoriesTicket->id]);
         Permission::create(['name' => 'supprimer catégories ticket', 'parent_id' => $manageCategoriesTicket->id]);
 
+        //Permissions de gestion de signalement
+        $manageSignalement = Permission::create(['name' => 'gérer les signalements']);
+        Permission::create(['name' => 'voir annonces signalées', 'parent_id' => $manageSignalement->id]);
+        Permission::create(['name' => 'voir signalements d\'une annonce', 'parent_id' => $manageSignalement->id]);
     }
 }

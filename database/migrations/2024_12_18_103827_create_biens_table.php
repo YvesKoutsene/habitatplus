@@ -20,6 +20,7 @@ return new class extends Migration
             $table->datetime('datePublication')->nullable(); // Peut être nul
             $table->string('statut');
             $table->string('type_offre')->nullable(); // Peut être nul
+            $table->string('motifBlocage')->nullable(); // Peut être nul
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade'); // Obligatoire
             $table->foreignId('id_categorie_bien')->constrained('categorie_biens')->onDelete('cascade'); // Obligatoire
             $table->timestamps();

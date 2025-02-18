@@ -10,6 +10,9 @@ use App\Models\Bien;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AnnonceBloqueeMail;
+
 class ReportingController extends Controller
 {
     /**
@@ -112,7 +115,7 @@ class ReportingController extends Controller
     }
 
     //Fonction permettant à un super ou admin de bloquer une annonce
-    public function block($id)
+    /*public function block($id)
     {
         $annonce = Bien::find($id);
         if (!$annonce) {
@@ -127,6 +130,33 @@ class ReportingController extends Controller
         $annonce->save();
 
         return redirect()->back()->with('success', 'Annonce bloquée avec succès.');
+    }*/
+
+    public function block(Request $request, $id)
+    {
+        $request->validate([
+            'motif' => 'required|string|max:255',
+        ],[
+           'motif.required' => "Le motif de bloquage de l'annonce est requis"
+        ]);
+
+        $annonce = Bien::find($id);
+
+        if (!$annonce) {
+            return redirect()->back()->with('error', 'Annonce introuvable.');
+        }
+
+        if ($annonce->statut !== 'publié') {
+            return redirect()->back()->with('error', 'Seules les annonces publiées peuvent être bloquées.');
+        }
+
+        $annonce->statut = 'bloqué';
+        $annonce->motifBlocage = $request->motif;
+        $annonce->save();
+
+        Mail::to($annonce->user->email)->send(new AnnonceBloqueeMail($annonce));
+
+        return redirect()->back()->with('success', "Annonce bloquée avec succès et notifiée à l'abonné {$annonce->user->name}");
     }
 
     //Fonction pour réactiver une annonce bloquée par un super ou admin

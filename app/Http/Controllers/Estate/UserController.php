@@ -210,29 +210,35 @@ class UserController extends Controller
     public function suspend(User $user)
     {
         if (auth()->id() === $user->id) {
-            return redirect()->route('users.index')->with('error', 'Vous ne pouvez pas suspendre votre propre compte.');
+            return redirect()->back()->with('error', 'Vous ne pouvez pas suspendre votre propre compte.');
+            //return redirect()->route('users.index')->with('error', 'Vous ne pouvez pas suspendre votre propre compte.');
         }
 
         if ($user->statut !== 'actif') {
-            return redirect()->route('users.index')->with('error', 'Seuls les comptes actifs peuvent être suspendus.');
+            return redirect()->back()->with('error', 'Seuls les comptes actifs peuvent être suspendus.');
+            //return redirect()->route('users.index')->with('error', 'Seuls les comptes actifs peuvent être suspendus.');
         }
 
         $user->update(['statut' => 'suspendu']);
-        return redirect()->route('users.index')->with('success', "Compte utilisateur {$user->name} suspendu.");
+        return redirect()->back()->with('success', "Compte utilisateur {$user->name} suspendu.");
+        //return redirect()->route('users.index')->with('success', "Compte utilisateur {$user->name} suspendu.");
     }
 
     public function reactivate(User $user)
     {
         if (auth()->id() === $user->id) {
-            return redirect()->route('users.index')->with('error', 'Vous ne pouvez pas réactiver votre propre compte.');
+            return redirect()->back()->with('error', 'Vous ne pouvez pas réactiver votre propre compte.');
+            //return redirect()->route('users.index')->with('error', 'Vous ne pouvez pas réactiver votre propre compte.');
         }
 
         if ($user->statut !== 'suspendu') {
-            return redirect()->route('users.index')->with('error', 'Seuls les comptes suspendus peuvent être réactivés.');
+            return redirect()->back()->with('error', 'Seuls les comptes suspendus peuvent être réactivés.');
+            //return redirect()->route('users.index')->with('error', 'Seuls les comptes suspendus peuvent être réactivés.');
         }
 
         $user->update(['statut' => 'actif']);
-        return redirect()->route('users.index')->with('success', "Compte utilisateur {$user->name} réactivé.");
+        return redirect()->back()->with('success', "Compte utilisateur {$user->name} réactivé.");
+        //return redirect()->route('users.index')->with('success', "Compte utilisateur {$user->name} réactivé.");
     }
 
     /**

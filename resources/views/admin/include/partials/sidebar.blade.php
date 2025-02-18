@@ -180,7 +180,7 @@
     </li>
     @endif
 
-    @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir annonces'))
+    @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir annonces signalées'))
         <li class="nav-item">
             <a class="nav-link collapsed {{ request()->routeIs('report.index') || request()->routeIs('report.show') ? 'active' : '' }}" href="{{ route('report.index') }}">
                 <i class="bi bi-flag"></i>

@@ -96,7 +96,8 @@ class AnnouncementController extends Controller
             'lieu' => $request->input('lieu', ''),
             'statut' => $action === 'publish' ? 'publié' : 'brouillon',
             'type_offre' => $request->input('type_offre', ''),
-            'datePublication' => Carbon::now(),
+            'datePublication' => $action === 'publish' ? Carbon::now() : null,
+            //'datePublication' => Carbon::now(),
             'id_user' => auth()->id(),
             'id_categorie_bien' => $validated['category'],
         ]);
@@ -222,7 +223,9 @@ class AnnouncementController extends Controller
             'statut' => ($action === 'publish' && in_array($bien->statut, ['brouillon', 'terminé'])) ? 'publié' : $bien->statut,
             'type_offre' => $request->input('type_offre', $bien->type_offre),
             'id_categorie_bien' => $validated['category'],
-            'datePublication' => Carbon::now(),
+
+            'datePublication' => ($action === 'publish' && in_array($bien->statut, ['brouillon', 'terminé'])) ? Carbon::now() : $bien->datePublication,
+            //'datePublication' => Carbon::now(),
         ]);
 
         $this->updatePhotos($bien, $request);
@@ -413,8 +416,5 @@ class AnnouncementController extends Controller
 
         return view('admin.pages.announcement.show', compact('bien'));
     }
-
-
-
 
 }
