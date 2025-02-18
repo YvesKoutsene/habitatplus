@@ -146,6 +146,30 @@
                                 <span class="badge {{ $classe = ($signal->bien->statut == 'publié') ? 'bg-primary' : (($signal->bien->statut == 'terminé') ? 'bg-warning' : 'bg-danger'); }}">
                                     {{ ucfirst($signal->bien->statut) }}
                                 </span>
+                                    @if($signal->bien->statut == 'bloqué' && $signal->bien->motifBlocage != '')
+                                    <span>
+                                        <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#motifModal{{ $signal->bien->id }}">
+                                            Motif
+                                        </button>
+
+                                        <div class="modal fade" id="motifModal{{ $signal->bien->id }}" tabindex="-1" aria-labelledby="motifModalLabel{{ $signal->bien->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="motifModalLabel{{ $signal->bien->id }}">Motif de suspension de l'annonce "{{ ucfirst($signal->bien->titre) }}"</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{ ucfirst($signal->bien->motifBlocage) }}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </span>
+                                    @endif
                                 </td>
                                 <td>
                                     <div class="d-flex">

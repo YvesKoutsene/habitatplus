@@ -2,14 +2,20 @@
 @section('content')
 
 <div class="container-fluid px-3 mt4">
-    <h4 class="text-black-50 mb-2 text-center">
-        <strong>
-            {{ $bien->categorieBien->titre !== null ? $bien->categorieBien->titre : 'N/A' }} en
+    <h5 class="text-black text-center mb-3">
+        <span>
+            @if($bien->statut == 'bloqué')
+                <span class="card-title fw-bold text-danger text-truncate">
+                    <i class="bi bi-exclamation-triangle-fill text-danger"></i> Cette annonce est bloquée par la plateforme.
+                </span><br>
+            @endif
+            <i class="bi bi-geo-alt-fill"></i> {{ $bien->lieu !== null ? $bien->lieu : 'N/A' }}
+            <i class="bi bi-building-fill"></i> {{ $bien->categorieBien->titre !== null ? $bien->categorieBien->titre : 'N/A' }} en
             {{ $bien->type_offre !== null ? $bien->type_offre : 'N/A' }} à
-            {{ number_format($bien->prix, 0, ',', ' ') }} FCFA
-        </strong>
-    </h4>
-    <div class="card mb-4 h-100 w-100 shadow-sm border-0 rounded-lg overflow-hidden">
+            <strong class="text-warning">{{ number_format($bien->prix, 0, ',', ' ') }} CFA</strong>
+        </span>
+    </h5>
+    <div class="card shadow-lg border-0 rounded-lg mb-4">
         <div id="bienCarousel" class="carousel slide" data-bs-ride="carousel">
             <ol class="carousel-indicators">
                 @if($bien->photos && count($bien->photos) > 0)
@@ -49,11 +55,6 @@
             <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}" class="img-thumbnail" style="cursor: pointer;" alt="Photo miniature">
             @endif
         </div>
-        @if($bien->statut == 'bloqué')
-            <br><p class="card-title fw-bold text-danger text-truncate">
-                <i class="bi bi-exclamation-triangle-fill text-danger"></i> Cette annonce est bloquée par la plateforme Habitat+
-            </p>
-        @endif
 
         @php
         $createdAt = \Carbon\Carbon::parse($bien->datePublication);
@@ -66,26 +67,30 @@
         @endphp
 
         <div class="d-flex align-items-center justify-content-between mt-4 p-3 border-top">
-            @if($bien->statut == 'publié')
             <div class="d-flex align-items-start gap-3">
-                <img src="{{ asset($bien->user->photo_profil) }}" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;" alt="Photo de profil">
+                <img src="{{ asset($bien->user->photo_profil) }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" alt="Photo de profil">
                 <div>
-                    <h6 class="mb-0">{{ $bien->user->name }}</h6>
-                    <p class="text-black-50 mb-0 small">Publié il y a
-                        @if ($diffInYears > 0)
-                        {{ $diffInYears }} an{{ $diffInYears > 1 ? 's' : '' }}
-                        @elseif ($diffInMonths > 0)
-                        {{ $diffInMonths }} mois
-                        @elseif ($diffInDays > 7)
-                        {{ floor($diffInDays / 7) }} semaine{{ floor($diffInDays / 7) > 1 ? 's' : '' }}
-                        @elseif ($diffInDays > 0)
-                        {{ $diffInDays }} jour{{ $diffInDays > 1 ? 's' : '' }}
-                        @elseif ($diffInHours > 0)
-                        {{ $diffInHours }} heure{{ $diffInHours > 1 ? 's' : '' }}
-                        @else
-                        {{ $diffInMins }} minute{{ $diffInMins > 1 ? 's' : '' }}
-                        @endif
-                    </p>
+                    <h6 class="mb-1">{{ $bien->user->name }}</h6>
+                    @if($bien->statut == 'publié')
+                        <p class="text-black-50">Publié il y a
+                            @if ($diffInYears > 0)
+                            {{ $diffInYears }} an{{ $diffInYears > 1 ? 's' : '' }}
+                            @elseif ($diffInMonths > 0)
+                            {{ $diffInMonths }} mois
+                            @elseif ($diffInDays > 7)
+                            {{ floor($diffInDays / 7) }} semaine{{ floor($diffInDays / 7) > 1 ? 's' : '' }}
+                            @elseif ($diffInDays > 0)
+                            {{ $diffInDays }} jour{{ $diffInDays > 1 ? 's' : '' }}
+                            @elseif ($diffInHours > 0)
+                            {{ $diffInHours }} heure{{ $diffInHours > 1 ? 's' : '' }}
+                            @else
+                            {{ $diffInMins }} minute{{ $diffInMins > 1 ? 's' : '' }}
+                            @endif
+                        </p>
+                    @else
+                        <p class="text-black-50 small">Non publiée
+                        </p>
+                    @endif
                 </div>
             </div>
 
@@ -94,46 +99,44 @@
                 <i class="bi bi-heart text-danger fs-5" title="Favoris"></i>
             </span>
             -->
-
-            @endif
         </div>
+        <h5 class="mt-2 text-center">Détails du bien</h5>
         <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between">
-                <span class="fw-bold card-title text-black-50 text-truncate">
-                    <strong>
-                        <i class="bi bi-geo-alt-fill text-danger"></i> {{ $bien->lieu !== null ? $bien->lieu : 'N/A' }}
-                    </strong>
-                </span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-                <span id="descriptionText" class="text-black-50">
-                    {{ Str::limit($bien->description !== null ? $bien->description : 'Aucune description', 25) }}
-                </span>
-                @if(strlen($bien->description) > 25)
-                <button class="btn btn-link btn-sm" id="toggleDescription" style="text-decoration: none; color: #007bff;">
-                    Voir plus
-                </button>
-                @endif
+                <div>
+                    <span>
+                        {{ Str::limit($bien->titre !== null ? $bien->titre : 'Aucun titre') }}
+                    </span><br>
+                    <span id="descriptionText">
+                        {{ Str::limit($bien->description !== null ? $bien->description : 'Aucune description', 25) }}
+                    </span>
+                    @if(strlen($bien->description) > 25)
+                    <button class="btn btn-link btn-sm" id="toggleDescription" style="text-decoration: none; color: #007bff;">
+                        Voir plus
+                    </button>
+                    @endif
+                </div>
+
             </li>
         </ul>
         <h5 class="mt-4 text-center">Caractéristiques du bien</h5>
         <ul class="list-group list-group-flush">
             @if($bien->valeurs->isEmpty())
-                <li class="list-group-item d-flex justify-content-between">
-                    <span class="fw-bold">Aucune caractéristique</span>
-                </li>
+            <li class="list-group-item d-flex justify-content-between">
+                <span class="fw-bold">Aucune caractéristique</span>
+            </li>
             @else
-                @foreach($bien->valeurs as $valeur)
-                <li class="list-group-item d-flex justify-content-between">
-                    <span class="fw-bold">{{ $valeur->associationCategorie->parametre->nom_parametre }} :</span>
-                    <span>{{ $valeur->valeur }}</span>
-                </li>
-                @endforeach
+            @foreach($bien->valeurs as $valeur)
+            <li class="list-group-item d-flex justify-content-between">
+                <span class="fw-bold">{{ $valeur->associationCategorie->parametre->nom_parametre }} :</span>
+                <span>{{ $valeur->valeur }}</span>
+            </li>
+            @endforeach
             @endif
         </ul>
-        <h5 class="text-success text-center mt-4">Contact et Signalement</h5>
-        <div class="d-flex flex-column gap-3 p-3">
 
+        <h5 class="text-success text-center mt-4">Contact & <span class="text-danger">Signalement</span></h5>
+        <div class="d-flex flex-column gap-3 p-3">
             @php
             $url = url()->current();
             $message = "Je suis intéressé par votre annonce de bien \"{$bien->titre}\" publiée sur Habitat+. Lien de l'annonce : {$url}";
@@ -141,11 +144,10 @@
             @endphp
 
             @auth
-            <a href="https://wa.me/{{ $bien->user->numero }}?text={{ urlencode($message) }}" class="btn btn-success d-flex align-items-center justify-content-center gap-2" target="_blank">
+            <a href="https://wa.me/{{ $bien->user->numero }}?text={{ $encodedMessage }}" class="btn btn-success d-flex align-items-center justify-content-center gap-2" target="_blank">
                 <i class="bi bi-whatsapp fs-5"></i>
                 <span>WhatsApp</span>
             </a>
-
             <button class="btn btn-outline-danger d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#reportModal">
                 <i class="bi bi-flag fs-5"></i>
                 <span>Signaler cette annonce</span>
@@ -168,10 +170,11 @@
 <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-black" >Signaler cette annonce</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
             <div class="modal-body">
-                <div class="d-flex justify-content-end">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Fermer"></button>
-                </div>
                 <form action="{{ route('announcement.report', ['bien' => $bien->id]) }}" method="POST">
                     @csrf
                     <div class="mb-3">
@@ -203,6 +206,7 @@
     }
 
     .card {
+        /*background-color: #ffffff;*/
         background-color: #ffffff;
         border-radius: 12px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

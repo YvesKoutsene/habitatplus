@@ -145,6 +145,30 @@
                                 <span class="badge {{ $classe = ($bien->statut == 'publié') ? 'bg-primary' : (($bien->statut == 'terminé') ? 'bg-warning' : 'bg-danger'); }}">
                                     {{ ucfirst($bien->statut) }}
                                 </span>
+                                @if($bien->statut == 'bloqué' && $bien->motifBlocage != '')
+                                    <span>
+                                        <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#motifModal{{ $bien->id }}">
+                                            Motif
+                                        </button>
+
+                                        <div class="modal fade" id="motifModal{{ $bien->id }}" tabindex="-1" aria-labelledby="motifModalLabel{{ $bien->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="motifModalLabel{{ $bien->id }}">Motif de suspension de l'annonce "{{ ucfirst($bien->titre) }}"</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{ ucfirst($bien->motifBlocage) }}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </span>
+                                @endif
                                 </td>
                                 <td>
                                     <div class="d-flex">

@@ -44,7 +44,7 @@
                                  class="card-img-top"
                                  alt="Image par défaut">
                             @endif
-                            <span class="badge bg-primary position-absolute top-0 start-0 m-2 p-2">
+                            <span class="badge bg-black position-absolute top-0 start-0 m-2 p-2"  style="opacity: 70%">
                                 {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
                             </span>
                         </div>
@@ -129,7 +129,7 @@
                                  class="card-img-top"
                                  alt="Image par défaut">
                             @endif
-                            <span class="badge bg-primary position-absolute top-0 start-0 m-2 p-2">
+                            <span class="badge bg-black position-absolute top-0 start-0 m-2 p-2"  style="opacity: 70%">
                                 {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
                             </span>
                         </div>
@@ -208,7 +208,7 @@
                                  class="card-img-top"
                                  alt="Image par défaut">
                             @endif
-                            <span class="badge bg-primary position-absolute top-0 start-0 m-2 p-2">
+                            <span class="badge bg-black position-absolute top-0 start-0 m-2 p-2"  style="opacity: 70%">
                                 {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
                             </span>
                         </div>
