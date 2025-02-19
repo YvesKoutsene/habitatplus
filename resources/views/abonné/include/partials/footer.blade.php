@@ -50,9 +50,7 @@
                 </ul>
             </div>
         </div>
-
         <hr>
-
         <div class="row">
             <div class="col-md-6">
                 &copy; 2024 <strong>Habitat+</strong>. Tous droits réservés.
@@ -62,11 +60,10 @@
                     <li class="list-inline-item">
                         <a href="#">Politique de confidentialité</a>
                     </li>
-<!--
                     <li class="list-inline-item">
                         <a href="#">Conditions d'utilisation</a>
                     </li>
--->
+
                 </ul>
             </div>
         </div>

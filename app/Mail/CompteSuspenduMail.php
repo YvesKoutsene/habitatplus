@@ -9,35 +9,29 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AnnonceBloqueeMail extends Mailable
+class CompteSuspenduMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $annonce;
+    public $user;
 
-    public function __construct($annonce)
+    public function __construct($user)
     {
-        $this->annonce = $annonce;
+        $this->user = $user;
     }
 
     public function build()
     {
-        return $this->subject('Votre annonce a été bloquée')
-            ->markdown('emails.annonce-bloquee');
+        return $this->subject('Votre compte a été suspendu')
+            ->markdown('emails.compte-suspendu');
     }
-
-    /**
-     * Create a new message instance.
-     */
-
-
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Votre annonce a été bloquée',
+            subject: 'Votre compte a été suspendu',
         );
     }
 
@@ -60,5 +54,4 @@ class AnnonceBloqueeMail extends Mailable
     {
         return [];
     }
-
 }

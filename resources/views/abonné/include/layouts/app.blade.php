@@ -38,7 +38,7 @@
         </aside>
         <main class="col-12 col-md-9">
             <div class="content">
-                @include('admin.include.partials.message')
+                @include('abonné.include.partials.message')
                 @yield('content')
                 @include('abonné.pages.auth.edit')
             </div>

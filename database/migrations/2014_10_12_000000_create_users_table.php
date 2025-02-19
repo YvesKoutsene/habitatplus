@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('numero');
             $table->integer('typeUser');
             $table->string('photo_profil')->nullable();
+
+            $table->string('motifBlocage')->nullable(); // Peut être nul
             $table->string('statut');
             $table->rememberToken();
             $table->timestamps();

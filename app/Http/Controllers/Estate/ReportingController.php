@@ -133,11 +133,11 @@ class ReportingController extends Controller
             return redirect()->back()->with('error', 'Seules les annonces publiées peuvent être bloquées.');
         }
 
+        Mail::to($annonce->user->email)->send(new AnnonceBloqueeMail($annonce));
+
         $annonce->statut = 'bloqué';
         $annonce->motifBlocage = $request->motif;
         $annonce->save();
-
-        Mail::to($annonce->user->email)->send(new AnnonceBloqueeMail($annonce));
 
         return redirect()->back()->with('success', "Annonce bloquée avec succès et notifiée au propriétaire : {$annonce->user->name}");
     }
@@ -154,12 +154,12 @@ class ReportingController extends Controller
             return redirect()->back()->with('error', 'Seules les annonces bloquées peuvent être réactivées.');
         }
 
+        Mail::to($annonce->user->email)->send(new AnnonceReactiveeMail($annonce));
+
         $annonce->statut = 'publié';
         $annonce->motifBlocage = null;
         $annonce->datePublication = Carbon::now();
         $annonce->save();
-
-        Mail::to($annonce->user->email)->send(new AnnonceReactiveeMail($annonce));
 
         return redirect()->back()->with('success', "Annonce réactivée avec succès et notifiée au propriétaire : {$annonce->user->name}");
     }

@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Support\Carbon;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CompteSuspenduMail;
+use App\Mail\CompteReactiveMail;
 
 class UserController extends Controller
 {
@@ -70,7 +73,6 @@ class UserController extends Controller
         $validateUser = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            //'password' => 'required|string|confirmed|min:8',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'pays' => 'required|string',
             'numero' => 'required|string|max:15',
@@ -160,7 +162,6 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'current_password' => 'nullable|required_with:password|current_password',
-            //'password' => 'nullable|string|confirmed|min:8',
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
             'pays' => 'required|string',
             'numero' => 'required|string|max:15',
@@ -207,38 +208,51 @@ class UserController extends Controller
             ->with('success', "Utilisateur {$user->name} mis à jour avec succès.");
     }
 
-    public function suspend(User $user)
+    //Fonction permettant de suspendre un compte utilisateur
+    public function suspend(Request $request, User $user)
     {
+        $request->validate([
+            'motif' => 'required|string|max:255',
+        ],[
+            'motif.required' => "Le motif de bloquage de compte est requis"
+        ]);
+
         if (auth()->id() === $user->id) {
             return redirect()->back()->with('error', 'Vous ne pouvez pas suspendre votre propre compte.');
-            //return redirect()->route('users.index')->with('error', 'Vous ne pouvez pas suspendre votre propre compte.');
         }
 
         if ($user->statut !== 'actif') {
             return redirect()->back()->with('error', 'Seuls les comptes actifs peuvent être suspendus.');
-            //return redirect()->route('users.index')->with('error', 'Seuls les comptes actifs peuvent être suspendus.');
         }
 
-        $user->update(['statut' => 'suspendu']);
-        return redirect()->back()->with('success', "Compte utilisateur {$user->name} suspendu.");
-        //return redirect()->route('users.index')->with('success', "Compte utilisateur {$user->name} suspendu.");
+        Mail::to($user->email)->send(new CompteSuspenduMail($user));
+
+        $user->statut = 'suspendu';
+        $user->motifBlocage = $request->motif;
+        $user->save();
+
+        return redirect()->back()->with('success', "Compte suspendu avec succès et notifié à l'utilisateur : {$user->name}");
+
     }
 
+    //Fonction permettant de réactiver un compte
     public function reactivate(User $user)
     {
         if (auth()->id() === $user->id) {
             return redirect()->back()->with('error', 'Vous ne pouvez pas réactiver votre propre compte.');
-            //return redirect()->route('users.index')->with('error', 'Vous ne pouvez pas réactiver votre propre compte.');
         }
 
         if ($user->statut !== 'suspendu') {
             return redirect()->back()->with('error', 'Seuls les comptes suspendus peuvent être réactivés.');
-            //return redirect()->route('users.index')->with('error', 'Seuls les comptes suspendus peuvent être réactivés.');
         }
 
-        $user->update(['statut' => 'actif']);
-        return redirect()->back()->with('success', "Compte utilisateur {$user->name} réactivé.");
-        //return redirect()->route('users.index')->with('success', "Compte utilisateur {$user->name} réactivé.");
+        Mail::to($user->email)->send(new CompteReactiveMail($user));
+
+        $user->statut = 'actif';
+        $user->motifBlocage = null;
+        $user->save();
+
+        return redirect()->back()->with('success', "Compte réactivé avec succès et notifié à l'utilisateur : {$user->name}");
     }
 
     /**

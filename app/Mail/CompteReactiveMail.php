@@ -9,27 +9,25 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AnnonceBloqueeMail extends Mailable
+class CompteReactiveMail extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $annonce;
-
-    public function __construct($annonce)
-    {
-        $this->annonce = $annonce;
-    }
-
-    public function build()
-    {
-        return $this->subject('Votre annonce a été bloquée')
-            ->markdown('emails.annonce-bloquee');
-    }
 
     /**
      * Create a new message instance.
      */
+    public $user;
 
+    public function __construct($user)
+    {
+        $this->user = $user;
+    }
+
+    public function build()
+    {
+        return $this->subject('Votre compte a été réactivé')
+            ->markdown('emails.compte-reactive');
+    }
 
     /**
      * Get the message envelope.
@@ -37,7 +35,7 @@ class AnnonceBloqueeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Votre annonce a été bloquée',
+            subject: 'Votre compte a été réactivé',
         );
     }
 
@@ -60,5 +58,4 @@ class AnnonceBloqueeMail extends Mailable
     {
         return [];
     }
-
 }

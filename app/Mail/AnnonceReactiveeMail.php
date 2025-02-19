@@ -16,8 +16,6 @@ class AnnonceReactiveeMail extends Mailable
     /**
      * Create a new message instance.
      */
-    use Queueable, SerializesModels;
-
 
     public $annonce;
 

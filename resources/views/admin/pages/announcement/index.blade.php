@@ -182,7 +182,6 @@
                                             <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#blockModal{{ $bien->id }}" title="Bloquer cette annonce">
                                                 <i class="bi bi-slash-circle"></i>
                                             </button>
-                                            <!-- Modal pour le motif de blocage -->
                                             <div class="modal fade" id="blockModal{{ $bien->id }}" tabindex="-1" aria-labelledby="blockModalLabel{{ $bien->id }}" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -211,7 +210,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Modal de confirmation de blocage -->
+
                                             <div class="modal fade" id="confirmBlockModal{{ $bien->id }}" tabindex="-1" aria-labelledby="confirmBlockModalLabel{{ $bien->id }}" aria-hidden="true">
                                                 <div class="modal-dialog  modal-dialog-centered">
                                                     <div class="modal-content">
@@ -230,6 +229,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             @elseif($bien->statut == 'bloqué')
                                             <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#confirmReactivateModal{{ $bien->id }}">
                                                 <i class="bi bi-check-circle" title="Réactiver cette annonce"></i>
@@ -258,8 +258,10 @@
                                             </div>
                                             @endif
                                         @endif
+
                                     </div
                                 </td>
+
                             </tr>
                             @endforeach
                             </tbody>
@@ -292,12 +294,13 @@
                             </li>
                         </ul>
                     </nav>
-
                     @endif
                 </div>
             </div>
         </div>
     </div>
+
+
 </section>
 
 <script>
@@ -308,7 +311,7 @@
         let motif = document.getElementById('motif' + id).value.trim();
 
         if (!motif) {
-            alert("Veuillez saisir un motif avant de bloquer l'annonce.");
+            alert("Veuillez saisir un motif avant de bloquer cette annonce.");
             return;
         }
 

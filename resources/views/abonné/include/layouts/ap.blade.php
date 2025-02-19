@@ -31,7 +31,7 @@
 <div class="container my-4 flex-grow-1">
     <main class="col-md-8 mx-auto">
         <div class="content habitat">
-            @include('admin.include.partials.message')
+            @include('abonné.include.partials.message')
             @yield('content')
         </div>
     </main>

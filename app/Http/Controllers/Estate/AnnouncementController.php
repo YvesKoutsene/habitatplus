@@ -12,8 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
-// Ajoutez cette ligne
-
 class AnnouncementController extends Controller
 {
     /**
