@@ -41,7 +41,7 @@ class AnnonceBloqueeMail extends Mailable
         );
     }
 
-    /**
+    /**        $this->annonce = $annonce;
      * Get the message content definition.
      */
     public function content(): Content

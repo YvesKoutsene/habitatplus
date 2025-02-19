@@ -119,7 +119,7 @@
     <div class="email-body">
         <h2>Bonjour {{ $user->name }} !</h2>
         <p>Nous vous informons que votre compte a été suspendu pour la raison suivante :</p>
-        <blockquote>{{ $user->motifBlocage }}</blockquote>
+        <blockquote>{{ $user->motif_blocage }}</blockquote>
         <p>Si vous avez des questions, veuillez nous contacter.</p>
         <p>Merci pour votre confiance,<br>L'équipe <strong>Habitat+</strong>.</p>
     </div>

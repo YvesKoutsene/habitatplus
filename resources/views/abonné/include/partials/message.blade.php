@@ -46,7 +46,7 @@
         opacity: 0;
         transform: translateY(-10px);
         transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-        margin-bottom: 10px; /* Ajout d'espacement entre les alertes */
+        margin-bottom: 5px; /* Ajout d'espacement entre les alertes */
     }
 
     .alert.show {

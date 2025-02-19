@@ -93,7 +93,7 @@
                                     {{ ucfirst($signal->user->statut) }}
                                 </span>
 
-                                @if($signal->user->statut == 'suspendu' && $signal->user->motifBlocage != '')
+                                @if($signal->user->statut == 'suspendu' && $signal->user->motif_blocage != '')
                                     <span>
                                         <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#motifModal{{ $signal->user->id }}">
                                             Motif
@@ -106,7 +106,7 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        {{ ucfirst($signal->user->motifBlocage) }}
+                                                        {{ ucfirst($signal->user->motif_blocage) }}
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
@@ -188,7 +188,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                                            <form action="{{ route('users.reactivate', $signal->user->id) }}" method="POST">
+                                                            <form action="{{ route('users.reactivate', $signal->user->id) }}" method="POST" onsubmit="showLoading()">
                                                                 @csrf
                                                                 @method('PATCH')
                                                                 <button type="submit" class="btn btn-danger"><i class="bi bi-check-circle"></i> Réactiver</button>
@@ -259,6 +259,7 @@
     }
 
     function submitBlockForm(id) {
+        showLoading();
         document.getElementById('blockForm' + id).submit();
     }
 </script>

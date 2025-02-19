@@ -143,7 +143,7 @@
                                 </td>
                                 <td>{{ $signal->total_signals }}</td>
                                 <td>
-                                <span class="badge {{ $classe = ($signal->bien->statut == 'publié') ? 'bg-primary' : (($signal->bien->statut == 'terminé') ? 'bg-warning' : 'bg-danger'); }}">
+                                <span class="badge {{ $classe = ($signal->bien->statut == 'publié') ? 'bg-primary' : (($signal->bien->statut == 'terminé') ? 'bg-warning' : 'bg-danger') }}">
                                     {{ ucfirst($signal->bien->statut) }}
                                 </span>
                                     @if($signal->bien->statut == 'bloqué' && $signal->bien->motifBlocage != '')
@@ -253,7 +253,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                                                <form action="{{ route('announcement.reactivate', $signal->bien->id) }}" method="POST">
+                                                                <form action="{{ route('announcement.reactivate', $signal->bien->id) }}" method="POST" onsubmit="showLoading()">
                                                                     @csrf
                                                                     @method('PUT')
                                                                     <button type="submit" class="btn btn-danger"><i class="bi bi-check-circle"></i> Réactiver</button>
@@ -324,6 +324,7 @@
     }
 
     function submitBlockForm(id) {
+        showLoading();
         document.getElementById('blockForm' + id).submit();
     }
 </script>

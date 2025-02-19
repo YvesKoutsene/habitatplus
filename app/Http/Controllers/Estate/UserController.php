@@ -217,6 +217,8 @@ class UserController extends Controller
             'motif.required' => "Le motif de bloquage de compte est requis"
         ]);
 
+        //dd($request->all());
+
         if (auth()->id() === $user->id) {
             return redirect()->back()->with('error', 'Vous ne pouvez pas suspendre votre propre compte.');
         }
@@ -228,7 +230,7 @@ class UserController extends Controller
         Mail::to($user->email)->send(new CompteSuspenduMail($user));
 
         $user->statut = 'suspendu';
-        $user->motifBlocage = $request->motif;
+        $user->motif_blocage = $request->motif;
         $user->save();
 
         return redirect()->back()->with('success', "Compte suspendu avec succès et notifié à l'utilisateur : {$user->name}");
@@ -249,7 +251,7 @@ class UserController extends Controller
         Mail::to($user->email)->send(new CompteReactiveMail($user));
 
         $user->statut = 'actif';
-        $user->motifBlocage = null;
+        $user->motif_blocage = null;
         $user->save();
 
         return redirect()->back()->with('success', "Compte réactivé avec succès et notifié à l'utilisateur : {$user->name}");

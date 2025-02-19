@@ -91,7 +91,7 @@ use Carbon\Carbon;
                                 <span class="badge {{ $user->statut == 'actif' ? 'bg-success' : 'bg-danger' }}">
                                     {{ ucfirst($user->statut) }}
                                 </span>
-                                    @if($user->statut == 'suspendu' && $user->motifBlocage != '')
+                                    @if($user->statut == 'suspendu' && $user->motif_blocage != '')
                                     <span>
                                         <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#motifModal{{ $user->id }}">
                                             Motif
@@ -104,7 +104,7 @@ use Carbon\Carbon;
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        {{ ucfirst($user->motifBlocage) }}
+                                                        {{ ucfirst($user->motif_blocage) }}
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Fermer</button>
@@ -193,7 +193,7 @@ use Carbon\Carbon;
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                                            <form action="{{ route('users.reactivate', $user->id) }}" method="POST">
+                                                            <form action="{{ route('users.reactivate', $user->id) }}" method="POST" onsubmit="showLoading()">
                                                                 @csrf
                                                                 @method('PATCH')
                                                                 <button type="submit" class="btn btn-danger"><i class="bi bi-check-circle"></i> Réactiver</button>
@@ -296,6 +296,7 @@ use Carbon\Carbon;
     }
 
     function submitBlockForm(id) {
+        showLoading(); // Afficher l'effet de chargement
         document.getElementById('blockForm' + id).submit();
     }
 </script>

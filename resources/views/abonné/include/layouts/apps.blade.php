@@ -39,6 +39,7 @@
 
         <main class="col-12 col-md-9">
             <div class="content">
+                @include('abonné.include.partials.loading')
                 @include('abonné.include.partials.message')
                 @yield('content')
                 @include('abonné.pages.auth.edit')

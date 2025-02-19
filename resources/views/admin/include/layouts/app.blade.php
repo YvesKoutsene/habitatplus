@@ -38,6 +38,7 @@
 
         <main id="main" class="main">
             @include('admin.include.partials.message')
+            @include('admin.include.partials.loading')
             @yield('content')
         </main>
 

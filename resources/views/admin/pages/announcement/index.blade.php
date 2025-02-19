@@ -142,7 +142,7 @@
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($bien->datePublication)->translatedFormat('d F Y') }}</td>
                                 <td>
-                                <span class="badge {{ $classe = ($bien->statut == 'publié') ? 'bg-primary' : (($bien->statut == 'terminé') ? 'bg-warning' : 'bg-danger'); }}">
+                                <span class="badge {{ $classe = ($bien->statut == 'publié') ? 'bg-primary' : (($bien->statut == 'terminé') ? 'bg-warning' : 'bg-danger')}}">
                                     {{ ucfirst($bien->statut) }}
                                 </span>
                                 @if($bien->statut == 'bloqué' && $bien->motifBlocage != '')
@@ -179,6 +179,7 @@
                                         @endif
                                         @if(Auth::user()->typeUser === 0 || Auth::user()->can('suspendre/réactiver annonces'))
                                             @if($bien->statut == 'publié')
+
                                             <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#blockModal{{ $bien->id }}" title="Bloquer cette annonce">
                                                 <i class="bi bi-slash-circle"></i>
                                             </button>
@@ -247,7 +248,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                                            <form action="{{ route('announcement.reactivate', $bien->id) }}" method="POST">
+                                                            <form action="{{ route('announcement.reactivate', $bien->id) }}" method="POST" onsubmit="showLoading()">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <button type="submit" class="btn btn-danger"><i class="bi bi-check-circle"></i> Réactiver</button>
@@ -259,7 +260,7 @@
                                             @endif
                                         @endif
 
-                                    </div
+                                    </div>
                                 </td>
 
                             </tr>
@@ -322,8 +323,10 @@
     }
 
     function submitBlockForm(id) {
+        showLoading(); // Afficher l'effet de chargement
         document.getElementById('blockForm' + id).submit();
     }
+
 </script>
 
 @endsection

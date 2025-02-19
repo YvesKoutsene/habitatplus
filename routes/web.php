@@ -56,7 +56,6 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
     Route::put('announcement/admin/{bien}/block', [ReportingController::class, 'block'])->name('announcement.block');
     Route::put('announcement/admin/{bien}/reactivate', [ReportingController::class, 'reactivate'])->name('announcement.reactivate');
 
-
 });
 
 #Pour abonné

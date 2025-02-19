@@ -27,8 +27,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'numero',
         'typeUser',
         'pays',
-        'motifBlocage',
         'photo_profil',
+        'motif_blocage',
         'statut',
         'email_verified_at'
     ];
