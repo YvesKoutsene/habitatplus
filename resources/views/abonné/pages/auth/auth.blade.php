@@ -27,7 +27,7 @@
 
                 <div class="tab-content" id="authTabContent">
                     <div class="tab-pane fade" id="registerSection" role="tabpanel" aria-labelledby="register-tab">
-                        <form action="{{ route('register') }}" method="POST" onsubmit="return validatePasswords02()">
+                        <form action="{{ route('register') }}" method="POST"  onsubmit="return handleFormSubmit()">
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label text-black">Nom et Prénom(s)<span class="text-danger" title="obligatoire">*</span></label>
@@ -94,7 +94,7 @@
                     </div>
 
                     <div class="tab-pane fade show active" id="loginSection" role="tabpanel" aria-labelledby="login-tab">
-                        <form action="{{ route('login') }}" method="POST">
+                        <form action="{{ route('login') }}" method="POST" onsubmit="showLoading()">
                             @csrf
                             <div class="mb-3">
                                 <label for="login_email" class="form-label text-black">Email<span class="text-danger" title="obligatoire">*</span></label>
@@ -227,7 +227,7 @@
                     listItem.onclick = () => {
                         const selectedIndicatif = `${indicatif} - ${nameInFrench}`;
                         document.getElementById("searchIndicatif").value = selectedIndicatif;
-                        document.getElementById("indicatif").value = indicatif; // Mettre à jour le champ caché avec l'indicatif
+                        document.getElementById("indicatif").value = indicatif;
                         document.getElementById("dropdownMenu").classList.remove("show");
                     };
 
@@ -293,6 +293,15 @@
             message.style.display = 'none';
             return true;
         }
+    }
+
+    function handleFormSubmit() {
+        if (!validatePasswords02()) {
+            return false;
+        }
+
+        showLoading();
+        return true;
     }
 
 </script>

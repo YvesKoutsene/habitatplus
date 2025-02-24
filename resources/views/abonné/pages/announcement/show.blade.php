@@ -70,9 +70,9 @@
             <div class="d-flex align-items-start gap-3">
                 <img src="{{ asset($bien->user->photo_profil) }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" alt="Photo de profil">
                 <div>
-                    <h6 class="mb-1">{{ $bien->user->name }}</h6>
+                    <h6 class="mb-1">{{ Str::limit($bien->user->name, 20, '...') }}</h6>
                     @if($bien->statut == 'publié')
-                        <p class="text-black-50">Publié il y a
+                        <p class="text-black-50 small">Publié il y a
                             @if ($diffInYears > 0)
                             {{ $diffInYears }} an{{ $diffInYears > 1 ? 's' : '' }}
                             @elseif ($diffInMonths > 0)
@@ -168,14 +168,14 @@
 </div>
 
 <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-black" >Signaler cette annonce</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('announcement.report', ['bien' => $bien->id]) }}" method="POST">
+                <form action="{{ route('announcement.report', ['bien' => $bien->id]) }}" method="POST" onsubmit="showLoading()">
                     @csrf
                     <div class="mb-3">
                         <textarea name="motif" id="motif" rows="4" class="form-control" placeholder="Donnez le motif du signalement..." maxlength="200" required></textarea>
@@ -206,7 +206,6 @@
     }
 
     .card {
-        /*background-color: #ffffff;*/
         background-color: #ffffff;
         border-radius: 12px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -254,8 +253,8 @@
     }
 
     .img-thumbnail {
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
         border-radius: 10px;
         transition: transform 0.3s ease-in-out, border 0.3s ease;
     }

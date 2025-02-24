@@ -8,7 +8,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bi bi-house-door"></i></a></li>
             <li class="breadcrumb-item">Annonces</li>
-            <li class="breadcrumb-item active">Liste Annonce</li>
+            <li class="breadcrumb-item active">Annonces Publiées</li>
         </ol>
     </nav>
 </div>
@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title">Liste des Annonces</h5>
+                        <h5 class="card-title">Liste des Annonces Publiées</h5>
                     </div>
                     @if(!$biens->isEmpty())
                     <div class="d-flex mb-3 justify-content-between">
@@ -40,7 +40,7 @@
 
                     @if($biens->isEmpty())
                     <div class="alert alert-info">
-                        Aucune annonce de bien disponible pour le moment.
+                        Aucune annonce de bien publiée pour le moment.
                     </div>
                     @else
                     <div class="table-responsive">
@@ -179,7 +179,6 @@
                                         @endif
                                         @if(Auth::user()->typeUser === 0 || Auth::user()->can('suspendre/réactiver annonces'))
                                             @if($bien->statut == 'publié')
-
                                             <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#blockModal{{ $bien->id }}" title="Bloquer cette annonce">
                                                 <i class="bi bi-slash-circle"></i>
                                             </button>
@@ -230,39 +229,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            @elseif($bien->statut == 'bloqué')
-                                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#confirmReactivateModal{{ $bien->id }}">
-                                                <i class="bi bi-check-circle" title="Réactiver cette annonce"></i>
-                                            </button>
-                                            <div class="modal fade" id="confirmReactivateModal{{ $bien->id }}" tabindex="-1" aria-labelledby="confirmReactivateModalLabel{{ $bien->id }}" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <i class="bi bi-exclamation-triangle me-1"></i>
-                                                            <h5 class="modal-title" id="confirmReactivateModalLabel{{ $bien->id }}">Confirmation de réactivation.</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            Êtes-vous sûr de vouloir réactiver l'annonce "{{ $bien->titre }}" ? Elle redeviendra visible par les abonnés.
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Annuler</button>
-                                                            <form action="{{ route('announcement.reactivate', $bien->id) }}" method="POST" onsubmit="showLoading()">
-                                                                @csrf
-                                                                @method('PUT')
-                                                                <button type="submit" class="btn btn-danger"><i class="bi bi-check-circle"></i> Réactiver</button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endif
                                         @endif
-
+                                    @endif
                                     </div>
                                 </td>
-
                             </tr>
                             @endforeach
                             </tbody>

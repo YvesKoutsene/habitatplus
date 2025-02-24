@@ -32,7 +32,7 @@
                         <strong>{{ number_format($bien->prix, 0, ',', ' ') }} FCFA</strong>
                     </p>
                     <a href="{{ route('announcement.show.costumer', $bien->id) }}" class="btn btn-outline-primary mt-auto">
-                        <i class="bi bi-eye"></i> Voir détails
+                        <i class="bi bi-eye"></i> Détails
                     </a>
                 </div>
             </div>

@@ -18,17 +18,40 @@ class AnnouncementController extends Controller
      * Display a listing of the resource.
      */
 
-    //Fonction permettant d'afficher la liste des biens crées dans la base de données
+    //Fonction permettant d'afficher la liste des biens publiés dans la base de données
     public function index(Request $request)
     {
         $search = $request->input('search', '');
         $perPage = $request->input('perPage', 10);
 
+        $query = Bien::with(['user', 'categorieBien', 'photos', 'valeurs'])->where(function ($query) {
+            $query->where('statut', 'publié')
+                ->orWhere('statut', 'terminé');
+        })->orderBy('datePublication', 'desc');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(titre) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(lieu) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(type_offre) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+        }
+
+        $biens = $query->paginate($perPage);
+
+        return view('admin.pages.announcement.index', compact('biens', 'search', 'perPage'));
+    }
+
+    //Fonction permettant d'afficher la liste des biens bloqués dans la base de données
+    public function index02(Request $request)
+    {
+        $search = $request->input('search', '');
+        $perPage = $request->input('perPage', 10);
+
         $query = Bien::with(['user','categorieBien', 'photos', 'valeurs'])->where(function($query) {
-                 $query->where('statut', 'publié')
-                     ->orWhere('statut', 'bloqué')
-                     ->orWhere('statut', 'terminé');
-             })->orderBy('datePublication', 'desc');
+            $query->where('statut', 'bloqué');
+        })->orderBy('updated_at', 'desc');
 
         if ($search) {
             $query->where(function($q) use ($search) {
@@ -41,7 +64,7 @@ class AnnouncementController extends Controller
 
         $biens = $query->paginate($perPage);
 
-        return view('admin.pages.announcement.index', compact('biens', 'search', 'perPage'));
+        return view('admin.pages.announcement.index02', compact('biens', 'search', 'perPage'));
     }
 
     /**

@@ -49,6 +49,7 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
     Route::resource('category_ticket', CategoryTicketController::class);
 
     Route::get('announcement/list', [AnnouncementController::class, 'index'])->name('announcement.list');
+    Route::get('announcement/list/block', [AnnouncementController::class, 'index02'])->name('announcement.list02');
     Route::get('announcement/admin/{bien}/details', [AnnouncementController::class, 'details'])->name('announcement.details');
 
     Route::get('announcement/admin/reporting', [ReportingController::class, 'index'])->name('report.index');

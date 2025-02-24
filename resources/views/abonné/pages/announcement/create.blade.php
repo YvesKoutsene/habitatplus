@@ -1,7 +1,7 @@
 @extends('abonné.include.layouts.ap')
 @section('content')
 
-<form id="createAdForm" action="{{ route('announcement.store') }}" method="POST" enctype="multipart/form-data">
+<form id="createAdForm" action="{{ route('announcement.store') }}" method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
     @csrf
     <h2 class="text-black-50 mb-4">Créer votre annonce</h2>
     <div class="card shadow-lg border-0 rounded-lg mb-4">

@@ -227,10 +227,9 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Seuls les comptes actifs peuvent être suspendus.');
         }
 
-        Mail::to($user->email)->send(new CompteSuspenduMail($user));
-
         $user->statut = 'suspendu';
         $user->motif_blocage = $request->motif;
+        Mail::to($user->email)->send(new CompteSuspenduMail($user));
         $user->save();
 
         return redirect()->back()->with('success', "Compte suspendu avec succès et notifié à l'utilisateur : {$user->name}");
@@ -248,10 +247,9 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Seuls les comptes suspendus peuvent être réactivés.');
         }
 
-        Mail::to($user->email)->send(new CompteReactiveMail($user));
-
         $user->statut = 'actif';
         $user->motif_blocage = null;
+        Mail::to($user->email)->send(new CompteReactiveMail($user));
         $user->save();
 
         return redirect()->back()->with('success', "Compte réactivé avec succès et notifié à l'utilisateur : {$user->name}");

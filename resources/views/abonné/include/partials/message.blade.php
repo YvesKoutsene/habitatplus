@@ -4,7 +4,7 @@
     <div class="alert alert-primary bg-primary text-light border-0 alert-dismissible fade show shadow-lg" role="alert">
         <i class="bi bi-check-circle me-1"></i>
         <strong>Succès :</strong> {{ session('success') }}
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!--<button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>-->
     </div>
     @endif
 
@@ -12,7 +12,7 @@
     <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show shadow-lg" role="alert">
         <i class="bi bi-exclamation-octagon me-1"></i>
         <strong>Erreur :</strong> {{ session('error') }}
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!--<button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>-->
     </div>
     @endif
 
@@ -23,7 +23,7 @@
         @foreach ($errors->all() as $error)
         - {{ $error }}<br>
         @endforeach
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!--<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
     </div>
     @endif
 </div>

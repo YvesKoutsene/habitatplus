@@ -1,18 +1,30 @@
 <ul class="sidebar-nav" id="sidebar-nav">
 
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}"> <!-- collapsed -->
+        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
             <i class="bi bi-grid"></i>
             <span>Tableau de bord</span>
         </a>
     </li>
+
     @if( Auth::user()->typeUser === 0 || Auth::user()->can('voir annonces'))
-    <li class="nav-item">
-        <a class="nav-link collapsed {{ request()->routeIs('announcement.list') || request()->routeIs('announcement.details') ? 'active' : '' }}" href="{{ route('announcement.list') }}">
-            <i class="bi bi-megaphone"></i>
-            <span>Annonce</span>
-        </a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed {{ request()->is('announcement/list') || request()->is('announcement/list/block') || request()->routeIs('announcement.details') ? 'active' : '' }} " data-bs-target="#announcement-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-megaphone"></i><span>Annonce</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="announcement-nav" class="nav-content collapse {{ request()->is('announcement/list') || request()->is('announcement/list/block') || request()->routeIs('announcement.details') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a class="{{ request()->routeIs('announcement.list') ? 'active' : '' }}" href="{{ route('announcement.list') }}">
+                        <i class="bi bi-circle"></i><span>Publications</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="{{ request()->routeIs('announcement.list02') ? 'active' : '' }}" href="{{ route('announcement.list02') }}">
+                        <i class="bi bi-circle"></i><span>Rejets</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
     @endif
 
     @if( Auth::user()->typeUser === 0 || Auth::user()->can('voir catégories') || Auth::user()->can('créer catégories') || Auth::user()->can('voir paramètres catégories') || Auth::user()->can('ajouter paramètres catégories'))

@@ -57,7 +57,7 @@
                                 </div>
 
                                 <div class="mt-4 flex items-center justify-between">
-                                    <form method="POST" action="{{ route('verification.send') }}">
+                                    <form method="POST" action="{{ route('verification.send') }}" onsubmit="showLoading()">
                                         @csrf
                                         <div>
                                             <button type="submit" class="btn btn-primary w-100">

@@ -1,7 +1,7 @@
 @extends('abonné.include.layouts.ap')
 @section('content')
 
-<form id="createAdForm" action="{{ route('announcement.update', $bien->id) }}" method="POST" enctype="multipart/form-data">
+<form id="createAdForm" action="{{ route('announcement.update', $bien->id) }}" method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
     @csrf
     @method('PUT')
     <h2 class="text-black-50 mb-4">Modifier votre annonce</h2>

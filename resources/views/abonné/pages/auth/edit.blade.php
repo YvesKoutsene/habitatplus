@@ -6,7 +6,7 @@
                 <div class="d-flex justify-content-end">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Fermer"></button>
                 </div>
-                <form method="POST" action="{{ route('update.profile', auth()->user()->id) }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('update.profile', auth()->user()->id) }}" enctype="multipart/form-data" onsubmit="showLoading()">
                     @csrf
                     @method('PUT')
                     <div class="text-center mb-4 position-relative">
@@ -67,7 +67,7 @@
                 <div class="d-flex justify-content-end">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Fermer"></button>
                 </div>
-                <form method="POST" action="{{ route('update.password', auth()->user()->id) }}" onsubmit="return validatePasswords()">
+                <form method="POST" action="{{ route('update.password', auth()->user()->id) }}" onsubmit="return handleFormSubmit()">
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
@@ -193,5 +193,14 @@
             message.style.display = 'none';
             return true;
         }
+    }
+
+    function handleFormSubmit() {
+        if (!validatePasswords()) {
+            return false;
+        }
+
+        showLoading();
+        return true;
     }
 </script>

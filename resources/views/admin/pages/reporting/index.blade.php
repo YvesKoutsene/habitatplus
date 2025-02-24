@@ -52,7 +52,7 @@
                                 <th>Titre annonce</th>
                                 <th>Prix (FCFA)</th>
                                 <th>Caractéristiques</th>
-                                <th>Total signal</th>
+                                <th>Total signalement</th>
                                 <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
@@ -275,7 +275,7 @@
                                 <th>Titre annonce</th>
                                 <th>Prix (FCFA)</th>
                                 <th>Caractéristiques</th>
-                                <th>Total signal</th>
+                                <th>Total signalement</th>
                                 <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
