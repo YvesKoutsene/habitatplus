@@ -3,7 +3,7 @@
 
 <form id="createAdForm" action="{{ route('announcement.store') }}" method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
     @csrf
-    <h2 class="text-black-50 mb-4">Créer votre annonce</h2>
+    <h3 class="text-black-50 mb-4">Créer votre annonce</h3>
     <div class="card shadow-lg border-0 rounded-lg mb-4">
         <div class="card-header text-black">
             <h5>Photos de l'annonce</h5>

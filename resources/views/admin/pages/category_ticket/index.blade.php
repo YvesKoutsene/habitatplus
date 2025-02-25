@@ -63,6 +63,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Nom</th>
                                 <th scope="col">Description</th>
+                                <th scope="col">Statut</th>
                                 <th scope="col">Date création</th>
                                 <th scope="col">Actions</th>
                             </tr>
@@ -98,9 +99,33 @@
                                     {{ ucfirst($model->description) }}
                                     @endif
                                 </td>
+                                <td>
+                                    <span class="badge {{ $categorie->statut == 'actif' ? 'bg-success' : 'bg-danger' }}">
+                                        {{ ucfirst($categorie->statut) }}
+                                    </span>
+                                </td>
                                 <td>{{ Carbon::parse($categorie->created_at)->translatedFormat('d F Y') }}</td>
                                 <td>
                                     <div class="d-flex">
+                                        @if(Auth::user()->typeUser === 0 || Auth::user()->can('désactiver/réactiver catégories ticket'))
+                                            @if($categorie->statut == 'actif')
+                                                <form action="{{ route('category_ticket.suspend', $categorie->id) }}" method="POST" class="me-2">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Désactiver">
+                                                        <i class="bi bi-slash-circle"></i>
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('category_ticket.reactivate', $categorie->id) }}" method="POST" class="me-2">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver">
+                                                        <i class="bi bi-check-circle"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        @endif
                                         @if(Auth::user()->typeUser === 0 || Auth::user()->can('editer catégories ticket'))
                                             <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $categorie->id }}">
                                                 <i class="bi bi-pencil-square" title="Editer"></i>
@@ -135,12 +160,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- Fin de la modal -->
                                     </div>
                                 </td>
                             </tr>
 
-                            <!-- Modal pour modifier un paramètre -->
                             <div class="modal fade" id="editCategoryModal{{ $categorie->id }}" tabindex="-1" aria-labelledby="editCategoryModalLabel{{ $categorie->id }}" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
@@ -188,6 +211,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Nom</th>
                                 <th scope="col">Description</th>
+                                <th scope="col">Statut</th>
                                 <th scope="col">Date création</th>
                                 <th scope="col">Actions</th>
                             </tr>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Estate;
 
 use App\Http\Controllers\Controller;
+use App\Models\CategorieBien;
 use Illuminate\Http\Request;
 
 use App\Models\CategorieTicket;
@@ -44,14 +45,18 @@ class CategoryTicketController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nom_categorie' => 'required|string|max:255|unique:categorie_tickets,nom_categorie',
             'description' => 'required|string|max:225',
         ],[
             'nom_categorie.unique' => 'Cette catégorie de ticket existe déjà'
         ]);
 
-        $categorie = CategorieTicket::create($request->all());
+        $categorie = CategorieTicket::create([
+            'nom_categorie' => $validated['nom_categorie'],
+            'description' => $validated['description'],
+            'statut' => 'actif'
+        ]);
 
         return redirect()->route('category_ticket.index')->with('success', "Catégorie de ticket {$categorie->nom_categorie} créée avec succès.");
     }
@@ -91,6 +96,26 @@ class CategoryTicketController extends Controller
         $categorie->save();
 
         return redirect()->route('category_ticket.index')->with('success', "Catégorie de ticket {$categorie->nom_categorie} mis à jour avec succès.");
+    }
+
+    public function suspend(CategorieTicket $categorieTicket)
+    {
+        if ($categorieTicket->statut !== 'actif') {
+            return redirect()->route('category_ticket.index')->with('error', 'Seules les catégories actives peuvent être désactivées.');
+        }
+
+        $categorieTicket->update(['statut' => 'inactif']);
+        return redirect()->route('category_ticket.index')->with('success', "Catégorie de ticket {$categorieTicket->nom_categorie} désactivée.");
+    }
+
+    public function reactivate(CategorieTicket $categorieTicket)
+    {
+        if ($categorieTicket->statut !== 'inactif') {
+            return redirect()->route('category_ticket.index')->with('error', 'Seules les catégories inactives peuvent être réactivées.');
+        }
+
+        $categorieTicket->update(['statut' => 'actif']);
+        return redirect()->route('category_ticket.index')->with('success', "Catégorie de ticket {$categorieTicket->nom_categorie} réactivée.");
     }
 
     /**

@@ -203,7 +203,8 @@
         width: 80px;
         height: 80px;
         object-fit: cover;
-        border: 3px solid #007bff;
+        border: 1px solid white;
+
     }
 
     .offcanvas-footer {

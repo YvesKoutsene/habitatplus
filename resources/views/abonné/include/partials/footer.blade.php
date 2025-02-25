@@ -26,7 +26,7 @@
                 <ul class="list-unstyled">
                     @auth
                         <li>
-                            Si vous rencontrez des problèmes, n'hésitez pas à <a data-bs-toggle="modal" data-bs-target="#problemModal" class="text-warning" href="">signaler un problème</a>.
+                            Si vous rencontrez des problèmes, n'hésitez pas à <a  class="text-warning" href="{{ route('ticket.create') }}">signaler un problème</a>.
                         </li>
                     @else
                         <li>
@@ -75,30 +75,6 @@
         </div>
     </div>
 </footer>
-
-<div class="modal fade" id="problemModal" tabindex="-1" aria-labelledby="problemModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-static">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-black" >Signaler un problème</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
-            </div>
-            <div class="modal-body">
-                <form action="" method="POST" onsubmit="showLoading()">
-                    @csrf
-                    <div class="mb-3">
-                        <textarea name="motif" id="motif" rows="4" class="form-control" placeholder="Donnez le motif du signalement..." maxlength="200" required></textarea>
-                    </div>
-                    <div class="d-flex justify-content-end gap-3">
-                        <button type="submit" class="btn btn-danger">
-                            <i class="bi bi-send"></i> Envoyer
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <style>
     body {

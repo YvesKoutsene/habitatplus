@@ -10,7 +10,7 @@ class CategorieTicket extends Model
     //
     use HasFactory;
 
-    protected $fillable = ['nom_categorie', 'description'];
+    protected $fillable = ['nom_categorie', 'description','statut'];
 
     public function tickets()
     {

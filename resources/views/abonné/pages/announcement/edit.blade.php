@@ -4,7 +4,7 @@
 <form id="createAdForm" action="{{ route('announcement.update', $bien->id) }}" method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
     @csrf
     @method('PUT')
-    <h2 class="text-black-50 mb-4">Modifier votre annonce</h2>
+    <h3 class="text-black-50 mb-4">Modifier votre annonce</h3>
 
     <div class="card shadow-lg border-0 rounded-lg mb-4">
         <div class="card-header text-black">

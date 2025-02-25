@@ -82,6 +82,7 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'créer catégories ticket', 'parent_id' => $manageCategoriesTicket->id]);
         Permission::create(['name' => 'editer catégories ticket', 'parent_id' => $manageCategoriesTicket->id]);
         Permission::create(['name' => 'supprimer catégories ticket', 'parent_id' => $manageCategoriesTicket->id]);
+        Permission::create(['name' => 'désactiver/réactiver catégories ticket', 'parent_id' => $manageCategoriesTicket->id]);
 
         //Permissions de gestion de signalement
         $manageSignalement = Permission::create(['name' => 'gérer les signalements']);

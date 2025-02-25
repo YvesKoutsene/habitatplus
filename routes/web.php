@@ -3,6 +3,7 @@
 use App\Http\Controllers\Estate\AnnouncementController;
 use App\Http\Controllers\Estate\CategoryBienController;
 use App\Http\Controllers\Estate\CategoryTicketController;
+use App\Http\Controllers\Estate\TicketController;
 use App\Http\Controllers\Estate\ModelSubscriptionController;
 use App\Http\Controllers\Estate\ParameterCategoryController;
 use App\Http\Controllers\Estate\ParameterModelController;
@@ -12,7 +13,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Estate\ReportingController;
-
 
 Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -47,6 +47,12 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
     Route::resource('model_subscription', ModelSubscriptionController::class);
 
     Route::resource('category_ticket', CategoryTicketController::class);
+    Route::patch('category_ticket/{categorieTicket}/suspend', [CategoryTicketController::class, 'suspend'])->name('category_ticket.suspend');
+    Route::patch('category_ticket/{categorieTicket}/reactivate', [CategoryTicketController::class, 'reactivate'])->name('category_ticket.reactivate');
+
+    Route::get('/ticket/list', [TicketController::class, 'index'])->name('tckt.index');
+    Route::get('/ticket/list/closed', [TicketController::class, 'index02'])->name('tckt.index02');
+    Route::put('/ticket/{ticket}/closed', [TicketController::class, 'close'])->name('tckt.close');
 
     Route::get('announcement/list', [AnnouncementController::class, 'index'])->name('announcement.list');
     Route::get('announcement/list/block', [AnnouncementController::class, 'index02'])->name('announcement.list02');
@@ -56,12 +62,6 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
     Route::get('announcement/admin/report/{bien}', [ReportingController::class, 'show'])->name('report.show');
     Route::put('announcement/admin/{bien}/block', [ReportingController::class, 'block'])->name('announcement.block');
     Route::put('announcement/admin/{bien}/reactivate', [ReportingController::class, 'reactivate'])->name('announcement.reactivate');
-
-});
-
-#Pour abonné
-Route::middleware(['auth', 'checkUserType:2','check.email.verified'])->group(function () {
-    Route::post('/announcement/{bien}/reporting', [ReportingController::class, 'report'])->name('announcement.report');
 
 });
 
@@ -77,8 +77,18 @@ Route::middleware(['auth', 'checkUserType:0,2','check.email.verified'])->group(f
 Route::middleware(['auth','checkUserType:0,1,2','check.email.verified'])->group(function () {
     Route::put('/profile/profile/update/{id}', [ProfileController::class, 'update'])->name('update.profile');
     Route::put('/profile/password/update/{id}', [ProfileController::class, 'updatePassword'])->name('update.password');
+    //Route::resource('ticket', TicketController::class);
 
 });
+
+#Pour abonné
+Route::middleware(['auth', 'checkUserType:2','check.email.verified'])->group(function () {
+    Route::post('/announcement/{bien}/reporting', [ReportingController::class, 'report'])->name('announcement.report');
+    Route::get('/ticket', [TicketController::class, 'create'])->name('ticket.create');
+    Route::post('/ticket', [TicketController::class, 'store'])->name('ticket.store');
+
+});
+
 
 #Pour les sans connecté (visiteurs)
 Route::middleware(['check.email.verified'])->group(function () {

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('categorie_tickets', function (Blueprint $table) {
             $table->id();
             $table->string('nom_categorie');
+            $table->string('statut');
             $table->text('description')->nullable();
             $table->timestamps();
         });

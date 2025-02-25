@@ -1,42 +1,40 @@
 <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
-    <div class="bg-primary text-white text-center py-5">
-        <div class="profile-picture mb-4">
+    <div class="text-white text-center py-5 position-relative">
+        <!-- Élément de fond avec opacité -->
+        <div class="bg-black" style="opacity: 0.6; position: absolute; top: 0; left: 0; right: 0; bottom: 0;"></div>
+
+        <div class="profile-picture mb-4 position-relative">
             <img src="{{ asset(Auth::user()->photo_profil) }}"
                  alt="Photo de profil"
                  class="img-thumbnail rounded-circle shadow-sm"
-                 style="width: 120px; height: 120px; border: 1px solid white;">
+                 style="width: 120px; height: 120px; border: 1px solid white; position: relative; z-index: 1;">
         </div>
-        <h4 class="mb-1">{{ auth()->user()->name }}</h4>
-        <p class="mb-1">{{ auth()->user()->email }}</p>
-        <!--
-            <p class="mb-1">
-                ({{ auth()->user()->pays }}) {{ auth()->user()->numero }}
-            </p>
-        -->
+        <h4 class="mb-1 text-light">{{ auth()->user()->name }}</h4>
+        <p class="mb-1 text-light">{{ auth()->user()->email }}</p>
         @php
-        $createdAt = \Carbon\Carbon::parse(Auth::user()->created_at);
-        $now = \Carbon\Carbon::now();
-        $diffInDays = $createdAt->diffInDays($now);
-        $diffInMonths = $createdAt->diffInMonths($now);
-        $diffInYears = $createdAt->diffInYears($now);
-        $diffInHours = $createdAt->diffInHours($now);
-        $diffInMins = $createdAt->diffInMinutes($now);
+            $createdAt = \Carbon\Carbon::parse(Auth::user()->created_at);
+            $now = \Carbon\Carbon::now();
+            $diffInDays = $createdAt->diffInDays($now);
+            $diffInMonths = $createdAt->diffInMonths($now);
+            $diffInYears = $createdAt->diffInYears($now);
+            $diffInHours = $createdAt->diffInHours($now);
+            $diffInMins = $createdAt->diffInMinutes($now);
         @endphp
 
         <p class="small text-light mb-1">
             Actif depuis
             @if ($diffInYears > 0)
-            <strong>{{ $diffInYears }} an{{ $diffInYears > 1 ? 's' : '' }}</strong>
+                <strong>{{ $diffInYears }} an{{ $diffInYears > 1 ? 's' : '' }}</strong>
             @elseif ($diffInMonths > 0)
-            <strong>{{ $diffInMonths }} mois</strong>
+                <strong>{{ $diffInMonths }} mois</strong>
             @elseif ($diffInDays > 7)
-            <strong>{{ floor($diffInDays / 7) }} semaine{{ floor($diffInDays / 7) > 1 ? 's' : '' }}</strong>
+                <strong>{{ floor($diffInDays / 7) }} semaine{{ floor($diffInDays / 7) > 1 ? 's' : '' }}</strong>
             @elseif ($diffInDays > 0)
-            <strong>{{ $diffInDays }} jour{{ $diffInDays > 1 ? 's' : '' }}</strong>
+                <strong>{{ $diffInDays }} jour{{ $diffInDays > 1 ? 's' : '' }}</strong>
             @elseif($diffInHours > 0)
-            <strong>{{ $diffInHours }} heure{{ $diffInHours > 1 ? 's' : '' }}</strong>
+                <strong>{{ $diffInHours }} heure{{ $diffInHours > 1 ? 's' : '' }}</strong>
             @else
-            <strong>{{ $diffInMins }} minute{{ $diffInMins > 1 ? 's' : '' }}</strong>
+                <strong>{{ $diffInMins }} minute{{ $diffInMins > 1 ? 's' : '' }}</strong>
             @endif
         </p>
     </div>
@@ -58,7 +56,6 @@
 
 <style>
     .card {
-        /*max-width: 500px;*/
         margin: 30px auto;
         border-radius: 15px;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
