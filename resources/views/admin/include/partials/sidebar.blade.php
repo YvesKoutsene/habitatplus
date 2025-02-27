@@ -123,37 +123,37 @@
     </li>
     @endif
 
-    @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir ticket') || Auth::user()->can('voir catégories ticket') || Auth::user()->can('créer catégories ticket') )
+    @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir tickets') || Auth::user()->can('voir catégories ticket') || Auth::user()->can('créer catégories ticket') )
     <li class="nav-item">
-        <a class="nav-link collapsed {{ request()->routeIs('tckt*') || request()->is('category_ticket*') || request()->is('message*') ? 'active' : '' }}" data-bs-target="#ticket-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed {{ request()->routeIs('tckt*') || request()->is('category_ticket*') || request()->is('ticket/list/*/messages') ? 'active' : '' }}" data-bs-target="#ticket-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-chat-quote"></i><span>Ticket</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="ticket-nav" class="nav-content collapse {{ request()->routeIs('tckt*') || request()->is('category_ticket*') || request()->is('message*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+        <ul id="ticket-nav" class="nav-content collapse {{ request()->routeIs('tckt*') || request()->is('category_ticket*') || request()->is('ticket/list/*/messages') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
             @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir tickets'))
-            <li>
-                <a class="{{ request()->routeIs('tckt.index') ? 'active' : '' }}" href="{{ route('tckt.index') }}">
-                    <i class="bi bi-circle"></i><span>Ouverts</span>
-                </a>
-            </li>
-            <li>
-                <a class="{{ request()->routeIs('tckt.index02') ? 'active' : '' }}" href="{{ route('tckt.index02') }}">
-                    <i class="bi bi-circle"></i><span>Clôturés</span>
-                </a>
-            </li>
+                <li>
+                    <a class="{{ request()->routeIs('tckt.index') ? 'active' : '' }}" href="{{ route('tckt.index') }}">
+                        <i class="bi bi-circle"></i><span>Ouverts</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="{{ request()->routeIs('tckt.index02') ? 'active' : '' }}" href="{{ route('tckt.index02') }}">
+                        <i class="bi bi-circle"></i><span>Clôturés</span>
+                    </a>
+                </li>
             @endif
             @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir catégories ticket'))
-            <li>
-                <a class="{{ request()->routeIs('category_ticket.index') ? 'active' : '' }}" href="{{ route('category_ticket.index') }}">
-                    <i class="bi bi-circle"></i><span>Catégorie Ticket</span>
-                </a>
-            </li>
+                <li>
+                    <a class="{{ request()->routeIs('category_ticket.index') ? 'active' : '' }}" href="{{ route('category_ticket.index') }}">
+                        <i class="bi bi-circle"></i><span>Catégorie Ticket</span>
+                    </a>
+                </li>
             @endif
             @if(Auth::user()->typeUser === 0 || Auth::user()->can('créer catégories ticket'))
-            <li>
-                <a href="{{ route('category_ticket.index', ['showModal' => 'create']) }}">
-                    <i class="bi bi-circle"></i><span>Ajouter Catégorie</span>
-                </a>
-            </li>
+                <li>
+                    <a href="{{ route('category_ticket.index', ['showModal' => 'create']) }}">
+                        <i class="bi bi-circle"></i><span>Ajouter Catégorie</span>
+                    </a>
+                </li>
             @endif
         </ul>
     </li>

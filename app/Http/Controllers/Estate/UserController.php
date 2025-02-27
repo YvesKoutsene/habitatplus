@@ -73,7 +73,8 @@ class UserController extends Controller
         $validateUser = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            //'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', Password::defaults()], // Utilisation de Password
             'pays' => 'required|string',
             'numero' => 'required|string|max:15',
             'photo_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',

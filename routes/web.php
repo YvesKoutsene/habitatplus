@@ -55,6 +55,10 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
     Route::get('/ticket/list/closed', [TicketController::class, 'index02'])->name('tckt.index02');
     Route::put('/ticket/{ticket}/closed', [TicketController::class, 'close'])->name('tckt.close');
 
+    Route::get('/ticket/list/{ticketId}/messages', [MessageTicketController::class, 'index'])->name('message.ticket');
+    Route::post('/ticket/{ticketId}/message', [MessageTicketController::class, 'sendMessage'])->name('message.send');
+    Route::get('/ticket/{ticketId}/message', [MessageTicketController::class, 'receiveMessage'])->name('message.revieve');
+
     Route::get('announcement/list', [AnnouncementController::class, 'index'])->name('announcement.list');
     Route::get('announcement/list/block', [AnnouncementController::class, 'index02'])->name('announcement.list02');
     Route::get('announcement/admin/{bien}/details', [AnnouncementController::class, 'details'])->name('announcement.details');
@@ -66,9 +70,7 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
 
 
 });
-Route::get('/ticket/list/{ticketId}/messages', [MessageTicketController::class, 'index'])->name('message.ticket');
-Route::post('/ticket/{ticketId}/message', [MessageTicketController::class, 'sendMessage'])->name('message.send');
-Route::get('/ticket/{ticketId}/message', [MessageTicketController::class, 'receiveMessage'])->name('message.revieve');
+
 
 #Pour super admin et abonné
 Route::middleware(['auth', 'checkUserType:0,2','check.email.verified'])->group(function () {

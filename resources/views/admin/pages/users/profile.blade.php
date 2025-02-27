@@ -24,7 +24,7 @@
                     @if(Auth::user()->typeUser === 0)
                         Super Admin
                     @else
-                        {{ Auth::user()->roles->first() ? ucfirst(Auth::user()->roles->first()->name) : 'Aucun rôle' }}
+                        {{ Auth::user()->roles->first() ? ucfirst(Auth::user()->roles->first()->name) : 'Super Admin' }}
                     @endif
                 </h3>
               <span>Actif depuis {{ \Carbon\Carbon::parse(Auth::user()->created_at)->format('d M Y') }}</span>

@@ -20,7 +20,13 @@ class MessageTicketController extends Controller
         if (!$ticket) {
             return redirect()->route('tickets.index')->with('error', 'Ticket introuvable.');
         }
-        return view('admin.pages.ticket.chat', compact('ticket'));
+
+        //New
+        $messagesByDate = $ticket->messages->groupBy(function($message) {
+            return \Carbon\Carbon::parse($message->created_at)->format('Y-m-d');
+        });
+
+        return view('admin.pages.ticket.chat', compact('ticket', 'messagesByDate'));
     }
 
     //Fonction pour envoyer un message d'un ticket
@@ -36,7 +42,7 @@ class MessageTicketController extends Controller
             'message' => $request->message,
         ]);
 
-        broadcast(new PusherBroadcastTicket($messageTicket))->toOthers();
+        broadcast(new PusherBroadcastTicket($messageTicket));
 
         return response()->json([
             'message' => $messageTicket->message,

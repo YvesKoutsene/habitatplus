@@ -204,13 +204,7 @@ use Carbon\Carbon;
                                             </div>
                                             @endif
                                         @endif
-                                        @if(Auth::user()->typeUser === 0)
-                                            @if($user->typeUser === 1)
-                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-placement="top" title="Réinitialiser"> <!--data-bs-target="#deleteConfirmation{{ $user->id }}" -->
-                                                <i class="bi bi-arrow-clockwise"></i>
-                                            </button>
-                                            @endif
-                                        @endif
+
                                         <div class="modal fade" id="deleteConfirmation{{ $user->id }}" tabindex="-1" aria-labelledby="deleteConfirmationLabel{{ $user->id }}" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
