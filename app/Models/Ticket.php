@@ -21,4 +21,10 @@ class Ticket extends Model
     {
         return $this->belongsTo(CategorieTicket::class, 'id_categorie');
     }
+
+    public function messages()
+    {
+        return $this->hasMany(MessageTicket::class);
+    }
+
 }

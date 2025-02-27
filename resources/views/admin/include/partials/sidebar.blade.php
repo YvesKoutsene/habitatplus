@@ -125,10 +125,10 @@
 
     @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir ticket') || Auth::user()->can('voir catégories ticket') || Auth::user()->can('créer catégories ticket') )
     <li class="nav-item">
-        <a class="nav-link collapsed {{ request()->routeIs('tckt*') || request()->is('category_ticket*') ? 'active' : '' }}" data-bs-target="#ticket-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed {{ request()->routeIs('tckt*') || request()->is('category_ticket*') || request()->is('message*') ? 'active' : '' }}" data-bs-target="#ticket-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-chat-quote"></i><span>Ticket</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="ticket-nav" class="nav-content collapse {{ request()->routeIs('tckt*') || request()->is('category_ticket*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+        <ul id="ticket-nav" class="nav-content collapse {{ request()->routeIs('tckt*') || request()->is('category_ticket*') || request()->is('message*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
             @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir tickets'))
             <li>
                 <a class="{{ request()->routeIs('tckt.index') ? 'active' : '' }}" href="{{ route('tckt.index') }}">

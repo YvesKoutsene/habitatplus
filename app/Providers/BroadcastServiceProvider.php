@@ -13,7 +13,12 @@ class BroadcastServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Broadcast::routes();
-
         require base_path('routes/channels.php');
+
+        //New by Jean-Yves
+        Broadcast::channel('chat.{ticketId}', function ($user, $ticketId) {
+            return true;
+        });
     }
+
 }

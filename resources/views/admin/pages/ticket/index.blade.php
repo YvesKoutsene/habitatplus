@@ -156,10 +156,9 @@
                                                             </div>
                                                         </div>
 
-
                                                     @endif
                                                     @if(Auth::user()->typeUser === 0 || Auth::user()->can('répondre tickets'))
-                                                        <a href="" class="btn btn-sm btn-secondary me-2" title="Chatter sur ce ticket">
+                                                        <a href="{{ route('message.ticket', $ticket->id) }}"  class="btn btn-sm btn-secondary me-2" title="Chatter sur ce ticket">
                                                             <i class="bi bi-chat-dots"></i>
                                                         </a>
                                                     @endif

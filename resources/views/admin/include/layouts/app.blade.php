@@ -24,6 +24,9 @@
         <link href="\assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
         <link href="\assets/css/style.css" rel="stylesheet">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
     </head>
 
     <body>

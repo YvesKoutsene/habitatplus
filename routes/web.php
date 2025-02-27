@@ -13,6 +13,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Estate\ReportingController;
+use App\Http\Controllers\Estate\MessageTicketController;
 
 Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -63,7 +64,11 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
     Route::put('announcement/admin/{bien}/block', [ReportingController::class, 'block'])->name('announcement.block');
     Route::put('announcement/admin/{bien}/reactivate', [ReportingController::class, 'reactivate'])->name('announcement.reactivate');
 
+
 });
+Route::get('/ticket/list/{ticketId}/messages', [MessageTicketController::class, 'index'])->name('message.ticket');
+Route::post('/ticket/{ticketId}/message', [MessageTicketController::class, 'sendMessage'])->name('message.send');
+Route::get('/ticket/{ticketId}/message', [MessageTicketController::class, 'receiveMessage'])->name('message.revieve');
 
 #Pour super admin et abonné
 Route::middleware(['auth', 'checkUserType:0,2','check.email.verified'])->group(function () {
