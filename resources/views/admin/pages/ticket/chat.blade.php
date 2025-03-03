@@ -29,37 +29,38 @@
                                     </small>
                                     - Objet : {{ $ticket->titre }}
                                 </h5>
-                                @if(Auth::user()->typeUser === 0 || Auth::user()->can('clôturer tickets'))
-                                    <a href="" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#confirmCloseModal{{ $ticket->id }}" title="Clôturer ce ticket">
-                                        <i class="bi bi-slash-circle"> Clôturer</i>
-                                    </a>
-                                    <div class="modal fade" id="confirmCloseModal{{ $ticket->id }}" tabindex="-1" aria-labelledby="confirmCloseModalLabel{{ $ticket->id }}" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <i class="bi bi-exclamation-triangle me-1"></i>
-                                                    <h5 class="modal-title" id="confirmCloseModalLabel{{ $ticket->id }}">Confirmation de clôture</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Êtes-vous sûr de vouloir clôturer ce ticket ? Cette action est irréversible.
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                                    <form action="{{ route('tckt.close', $ticket->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button type="submit" class="btn btn-danger">Clôturer</button>
-                                                    </form>
+                                @if($ticket->statut == 'ouvert')
+                                    @if(Auth::user()->typeUser === 0 || Auth::user()->can('clôturer tickets'))
+                                        <a href="" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#confirmCloseModal{{ $ticket->id }}" title="Clôturer ce ticket">
+                                            <i class="bi bi-slash-circle"> Clôturer</i>
+                                        </a>
+                                        <div class="modal fade" id="confirmCloseModal{{ $ticket->id }}" tabindex="-1" aria-labelledby="confirmCloseModalLabel{{ $ticket->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <i class="bi bi-exclamation-triangle me-1"></i>
+                                                        <h5 class="modal-title" id="confirmCloseModalLabel{{ $ticket->id }}">Confirmation de clôture</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Êtes-vous sûr de vouloir clôturer ce ticket ? Cette action est irréversible.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                        <form action="{{ route('tckt.close', $ticket->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <button type="submit" class="btn btn-danger">Clôturer</button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 @endif
                             </div>
                         </div>
                     </div>
-
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title text-center">Discussions</h5>
@@ -67,7 +68,6 @@
                                 @php
                                     $hasTodayMessages = false;
                                 @endphp
-
                                 @foreach($messagesByDate as $date => $messages)
                                     @php
                                         $formattedDate = \Carbon\Carbon::parse($date);
@@ -82,7 +82,6 @@
                                             $header = $formattedDate->translatedFormat('d F Y');
                                         }
                                     @endphp
-
                                     <div class="date-header">{{ $header }}</div>
                                     @foreach($messages as $message)
                                         <div class="message {{ $message->user_id === auth()->id() ? 'right' : 'left' }}">
@@ -96,23 +95,24 @@
                                         </div>
                                     @endforeach
                                 @endforeach
-
                                 @if(!$hasTodayMessages)
                                     <div class="date-header" style="display:none;" id="today-header">Aujourd'hui</div>
                                 @endif
                             </div>
-
-                            <form id="messageForm">
-                                <div class="input-group">
-                                    <input type="text" id="message" name="message" class="form-control me-2" placeholder="Entrer votre message...">
-                                    <button type="submit" class="btn btn-primary rounded">
-                                        <i class="bi bi-send"></i>
-                                    </button>
-                                </div>
-                            </form>
+                            @if($ticket->statut == 'ouvert')
+                                @if(Auth::user()->typeUser === 0 || Auth::user()->can('clôturer tickets'))
+                                    <form id="messageForm">
+                                        <div class="input-group">
+                                            <input type="text" id="message" name="message" class="form-control me-2" placeholder="Entrer votre message...">
+                                            <button type="submit" class="btn btn-primary rounded">
+                                                <i class="bi bi-send"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                @endif
+                            @endif
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -127,7 +127,6 @@
         });
         const channel = pusher.subscribe("chat." + ticketId);
         const notification = document.getElementById("newMessageNotification");
-
         channel.bind("chat", function(data) {
             let userId = {{ auth()->id() }};
             let messageHtml = `

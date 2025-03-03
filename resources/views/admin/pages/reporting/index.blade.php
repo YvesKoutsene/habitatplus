@@ -48,8 +48,8 @@
                         <table class="table table-hover table-striped">
                             <thead>
                             <tr>
+                                <th>Annonce signalée</th>
                                 <th>Propriétaire</th>
-                                <th>Titre annonce</th>
                                 <th>Prix (FCFA)</th>
                                 <th>Caractéristiques</th>
                                 <th>Total signalement</th>
@@ -60,10 +60,6 @@
                             <tbody>
                             @foreach($signalements as $signal)
                             <tr>
-                                <td>
-                                    <img src="{{ asset($signal->bien->user->photo_profil) }}" alt="Profil" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;">
-                                    | {{ $signal->bien->user->name }}
-                                </td>
                                 <td>
                                     @if(strlen($signal->bien->titre) > 8)
                                     {{ ucfirst(substr($signal->bien->titre, 0, 8)) }}...
@@ -89,6 +85,10 @@
                                     @else
                                     {{ ucfirst($signal->bien->titre) }}
                                     @endif
+                                </td>
+                                <td>
+                                    <img src="{{ asset($signal->bien->user->photo_profil) }}" alt="Profil" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;">
+                                    | {{ $signal->bien->user->name }}
                                 </td>
                                 <td>{{ number_format($signal->bien->prix, 0, ',', ' ') }}</td>
                                 <td>
@@ -217,7 +217,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- Modal de confirmation de blocage -->
                                                 <div class="modal fade" id="confirmBlockModal{{ $signal->bien->id }}" tabindex="-1" aria-labelledby="confirmBlockModalLabel{{ $signal->bien->id }}" aria-hidden="true">
                                                     <div class="modal-dialog  modal-dialog-centered">
                                                         <div class="modal-content">
@@ -271,8 +270,8 @@
                             </tbody>
                             <tfoot>
                             <tr>
+                                <th>Annonce signalée</th>
                                 <th>Propriétaire</th>
-                                <th>Titre annonce</th>
                                 <th>Prix (FCFA)</th>
                                 <th>Caractéristiques</th>
                                 <th>Total signalement</th>

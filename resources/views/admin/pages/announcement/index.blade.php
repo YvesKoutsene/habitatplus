@@ -47,8 +47,8 @@
                         <table class="table table-hover table-striped">
                             <thead>
                             <tr>
-                                <th>Propriétaire</th>
                                 <th>Titre annonce</th>
+                                <th>Propriétaire</th>
                                 <th>Prix (FCFA)</th>
                                 <th>Caractéristiques</th>
                                 <th>Publié le</th>
@@ -59,10 +59,6 @@
                             <tbody>
                             @foreach($biens as $bien)
                             <tr>
-                                <td>
-                                    <img src="{{ asset($bien->user->photo_profil) }}" alt="Profil" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;">
-                                    | {{ $bien->user->name }}
-                                </td>
                                 <td>
                                     @if(strlen($bien->titre) > 8)
                                     {{ ucfirst(substr($bien->titre, 0, 8)) }}...
@@ -88,6 +84,10 @@
                                     @else
                                     {{ ucfirst($bien->titre) }}
                                     @endif
+                                </td>
+                                <td>
+                                    <img src="{{ asset($bien->user->photo_profil) }}" alt="Profil" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;">
+                                    | {{ $bien->user->name }}
                                 </td>
                                 <td>{{ number_format($bien->prix, 0, ',', ' ') }}</td>
                                 <td>
@@ -238,8 +238,8 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th>Propriétaire</th>
                                 <th>Titre annonce</th>
+                                <th>Propriétaire</th>
                                 <th>Prix (FCFA)</th>
                                 <th>Caractéristiques</th>
                                 <th>Publié le</th>

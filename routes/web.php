@@ -53,6 +53,7 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
 
     Route::get('/ticket/list', [TicketController::class, 'index'])->name('tckt.index');
     Route::get('/ticket/list/closed', [TicketController::class, 'index02'])->name('tckt.index02');
+    Route::get('/ticket/admin/{ticket}/details', [TicketController::class, 'show'])->name('tckt.show');
     Route::put('/ticket/{ticket}/closed', [TicketController::class, 'close'])->name('tckt.close');
 
     Route::get('/ticket/list/{ticketId}/messages', [MessageTicketController::class, 'index'])->name('message.ticket');
@@ -77,6 +78,7 @@ Route::middleware(['auth', 'checkUserType:0,2','check.email.verified'])->group(f
     Route::resource('announcement', AnnouncementController::class);
     Route::put('announcement/{bien}/terminate', [AnnouncementController::class, 'terminate'])->name('announcement.terminate');
     Route::put('announcement/{bien}/relaunch', [AnnouncementController::class, 'relaunch'])->name('announcement.relaunch');
+    Route::put('announcement/{bien}/publish', [AnnouncementController::class, 'publish'])->name('announcement.publish');
 
 });
 
@@ -84,7 +86,6 @@ Route::middleware(['auth', 'checkUserType:0,2','check.email.verified'])->group(f
 Route::middleware(['auth','checkUserType:0,1,2','check.email.verified'])->group(function () {
     Route::put('/profile/profile/update/{id}', [ProfileController::class, 'update'])->name('update.profile');
     Route::put('/profile/password/update/{id}', [ProfileController::class, 'updatePassword'])->name('update.password');
-    //Route::resource('ticket', TicketController::class);
 
 });
 

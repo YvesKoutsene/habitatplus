@@ -2,11 +2,11 @@
 @section('content')
 
 <div class="pagetitle">
-    <h1>Détails du Bien</h1>
+    <h1>Annonces</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bi bi-house-door"></i></a></li>
-            <li class="breadcrumb-item"><a href="{{ route('announcement.list') }}">Liste des Annonces</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('announcement.list') }}">Annonces</a></li>
             <li class="breadcrumb-item active">Détails du Bien</li>
         </ol>
     </nav>
@@ -69,7 +69,7 @@
                         <li class="list-group-item d-flex justify-content-between"><strong>Prix :</strong> {{ number_format($bien->prix, 0, ',', ' ') }} FCFA</li>
                         <li class="list-group-item d-flex justify-content-between"><strong>Catégorie :</strong> {{ $bien->categorieBien->titre }}</li>
                         <li class="list-group-item d-flex justify-content-between"><strong>Lieu :</strong> {{ $bien->lieu }}</li>
-                        <li class="list-group-item d-flex justify-content-between"><strong>Statut :</strong> <span class="badge {{ $classe = ($bien->statut == 'publié') ? 'bg-primary' : (($bien->statut == 'terminé') ? 'bg-warning' : 'bg-danger'); }}">{{ ucfirst($bien->statut) }}</span></li>
+                        <li class="list-group-item d-flex justify-content-between"><strong>Statut :</strong> <span class="badge {{ $classe = ($bien->statut == 'publié') ? 'bg-primary' : (($bien->statut == 'terminé') ? 'bg-warning' : 'bg-danger') }}">{{ ucfirst($bien->statut) }}</span></li>
                         <li class="list-group-item d-flex justify-content-between">
                             <span id="descriptionText" class="text-black-50">
                                 {{ Str::limit($bien->description !== null ? $bien->description : 'Aucune description', 25) }}

@@ -15,12 +15,12 @@
             <ul id="announcement-nav" class="nav-content collapse {{ request()->is('announcement/list') || request()->is('announcement/list/block') || request()->routeIs('announcement.details') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
                 <li>
                     <a class="{{ request()->routeIs('announcement.list') ? 'active' : '' }}" href="{{ route('announcement.list') }}">
-                        <i class="bi bi-circle"></i><span>Publications</span>
+                        <i class="bi bi-circle"></i><span>Annonce Publiée</span>
                     </a>
                 </li>
                 <li>
                     <a class="{{ request()->routeIs('announcement.list02') ? 'active' : '' }}" href="{{ route('announcement.list02') }}">
-                        <i class="bi bi-circle"></i><span>Rejets</span>
+                        <i class="bi bi-circle"></i><span>Annonce Rejetée</span>
                     </a>
                 </li>
             </ul>
@@ -132,12 +132,12 @@
             @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir tickets'))
                 <li>
                     <a class="{{ request()->routeIs('tckt.index') ? 'active' : '' }}" href="{{ route('tckt.index') }}">
-                        <i class="bi bi-circle"></i><span>Ouverts</span>
+                        <i class="bi bi-circle"></i><span>Ticket Ouvert</span>
                     </a>
                 </li>
                 <li>
                     <a class="{{ request()->routeIs('tckt.index02') ? 'active' : '' }}" href="{{ route('tckt.index02') }}">
-                        <i class="bi bi-circle"></i><span>Clôturés</span>
+                        <i class="bi bi-circle"></i><span>Ticket Clôturé</span>
                     </a>
                 </li>
             @endif

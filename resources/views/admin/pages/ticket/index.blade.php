@@ -37,7 +37,6 @@
                                 </form>
                             </div>
                         @endif
-
                         @if($tickets->isEmpty())
                             <div class="alert alert-info">
                                 Aucun ticket ouvert pour le moment.
@@ -47,9 +46,9 @@
                                 <table class="table table-hover table-striped">
                                     <thead>
                                     <tr>
-                                        <th>Ouvert par</th>
+                                       <th>#</th>
                                         <th>Objet</th>
-                                        <th>Catégorie ticket</th>
+                                        <th>Ouvert par</th>
                                         <th>Description</th>
                                         <th>Ouvert le</th>
                                         <th>Statut</th>
@@ -59,10 +58,7 @@
                                     <tbody>
                                     @foreach($tickets as $ticket)
                                         <tr>
-                                            <td>
-                                                <img src="{{ asset($ticket->user->photo_profil) }}" alt="Profil" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;">
-                                                | {{ $ticket->user->name }}
-                                            </td>
+                                            <td>{{ $ticket->id}}</td>
                                             <td>
                                                 @if(strlen($ticket->titre) > 8)
                                                     {{ ucfirst(substr($ticket->titre, 0, 8)) }}...
@@ -89,7 +85,10 @@
                                                     {{ ucfirst($ticket->titre) }}
                                                 @endif
                                             </td>
-                                            <td>{{ $ticket->categorie->nom_categorie }}</td>
+                                            <td>
+                                                <img src="{{ asset($ticket->user->photo_profil) }}" alt="Profil" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;">
+                                                | {{ $ticket->user->name }}
+                                            </td>
                                             <td>
                                                 @if(strlen($ticket->description) > 8)
                                                     {{ ucfirst(substr($ticket->description, 0, 8)) }}...
@@ -125,8 +124,13 @@
                                             <td>
                                                 <div class="d-flex">
                                                     @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir tickets'))
-                                                        <a href="" class="btn btn-sm btn-outline-info me-2" title="Détails du ticket">
+                                                        <a href="{{ route('tckt.show', $ticket->id) }}" class="btn btn-sm btn-outline-info me-2" title="Détails du ticket">
                                                             <i class="bi bi-eye"></i>
+                                                        </a>
+                                                    @endif
+                                                    @if(Auth::user()->typeUser === 0 || Auth::user()->can('répondre tickets'))
+                                                        <a href="{{ route('message.ticket', $ticket->id) }}"  class="btn btn-sm btn-secondary me-2" title="Traiter ce ticket">
+                                                            <i class="bi bi-chat-dots"></i>
                                                         </a>
                                                     @endif
                                                     @if(Auth::user()->typeUser === 0 || Auth::user()->can('clôturer tickets'))
@@ -155,12 +159,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                    @endif
-                                                    @if(Auth::user()->typeUser === 0 || Auth::user()->can('répondre tickets'))
-                                                        <a href="{{ route('message.ticket', $ticket->id) }}"  class="btn btn-sm btn-secondary me-2" title="Chatter sur ce ticket">
-                                                            <i class="bi bi-chat-dots"></i>
-                                                        </a>
                                                     @endif
                                                 </div>
                                             </td>
@@ -169,9 +167,9 @@
                                     </tbody>
                                     <tfoot>
                                     <tr>
-                                        <th>Ouvert par</th>
+                                        <th>#</th>
                                         <th>Objet</th>
-                                        <th>Catégorie ticket</th>
+                                        <th>Ouvert par</th>
                                         <th>Description</th>
                                         <th>Ouvert le</th>
                                         <th>Statut</th>
@@ -202,9 +200,7 @@
             </div>
         </div>
 
-
     </section>
-
     <script>
         function showConfirmModal(id) {
             let blockModal = document.getElementById('blockModal' + id);

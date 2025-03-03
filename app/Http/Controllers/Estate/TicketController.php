@@ -87,19 +87,18 @@ class TicketController extends Controller
             'description.required' => 'La description est obligatoire'
         ]);
 
-        //dd($request->all());
-
         $filePath = null;
+
         if ($request->hasFile('piece_jointe')) {
             $piece_jointe = $request->file('piece_jointe');
-            $photoName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $piece_jointe->getClientOriginalName());
-            $filePath = $piece_jointe->storeAs('images/tickets', $photoName, 'public');
+            $fileName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $piece_jointe->getClientOriginalName());
+            $filePath = $piece_jointe->storeAs('images/tickets', $fileName, 'public');
         }
 
         Ticket::create([
             'titre' => $request->titre,
             'description' => $request->description,
-            'piece_jointe' => $filePath,
+            'piece_jointe' => $filePath ? Storage::url($filePath) : null,
             'statut' => 'ouvert',
             'id_user' => Auth::id(),
             'id_categorie' => $request->id_categorie,
@@ -129,9 +128,17 @@ class TicketController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+
+    //Fonction permettant d'afficher les details d'un ticket
+    public function show($id)
     {
-        //
+        $ticket = Ticket::with(['user','categorie'])->findOrFail($id);
+
+        if (!$ticket) {
+            return redirect()->back()->with('error', 'Ticket introuvable.');
+        }
+
+        return view('admin.pages.ticket.show', compact('ticket'));
     }
 
     /**

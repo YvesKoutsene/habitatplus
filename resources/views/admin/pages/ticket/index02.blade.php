@@ -47,9 +47,9 @@
                                 <table class="table table-hover table-striped">
                                     <thead>
                                     <tr>
-                                        <th>Ouvert par</th>
+                                        <th>#</th>
                                         <th>Objet</th>
-                                        <th>Catégorie ticket</th>
+                                        <th>Ouvert par</th>
                                         <th>Description</th>
                                         <th>Clôturé le</th>
                                         <th>Statut</th>
@@ -59,10 +59,7 @@
                                     <tbody>
                                     @foreach($tickets as $ticket)
                                         <tr>
-                                            <td>
-                                                <img src="{{ asset($ticket->user->photo_profil) }}" alt="Profil" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;">
-                                                | {{ $ticket->user->name }}
-                                            </td>
+                                            <td>{{ $ticket->id}}</td>
                                             <td>
                                                 @if(strlen($ticket->titre) > 8)
                                                     {{ ucfirst(substr($ticket->titre, 0, 8)) }}...
@@ -89,7 +86,10 @@
                                                     {{ ucfirst($ticket->titre) }}
                                                 @endif
                                             </td>
-                                            <td>{{ $ticket->categorie->nom_categorie }}</td>
+                                            <td>
+                                                <img src="{{ asset($ticket->user->photo_profil) }}" alt="Profil" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;">
+                                                | {{ $ticket->user->name }}
+                                            </td>
                                             <td>
                                                 @if(strlen($ticket->description) > 8)
                                                     {{ ucfirst(substr($ticket->description, 0, 8)) }}...
@@ -125,12 +125,12 @@
                                             <td>
                                                 <div class="d-flex">
                                                     @if(Auth::user()->typeUser === 0 || Auth::user()->can('voir tickets'))
-                                                        <a href="" class="btn btn-sm btn-outline-info me-2" title="Détails du ticket">
+                                                        <a href="{{ route('tckt.show', $ticket->id) }}" class="btn btn-sm btn-outline-info me-2" title="Détails du ticket">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
                                                     @endif
                                                     @if(Auth::user()->typeUser === 0 || Auth::user()->can('répondre tickets'))
-                                                        <a href="" class="btn btn-sm btn-info me-2" title="Historique des conversations">
+                                                        <a href="{{ route('message.ticket', $ticket->id) }}" class="btn btn-sm btn-info me-2" title="Historique de traitement">
                                                             <i class="bi bi-clock-history"></i>
                                                         </a>
                                                     @endif
@@ -141,9 +141,9 @@
                                     </tbody>
                                     <tfoot>
                                     <tr>
-                                        <th>Ouvert par</th>
+                                        <th>#</th>
                                         <th>Objet</th>
-                                        <th>Catégorie ticket</th>
+                                        <th>Ouvert par</th>
                                         <th>Description</th>
                                         <th>Clôturé le</th>
                                         <th>Statut</th>

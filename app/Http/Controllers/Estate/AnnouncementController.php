@@ -399,6 +399,28 @@ class AnnouncementController extends Controller
         return redirect()->route('dashboard')->with('success', 'Annonce republiée avec succès.');
     }
 
+    //Fonction permettant de publier une annonce brouillon
+    public function publish($id)
+    {
+        $annonce = Bien::find($id);
+        if (!$annonce) {
+            return redirect()->back()->with('error', 'Annonce introuvable.');
+        }
+        if ($annonce->id_user !== auth()->id()) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à republier cette annonce.');
+        }
+
+        if ($annonce->statut !== 'brouillon') {
+            return redirect()->back()->with('error', 'Seules les annonces brouillons peuvent être publiées.');
+        }
+
+        $annonce->statut = 'publié';
+        $annonce->datePublication = Carbon::now();
+        $annonce->save();
+
+        return redirect()->route('dashboard')->with('success', 'Annonce publiée avec succès.');
+    }
+
     //Fonction permettant à un abonné de supprimer une de ses annonces
     public function destroy($id)
     {
