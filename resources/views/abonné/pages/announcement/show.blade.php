@@ -165,6 +165,20 @@
 
         </div>
     </div>
+
+    @if($bien->boost)
+        @if($bien->id_user === Auth::user()->id)
+            <div class="card shadow-lg border-0 rounded-lg mb-4">
+                <li class="btn btn-info rounded">
+                    <span class="text-white ">Annonce boostée : {{ ucfirst($bien->boost->type_boost) }}</span>
+                    <p>Expire le {{ \Carbon\Carbon::parse($bien->boost->date_fin)->translatedFormat('d F Y') }} à
+                        {{ \Carbon\Carbon::parse($bien->boost->date_fin)->translatedFormat('H:i') }}
+                    </p>
+                </li>
+            </div>
+        @endif
+    @endif
+
 </div>
 
 <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">

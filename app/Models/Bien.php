@@ -32,5 +32,8 @@ class Bien extends Model
         return $this->hasMany(ValeurBien::class, 'id_bien');
     }
 
+    public function boost() {
+        return $this->hasOne(Boost::class, 'id_bien');
+    }
 
 }

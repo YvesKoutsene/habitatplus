@@ -14,6 +14,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Estate\ReportingController;
 use App\Http\Controllers\Estate\MessageTicketController;
+use App\Http\Controllers\Estate\BoostController;
 
 Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -69,7 +70,6 @@ Route::middleware(['auth', 'checkUserType:0,1','check.email.verified'])->group(f
     Route::put('announcement/admin/{bien}/block', [ReportingController::class, 'block'])->name('announcement.block');
     Route::put('announcement/admin/{bien}/reactivate', [ReportingController::class, 'reactivate'])->name('announcement.reactivate');
 
-
 });
 
 
@@ -79,6 +79,8 @@ Route::middleware(['auth', 'checkUserType:0,2','check.email.verified'])->group(f
     Route::put('announcement/{bien}/terminate', [AnnouncementController::class, 'terminate'])->name('announcement.terminate');
     Route::put('announcement/{bien}/relaunch', [AnnouncementController::class, 'relaunch'])->name('announcement.relaunch');
     Route::put('announcement/{bien}/publish', [AnnouncementController::class, 'publish'])->name('announcement.publish');
+
+    Route::post('announcement/{bien}/boost', [BoostController::class, 'store'])->name('announcement.boost');
 
 });
 

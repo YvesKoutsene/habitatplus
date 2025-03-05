@@ -51,7 +51,7 @@ class AnnouncementController extends Controller
 
         $query = Bien::with(['user','categorieBien', 'photos', 'valeurs'])->where(function($query) {
             $query->where('statut', 'bloqué');
-        })->orderBy('updated_at', 'desc');
+        })->orderBy('datePublication', 'desc');
 
         if ($search) {
             $query->where(function($q) use ($search) {

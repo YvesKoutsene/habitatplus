@@ -162,7 +162,7 @@
 
                                         @if($categorie->biens->isEmpty() && $categorie->alertes->isEmpty())
                                         @if(Auth::user()->typeUser === 0 || Auth::user()->can('supprimer catégories'))
-                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $categorie->id }}" data-bs-toggle="tooltip" title="Supprimer">
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmation{{ $categorie->id }}" title="Supprimer">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                         @endif

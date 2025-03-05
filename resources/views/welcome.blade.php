@@ -1,46 +1,100 @@
 @extends('abonné.include.layouts.app')
 @section('content')
 
-@if($biens->isEmpty())
+@if($autresBiens->isEmpty() && $topBiens->isEmpty())
 <div class="alert alert-info text-center text-black">
     Aucune annonce disponible pour le moment.
 </div>
 @else
-<div class="container-fluid px-3">
-    <div class="pagetitle text-center mb-2">
-        <p class="text-muted text-start">Top Annonces</p>
-    </div>
 
-    <div class="row">
-        @foreach($biens as $bien)
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-            <div class="card h-100 shadow-sm border-0 rounded-lg overflow-hidden">
-                <div class="position-relative">
-                    @if($bien->photos && count($bien->photos) > 0)
-                    <img src="{{ asset($bien->photos[0]->url_photo) }}" class="card-img-top" alt="Image de l'annonce">
-                    @else
-                    <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}" class="card-img-top" alt="Image par défaut">
-                    @endif
-                    <span class="badge bg-black position-absolute top-0 start-0 m-2 p-2" style="opacity: 70%">
-                        {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
-                    </span>
+    @if(!$topBiens->isEmpty())
+        <div class="pagetitle text-center mb-2">
+            <p class="text-muted text-start">🏆 Top Annonces</p>
+        </div>
+
+        <div class="swiper mySwiper">
+
+            <div class="swiper-wrapper">
+                @foreach($topBiens as $bien)
+                    <div class="swiper-slide">
+                        <div class="card mb-4">
+                            <div class="position-relative">
+                                @if($bien->photos && count($bien->photos) > 0)
+                                    <img src="{{ asset($bien->photos[0]->url_photo) }}" class="card-img-top" alt="Image">
+                                @else
+                                    <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}" class="card-img-top" alt="Image par défaut">
+                                @endif
+                                <span class="badge bg-black position-absolute bottom-0 end-0 m-2 p-2" style="opacity: 70%">
+                                    {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
+                                </span>
+                                <span class="badge bg-success position-absolute top-0 start-0 m-2 p-2">🏅 Top</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold text-black-50 text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
+                                <p class="card-text text-muted mb-3">
+                                    <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu, 20, '...') }}<br>
+                                    <strong>{{ number_format($bien->prix, 0, ',', ' ') }} FCFA</strong>
+                                </p>
+                                <a href="{{ route('announcement.show.costumer', $bien->id) }}" class="btn btn-outline-primary mt-auto">
+                                    <i class="bi bi-eye"></i> Détails
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    @endif
+
+    @if(!$autresBiens->isEmpty())
+        <div class="">
+            <div class="pagetitle text-start mb-4">
+                <p class="text-muted text-start">📢 Autres Annonces</p>
+            </div>
+
+            <div class="row">
+                @foreach($autresBiens as $bien)
+                    @php
+                        $isHighlight = optional($bien->boost)->type_boost === 'mise_en_avant';
+                    @endphp
+                <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card shadow-lg border-0 rounded-lg {{ $isHighlight ? 'highlight-card' : '' }}">
+                        <div class="position-relative">
+                            @if($bien->photos && count($bien->photos) > 0)
+                            <img src="{{ asset($bien->photos[0]->url_photo) }}" class="card-img-top" alt="Image de l'annonce">
+                            @else
+                            <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}" class="card-img-top" alt="Image par défaut">
+                            @endif
+                            @if($isHighlight)
+                                <span class="badge bg-warning position-absolute top-0 start-0 m-2 p-2">🌟 En vedette</span>
+                                    <span class="badge bg-black position-absolute bottom-0 end-0 m-2 p-2" style="opacity: 70%">
+                                {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
+                                </span>
+                            @else
+                                <span class="badge bg-black position-absolute top-0 start-0 m-2 p-2" style="opacity: 70%">
+                                {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
+                                </span>
+                            @endif
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold text-black-50 text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
+                            <p class="card-text text-muted mb-3">
+                                <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu, 20, '...') }}<br>
+                                <strong>{{ number_format($bien->prix, 0, ',', ' ') }} FCFA</strong>
+                            </p>
+                            <a href="{{ route('announcement.show.costumer', $bien->id) }}" class="btn btn-outline-primary mt-auto">
+                                <i class="bi bi-eye"></i> Détails
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title fw-bold text-black-50 text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
-                    <p class="card-text text-muted mb-3">
-                        <i class="bi bi-geo-alt-fill text-danger"></i> {{ Str::limit($bien->lieu, 20, '...') }}<br>
-                        <strong>{{ number_format($bien->prix, 0, ',', ' ') }} FCFA</strong>
-                    </p>
-                    <a href="{{ route('announcement.show.costumer', $bien->id) }}" class="btn btn-outline-primary mt-auto">
-                        <i class="bi bi-eye"></i>Détails
-                    </a>
-                </div>
+                @endforeach
             </div>
         </div>
-        @endforeach
-    </div>
-
-</div>
+    @endif
 
 @endif
 
@@ -122,6 +176,19 @@
         white-space: nowrap;
     }
 
+</style>
+
+<style>
+    .carousel {
+        margin-bottom: 30px;
+    }
+    .carousel-item {
+        transition: transform 0.5s ease-in-out;
+    }
+    .highlight-card {
+        border: 2px solid #FFD700 !important;
+        background-color: #FFF8DC !important;
+    }
 </style>
 
 @endsection

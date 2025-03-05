@@ -38,8 +38,8 @@
                         @php
                             $hasPublishedOrBlocked = true;
                         @endphp
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card shadow-lg border-0 rounded-lg"> <!-- card shadow-lg border-0 rounded-lg overflow-hidden -->
                                 <div class="position-relative">
                                     @if($bien->photos && count($bien->photos) > 0)
                                         <img src="{{ asset($bien->photos[0]->url_photo) }}"
@@ -51,8 +51,8 @@
                                              alt="Image par défaut">
                                     @endif
                                     <span class="badge bg-black position-absolute top-0 start-0 m-2 p-2" style="opacity: 70%">
-                            {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
-                        </span>
+                                        {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
+                                    </span>
                                 </div>
                                 <div class="card-body d-flex flex-column">
                                     @if($bien->statut == 'bloqué')
@@ -71,6 +71,19 @@
                                                     <i class="bi bi-three-dots"></i>
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="actionMenu{{ $bien->id }}">
+                                                    @if($bien->statut != 'bloqué')
+                                                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+                                                            @if(!$bien->boost)
+                                                            <li class="btn btn-warning rounded">
+                                                                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#boostAnnonce{{ $bien->id }}" title="Booster cette annonce">
+                                                                    <i class="fas fa-bolt"></i> Booster annonce
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                                <hr class="dropdown-divider">
+                                                            </li>
+                                                           @endif
+                                                    @endif
                                                     <li>
                                                         <a class="dropdown-item" href="{{ route('announcement.show', $bien->id) }}" title="Détails de cette annonce">
                                                             <i class="bi bi-eye"></i> Voir détails
@@ -123,6 +136,60 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="modal fade" id="boostAnnonce{{ $bien->id }}" tabindex="-1" aria-labelledby="boostAnnonceLabel{{ $bien->id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <i class="fas fa-bolt me-1 text-black"></i>
+                                        <h5 class="modal-title text-black" id="boostAnnonceLabel{{ $bien->id }}">Booster une annonce</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="{{ route('announcement.boost', $bien->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('POST')
+                                        <div class="modal-body ">
+                                            <div class="mb-3">
+                                                <label for="boost_type" class="form-label text-black">Type de Boost<span class="text-danger" title="obligatoire">*</span></label>
+                                                <select id="boost_type" class="form-select form-control form-select-sm" name="type_boost" required>
+                                                    <option value="" disabled selected>Sélectionnez un type</option>
+                                                    <option value="top">Top (Annonce affichée en haut)</option>
+                                                    <option value="mise_en_avant">Highlight (Encadrement spécial)</option>
+                                                    <option value="auto-remontee">Auto-remontée (Remontée automatique)</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="duree" class="form-label text-black">Durée<span class="text-danger" title="obligatoire">*</span></label>
+                                                <div class="row">
+                                                    <div class="col-7 col-md-7 mb-2 mb-md-0">
+                                                        <select id="boost_unite_duree" class="form-select form-control form-select-sm" name="unite_duree" required>
+                                                            <option value="" disabled selected>Sélectionnez une unité</option>
+                                                            <option value="jour">Jour(s)</option>
+                                                            <option value="semaine">Semaine(s)</option>
+                                                            <option value="mois">Mois</option>
+                                                            <option value="annee">Année</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-5 col-md-5">
+                                                        <input type="text" id="duree"  min="1"  name="duree" class="form-control form-control-sm" required placeholder="Ex: 30" oninput="validateInputDuree()">
+                                                        <div class="invalid-feedback">Veuillez entrer une durée!</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                <i class="bi bi-x-circle"></i> Annuler
+                                            </button>
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="bi bi-check"></i> Valider
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                     @endif
                 @endforeach
                 @if(!$hasPublishedOrBlocked)
@@ -145,8 +212,8 @@
                         @php
                             $hasDraft = true;
                         @endphp
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card shadow-lg border-0 rounded-lg mb-4">
                                 <div class="position-relative">
                                     @if($bien->photos && count($bien->photos) > 0)
                                         <img src="{{ asset($bien->photos[0]->url_photo) }}"
@@ -279,8 +346,8 @@
                         @php
                             $hasFinished = true;
                         @endphp
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card shadow-lg border-0 rounded-lg mb-4">
                                 <div class="position-relative">
                                     @if($bien->photos && count($bien->photos) > 0)
                                         <img src="{{ asset($bien->photos[0]->url_photo) }}"
@@ -477,3 +544,14 @@
         display: none !important;
     }
 </style>
+
+<script>
+    function validateInputDuree() {
+        const input = document.getElementById('duree');
+        input.value = input.value.replace(/[^0-9]/g, '');
+
+        if (input.value.length > 3) {
+            input.value = input.value.substring(0, 3);
+        }
+    }
+</script>
