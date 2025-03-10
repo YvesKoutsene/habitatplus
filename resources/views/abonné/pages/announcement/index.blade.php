@@ -73,7 +73,7 @@
                                                 <ul class="dropdown-menu" aria-labelledby="actionMenu{{ $bien->id }}">
                                                     @if($bien->statut != 'bloqué')
                                                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-                                                            @if(!$bien->boost)
+                                                            @if(!$bien->boost || $bien->boost->statut == 'expiré')
                                                             <li class="btn btn-warning rounded">
                                                                 <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#boostAnnonce{{ $bien->id }}" title="Booster cette annonce">
                                                                     <i class="fas fa-bolt"></i> Booster annonce
@@ -152,10 +152,10 @@
                                             <div class="mb-3">
                                                 <label for="boost_type" class="form-label text-black">Type de Boost<span class="text-danger" title="obligatoire">*</span></label>
                                                 <select id="boost_type" class="form-select form-control form-select-sm" name="type_boost" required>
-                                                    <option value="" disabled selected>Sélectionnez un type</option>
+                                                    <!--<option value="" disabled selected>Sélectionnez un type</option>-->
                                                     <option value="top">Top (Annonce affichée en haut)</option>
-                                                    <option value="mise_en_avant">Highlight (Encadrement spécial)</option>
-                                                    <option value="auto-remontee">Auto-remontée (Remontée automatique)</option>
+                                                    <!--<option value="mise_en_avant">Highlight (Encadrement spécial)</option>
+                                                    <option value="auto-remontee">Auto-remontée (Remontée automatique)</option>-->
                                                 </select>
                                             </div>
                                             <div class="mb-3">
@@ -163,15 +163,15 @@
                                                 <div class="row">
                                                     <div class="col-7 col-md-7 mb-2 mb-md-0">
                                                         <select id="boost_unite_duree" class="form-select form-control form-select-sm" name="unite_duree" required>
-                                                            <option value="" disabled selected>Sélectionnez une unité</option>
+                                                            <!--<option value="" disabled selected>Sélectionnez une unité</option>-->
                                                             <option value="jour">Jour(s)</option>
-                                                            <option value="semaine">Semaine(s)</option>
+                                                            <!--<option value="semaine">Semaine(s)</option>
                                                             <option value="mois">Mois</option>
-                                                            <option value="annee">Année</option>
+                                                            <option value="annee">Année</option>-->
                                                         </select>
                                                     </div>
                                                     <div class="col-5 col-md-5">
-                                                        <input type="text" id="duree"  min="1"  name="duree" class="form-control form-control-sm" required placeholder="Ex: 30" oninput="validateInputDuree()">
+                                                        <input type="text" id="duree"  min="1"  name="duree" class="form-control form-control-sm" required placeholder="Ex: 30" oninput="validateInputDuree()" value="30" disabled>
                                                         <div class="invalid-feedback">Veuillez entrer une durée!</div>
                                                     </div>
                                                 </div>

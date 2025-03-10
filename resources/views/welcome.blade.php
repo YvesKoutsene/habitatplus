@@ -1,7 +1,7 @@
 @extends('abonné.include.layouts.app')
 @section('content')
 
-@if($autresBiens->isEmpty() && $topBiens->isEmpty())
+@if($biens->isEmpty() && $topBiens->isEmpty())
 <div class="alert alert-info text-center text-black">
     Aucune annonce disponible pour le moment.
 </div>
@@ -16,8 +16,11 @@
 
             <div class="swiper-wrapper">
                 @foreach($topBiens as $bien)
+                    @php
+                        $isTop = optional($bien->boost)->type_boost === 'top' && optional($bien->boost)->statut === 'actif';
+                    @endphp
                     <div class="swiper-slide">
-                        <div class="card mb-4">
+                        <div class="card mb-4 {{ $isTop ? 'top-card' : '' }}">
                             <div class="position-relative">
                                 @if($bien->photos && count($bien->photos) > 0)
                                     <img src="{{ asset($bien->photos[0]->url_photo) }}" class="card-img-top" alt="Image">
@@ -49,35 +52,25 @@
         </div>
     @endif
 
-    @if(!$autresBiens->isEmpty())
+    @if(!$biens->isEmpty())
         <div class="">
             <div class="pagetitle text-start mb-4">
-                <p class="text-muted text-start">📢 Autres Annonces</p>
+                <p class="text-muted text-start">📢 Récentes Annonces</p>
             </div>
 
             <div class="row">
-                @foreach($autresBiens as $bien)
-                    @php
-                        $isHighlight = optional($bien->boost)->type_boost === 'mise_en_avant';
-                    @endphp
+                @foreach($biens as $bien)
                 <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card shadow-lg border-0 rounded-lg {{ $isHighlight ? 'highlight-card' : '' }}">
+                    <div class="card shadow-lg border-0 rounded-lg">
                         <div class="position-relative">
                             @if($bien->photos && count($bien->photos) > 0)
                             <img src="{{ asset($bien->photos[0]->url_photo) }}" class="card-img-top" alt="Image de l'annonce">
                             @else
                             <img src="{{ asset('/storage/images/annonces/default_main_image.jpg') }}" class="card-img-top" alt="Image par défaut">
                             @endif
-                            @if($isHighlight)
-                                <span class="badge bg-warning position-absolute top-0 start-0 m-2 p-2">🌟 En vedette</span>
-                                    <span class="badge bg-black position-absolute bottom-0 end-0 m-2 p-2" style="opacity: 70%">
+                            <span class="badge bg-black position-absolute top-0 start-0 m-2 p-2" style="opacity: 70%">
                                 {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
-                                </span>
-                            @else
-                                <span class="badge bg-black position-absolute top-0 start-0 m-2 p-2" style="opacity: 70%">
-                                {{ $bien->categorieBien->titre ?? 'Non spécifié' }}
-                                </span>
-                            @endif
+                            </span>
                         </div>
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title fw-bold text-black-50 text-truncate">{{ Str::limit($bien->titre, 20, '...') }}</h5>
@@ -185,7 +178,7 @@
     .carousel-item {
         transition: transform 0.5s ease-in-out;
     }
-    .highlight-card {
+    .top-card {
         border: 2px solid #FFD700 !important;
         background-color: #FFF8DC !important;
     }

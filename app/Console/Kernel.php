@@ -10,9 +10,15 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      */
-    protected function schedule(Schedule $schedule): void
+    /*protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+    }*/
+
+    //Pour mettre à jour automatiquement les boosts ayant expiré
+    protected function schedule(\Illuminate\Console\Scheduling\Schedule $schedule)
+    {
+        $schedule->command('boosts:expire')->hourly();
     }
 
     /**

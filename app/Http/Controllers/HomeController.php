@@ -41,10 +41,10 @@ class HomeController extends Controller
         return redirect('acceuil');
     }
 
-    //Fonction pour taper sur la route "/"
+    //Fonction pour taper sur la route "/" avec les biens publiés
     /*public function indexHome(Request $request) {
         $search = $request->input('search', '');
-        $perPage = $request->input('perPage', 24);
+        $perPage = $request->input('perPage', 32);
 
         $query = Bien::with(['categorieBien'])
             ->where('statut', 'publié')
@@ -64,40 +64,44 @@ class HomeController extends Controller
         return view('welcome', compact('biens', 'search'));
     }*/
 
+    //Fonction permettant de renvoyer la page d'acceuil avec les annonces top et non boostée
     public function indexHome(Request $request) {
         $search = $request->input('search', '');
         $perPage = $request->input('perPage', 32);
 
-        // Récupération des annonces avec leur boost
-        $query = Bien::with(['categorieBien', 'boost', 'photos'])
-            ->leftJoin('boosts', 'biens.id', '=', 'boosts.id_bien')
-            ->where('biens.statut', 'publié');
+        $searchQuery = function ($query) use ($search) {
+            $query->whereRaw('LOWER(titre) LIKE ?', ['%' . strtolower($search) . '%'])
+                ->orWhereRaw('LOWER(lieu) LIKE ?', ['%' . strtolower($search) . '%'])
+                ->orWhereRaw('LOWER(type_offre) LIKE ?', ['%' . strtolower($search) . '%'])
+                ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%']);
+        };
 
-        if ($search) {
-            $query->where(function($q) use ($search) {
-                $q->whereRaw('LOWER(biens.titre) LIKE ?', ['%' . strtolower($search) . '%'])
-                    ->orWhereRaw('LOWER(biens.lieu) LIKE ?', ['%' . strtolower($search) . '%'])
-                    ->orWhereRaw('LOWER(biens.type_offre) LIKE ?', ['%' . strtolower($search) . '%'])
-                    ->orWhereRaw('LOWER(biens.description) LIKE ?', ['%' . strtolower($search) . '%']);
-            });
-        }
+        // Récupérer les annonces boostées (Top) sans pagination
+        $topBiens = Bien::with(['categorieBien', 'boost'])
+            ->whereHas('boost', function ($query) {
+                $query->where('type_boost', 'top')->where('statut', 'actif');
+            })
+            ->where('statut', 'publié')
+            ->when($search, function ($query) use ($searchQuery) {
+                $query->where($searchQuery);
+            })
+            ->orderBy('datePublication', 'desc')
+            ->get();
 
-        // Trier les annonces boostées en priorité
-        $query->orderByRaw("
-        CASE
-            WHEN boosts.type_boost = 'top' AND boosts.statut = 'inactif' THEN 1
-            WHEN boosts.type_boost = 'auto-remontee' AND boosts.statut = 'actif' THEN 2
-            ELSE 3
-        END, biens.datePublication DESC
-        ");
+        // Récupérer les annonces normales avec pagination
+        $query = Bien::with(['categorieBien'])
+            ->where('statut', 'publié')
+            ->whereDoesntHave('boost', function ($query) {
+                $query->where('type_boost', 'top')->where('statut', 'actif');
+            })
+            ->when($search, function ($query) use ($searchQuery) {
+                $query->where($searchQuery);
+            })
+            ->orderBy('datePublication', 'desc');
 
-        $biens = $query->select('biens.*')->paginate($perPage);
+        $biens = $query->paginate($perPage);
 
-        // Séparer les annonces boostées en "top" et les autres
-        $topBiens = $biens->filter(fn($bien) => optional($bien->boost)->type_boost === 'top');
-        $autresBiens = $biens->filter(fn($bien) => optional($bien->boost)->type_boost !== 'top');
-
-        return view('welcome', compact('topBiens', 'autresBiens', 'search', 'biens'));
+        return view('welcome', compact('biens', 'topBiens', 'search'));
     }
 
     //Fonction d'affichage de page de details d'un bien
